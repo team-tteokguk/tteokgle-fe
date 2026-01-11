@@ -3,8 +3,13 @@
 
 COMMIT_MSG_FILE=$1
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
-ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+')
+ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+' | head -n 1)
 
 if [ -n "$ISSUE_NUMBER" ]; then
-  sed -i.bak -e "1s/^/(#$ISSUE_NUMBER) /" "$COMMIT_MSG_FILE"
+  ORIGINAL_MSG=$(cat "$COMMIT_MSG_FILE")
+  
+  if ! echo "$ORIGINAL_MSG" | grep -q "(#$ISSUE_NUMBER)"; then
+    echo "$ORIGINAL_MSG (#$ISSUE_NUMBER)" > "$COMMIT_MSG_FILE"
+    echo "✅ Husky: 커밋 메시지 끝에 이슈 번호(#$ISSUE_NUMBER)를 추가했습니다."
+  fi
 fi
