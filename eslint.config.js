@@ -10,24 +10,20 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist', '.path', 'node_modules']),
 
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  perfectionist.configs['recommended-natural'],
+
   {
     files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      perfectionist.configs['recommended-natural'],
-      prettierConfig, 
-    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-      parser: tseslint.parser, 
+      parser: tseslint.parser,
     },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      '@typescript-eslint': tseslint.plugin,
-      'perfectionist': perfectionist,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -45,17 +41,16 @@ export default defineConfig([
           groups: [
             'type',
             ['builtin', 'external'],
-            'internal-type',
             'internal',
-            ['parent-type', 'sibling-type', 'index-type'],
             ['parent', 'sibling', 'index'],
             'side-effect',
             'style',
-            'object',
             'unknown',
           ],
         },
       ],
     },
   },
+
+  prettierConfig,
 ])
