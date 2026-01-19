@@ -7,7 +7,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <h1>메인 페이지</h1>
     </QueryClientProvider>
   )
 }
