@@ -13,6 +13,6 @@ export const createItem = async (
   storeId: string,
   body: ItemCreateRequest,
 ): Promise<StoreItemResponse> => {
-  const { data } = await instance.patch(`/store/${storeId}/items`, body);
+  const { data } = await instance.post(`/store/${storeId}/items`, body);
   return data;
 };
