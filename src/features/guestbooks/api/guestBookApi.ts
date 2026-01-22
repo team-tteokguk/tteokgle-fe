@@ -3,7 +3,7 @@ import type { GuestBookRequest, GuestBookResponse } from '../types';
 import { instance } from '../../../services/axios';
 
 // [GET] 방명록 불러오기
-export const getGuestBookInfo = async (storeId: string): Promise<GuestBookResponse> => {
+export const getGuestBook = async (storeId: string): Promise<GuestBookResponse[]> => {
   const { data } = await instance.get(`/store/${storeId}/guestbooks`);
   return data;
 };
