@@ -1,6 +1,12 @@
-import type { ItemCreateRequest, StoreItemResponse } from '../types';
+import type { ItemCreateRequest, StoreItemResponse, StoreResponse } from '../types';
 
 import { instance } from '../../../services/axios';
+
+// [GET] 상점 정보 불러오기
+export const getStore = async (storeId: string): Promise<StoreResponse> => {
+  const { data } = await instance.get(`/store/${storeId}`);
+  return data;
+};
 
 // [GET] 상점 고명 리스트 조회하기
 export const getItems = async (storeId: string): Promise<StoreItemResponse[]> => {

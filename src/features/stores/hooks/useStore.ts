@@ -2,8 +2,15 @@ import type { ItemCreateRequest } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createItem, deleteItem, getItems } from '../api/storeApi';
+import { createItem, deleteItem, getItems, getStore } from '../api/storeApi';
 import { storeKeys } from '../api/storeKeys';
+
+export const useStore = (storeId: string) => {
+  return useQuery({
+    queryFn: () => getStore(storeId),
+    queryKey: storeKeys.detail(storeId),
+  });
+};
 
 export const useItems = (storeId: string) => {
   return useQuery({
