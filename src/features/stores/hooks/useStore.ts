@@ -2,7 +2,14 @@ import type { ItemCreateRequest } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createItem, deleteItem, getItems, getStore } from '../api/storeApi';
+import {
+  createItem,
+  deleteItem,
+  getItems,
+  getStore,
+  subscribe,
+  unsubscribe,
+} from '../api/storeApi';
 import { storeKeys } from '../api/storeKeys';
 
 export const useStore = (storeId: string) => {
@@ -45,6 +52,24 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
       queryClient.invalidateQueries({
         queryKey: storeKeys.items(storeId),
       });
+    },
+  });
+};
+
+export const useToggleSubscribe = (storeId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (isSubscribed: boolean) =>
+      isSubscribed ? unsubscribe(storeId) : subscribe(storeId),
+    onError: (error) => {
+      console.error('고명 삭제 실패', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.info(storeId),
+      });
+
+      // TODO: 나의 구독 목록 무효화
     },
   });
 };

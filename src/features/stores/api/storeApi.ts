@@ -27,3 +27,13 @@ export const createItem = async (
 export const deleteItem = async (storeId: string, itemId: string): Promise<void> => {
   await instance.delete(`/store/${storeId}/items/${itemId}`);
 };
+
+// [POST] 즐겨찾기 추가
+export const subscribe = async (storeId: string): Promise<void> => {
+  await instance.post(`/store/${storeId}/subscription`);
+};
+
+// [POST] 즐겨찾기 해제
+export const unsubscribe = async (storeId: string): Promise<void> => {
+  await instance.delete(`/store/${storeId}/subscription`);
+};

@@ -12,4 +12,7 @@ export const storeKeys = {
 
   // 2. 상점의 물건 리스트
   items: (storeId: string) => [...storeKeys.detail(storeId), 'items'] as const,
+
+  // 3. 상점에 즐겨찾기 추가
+  subscribe: (storeId: string) => [...storeKeys.detail(storeId), 'subscribe'] as const,
 };
