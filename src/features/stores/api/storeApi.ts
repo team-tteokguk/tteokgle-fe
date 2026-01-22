@@ -16,3 +16,8 @@ export const createItem = async (
   const { data } = await instance.post(`/store/${storeId}/items`, body);
   return data;
 };
+
+// [DELETE] 고명 삭제하기
+export const deleteItem = async (storeId: string, itemId: string): Promise<void> => {
+  await instance.delete(`/store/${storeId}/items/${itemId}`);
+};

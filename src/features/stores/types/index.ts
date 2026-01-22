@@ -18,3 +18,11 @@ export interface StoreItemResponse extends ItmeBase {
   cost: number;
   sellCounts: number;
 }
+
+/**
+ * 상점 정보 불러오기
+ */
+export interface StoreResponse {
+  id: number;
+  name: string;
+}
