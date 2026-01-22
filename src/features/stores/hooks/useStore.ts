@@ -58,18 +58,31 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
 
 export const useToggleSubscribe = (storeId: string) => {
   const queryClient = useQueryClient();
+  const queryKey = storeKeys.subscribe(storeId);
+
   return useMutation({
     mutationFn: (isSubscribed: boolean) =>
       isSubscribed ? unsubscribe(storeId) : subscribe(storeId),
-    onError: (error) => {
-      console.error('고명 삭제 실패', error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: storeKeys.info(storeId),
-      });
 
-      // TODO: 나의 구독 목록 무효화
+    onError: (error) => {
+      console.error('즐겨찾기 상태 변경 실패', error);
+    },
+
+    onMutate: async (isSubscribed) => {
+      // 진행 중인 refetch 중지
+      await queryClient.cancelQueries({ queryKey });
+
+      // 롤백을 위한 백업
+      const previousStatus = queryClient.getQueryData(queryKey);
+
+      // 캐시 즉시 업데이트
+      queryClient.setQueryData(queryKey, !isSubscribed);
+
+      return { previousStatus };
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 };
