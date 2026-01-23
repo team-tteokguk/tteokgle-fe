@@ -1,35 +1,40 @@
-## 🤖 AI Change Summary for PR #9
+## 🤖 AI Change Summary for PR #11
 
 ### Chunk 1/1
 ### 개요
-이번 변경 사항은 `package-lock.json` 및 `package.json` 파일에서 `@types/node` 패키지 버전을 업데이트하고, 새로운 API 및 훅을 추가하여 아이템 관련 기능을 구현하는 내용을 포함합니다.
+이번 변경 사항은 방명록 기능과 상점 정보 관련 API 및 훅을 추가하고, 기존의 상점 API 및 훅을 수정하여 방명록과 상점 정보를 관리할 수 있도록 개선한 내용입니다.
 
 ### 주요 변경 사항
-1. **패키지 버전 업데이트**:
-   - `@types/node`의 버전이 `24.10.1`에서 `24.10.9`로 업데이트됨.
+1. **방명록 API 추가**:
+   - `getGuestBook`, `createGuestBook`, `updateGuestBook`, `deleteGuestBook` 함수가 `guestBookApi.ts` 파일에 추가됨.
    
-2. **새로운 API 추가**:
-   - `src/features/myItems/api/myItemApi.ts` 파일에 아이템 조회, 배치, 읽음 처리 및 리스트 조회를 위한 API 함수 추가.
-   - `src/features/myItems/api/myItemKeys.ts` 파일에 쿼리 키를 정의하는 객체 추가.
-   
-3. **새로운 훅 추가**:
-   - `src/features/myItems/hooks/useMyItem.ts` 파일에 아이템 상세 조회, 배치 업데이트, 읽음 처리, 배치된 아이템 리스트 및 미배치된 아이템 리스트를 위한 훅 추가.
-   
-4. **타입 정의 추가**:
-   - `src/features/myItems/types/index.ts` 파일에 아이템 관련 응답 타입 정의.
-   - `src/features/stores/api/storeApi.ts` 및 `src/features/stores/hooks/useStore.ts` 파일에 상점 아이템 조회 및 등록을 위한 API 및 훅 추가.
-   - `src/features/stores/types/index.ts` 파일에 상점 아이템 등록 요청 타입 정의.
+2. **방명록 키 추가**:
+   - `guestBookKeys` 객체가 `guestBookKeys.ts` 파일에 추가되어 방명록 관련 쿼리 키를 정의함.
+
+3. **방명록 훅 추가**:
+   - `useGuestBook`, `useCreateGuestBook`, `useUpdateGuestBook`, `useDeleteGuestBook` 훅이 `useGuestBook.ts` 파일에 추가되어 방명록의 CRUD 작업을 지원함.
+
+4. **상점 API 수정**:
+   - `storeApi.ts` 파일에 `getStore`, `subscribe`, `unsubscribe` 함수가 추가됨.
+   - 기존의 `getItems` 함수와 함께 상점 정보를 가져오는 기능을 포함함.
+
+5. **상점 키 수정**:
+   - `storeKeys` 객체가 수정되어 상점 관련 쿼리 키를 보다 명확하게 정의함.
+
+6. **상점 훅 수정**:
+   - `useStore`, `useDeleteItem`, `useToggleSubscribe` 훅이 추가 및 수정되어 상점 정보를 가져오고, 아이템 삭제 및 즐겨찾기 상태를 토글하는 기능을 지원함.
+
+7. **타입 정의 추가**:
+   - `GuestBookRequest`, `GuestBookResponse`, `StoreResponse` 인터페이스가 `types` 폴더에 추가되어 데이터 구조를 정의함.
 
 ### 위험/영향
-- **호환성 문제**: `@types/node`의 버전 변경으로 인해 기존 코드와의 호환성 문제가 발생할 수 있음.
-- **기능 추가**: 새로운 API와 훅이 추가됨에 따라, 기존 코드와의 통합 테스트가 필요함.
-- **의존성 관리**: 추가된 API와 훅이 의존하는 다른 모듈의 변경이 필요할 수 있음.
+- 새로운 API와 훅이 추가됨에 따라, 기존 코드와의 호환성 문제는 없지만, 새로운 기능이 추가됨에 따라 테스트가 필요함.
+- 방명록과 상점 기능이 서로 연결되어 있으므로, 이들 간의 의존성을 고려해야 함.
 
 ### 테스트/검증
-- 새로운 API와 훅에 대한 단위 테스트 및 통합 테스트를 작성하여 기능이 정상적으로 작동하는지 검증해야 함.
-- `@types/node`의 업데이트가 기존 코드에 미치는 영향을 확인하기 위한 테스트 필요.
+- 각 API와 훅의 기능이 정상적으로 작동하는지 확인하기 위해 단위 테스트 및 통합 테스트를 수행해야 함.
+- 방명록 CRUD 작업과 상점 정보 조회 및 즐겨찾기 기능에 대한 테스트 케이스를 작성하고 실행해야 함.
 
 ### 후속 조치
-- 추가된 API와 훅에 대한 문서화 작업 필요.
-- 기존 코드와의 통합 테스트를 수행하여 모든 기능이 정상적으로 작동하는지 확인.
-- 필요 시, 추가적인 패키지 업데이트 및 의존성 관리를 진행.
+- 추가된 API와 훅에 대한 문서화를 진행하여 개발자들이 쉽게 이해하고 사용할 수 있도록 해야 함.
+- 사용자 피드백을 수집하여 방명록 및 상점 기능의 개선점을 파악하고, 필요한 경우 추가적인 수정 작업을 계획해야 함.

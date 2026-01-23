@@ -2,13 +2,27 @@ import type { ItemCreateRequest } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createItem, getItems } from '../api/storeApi';
+import {
+  createItem,
+  deleteItem,
+  getItems,
+  getStore,
+  subscribe,
+  unsubscribe,
+} from '../api/storeApi';
 import { storeKeys } from '../api/storeKeys';
+
+export const useStore = (storeId: string) => {
+  return useQuery({
+    queryFn: () => getStore(storeId),
+    queryKey: storeKeys.detail(storeId),
+  });
+};
 
 export const useItems = (storeId: string) => {
   return useQuery({
     queryFn: () => getItems(storeId),
-    queryKey: [...storeKeys.all, storeId],
+    queryKey: storeKeys.items(storeId),
   });
 };
 
@@ -21,8 +35,54 @@ export const useCreateItem = (storeId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...storeKeys.all, storeId],
+        queryKey: storeKeys.items(storeId),
       });
+    },
+  });
+};
+
+export const useDeleteItem = (storeId: string, itemId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => deleteItem(storeId, itemId),
+    onError: (error) => {
+      console.error('고명 삭제 실패', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.items(storeId),
+      });
+    },
+  });
+};
+
+export const useToggleSubscribe = (storeId: string) => {
+  const queryClient = useQueryClient();
+  const queryKey = storeKeys.subscribe(storeId);
+
+  return useMutation({
+    mutationFn: (isSubscribed: boolean) =>
+      isSubscribed ? unsubscribe(storeId) : subscribe(storeId),
+
+    onError: (error) => {
+      console.error('즐겨찾기 상태 변경 실패', error);
+    },
+
+    onMutate: async (isSubscribed) => {
+      // 진행 중인 refetch 중지
+      await queryClient.cancelQueries({ queryKey });
+
+      // 롤백을 위한 백업
+      const previousStatus = queryClient.getQueryData(queryKey);
+
+      // 캐시 즉시 업데이트
+      queryClient.setQueryData(queryKey, !isSubscribed);
+
+      return { previousStatus };
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 };
