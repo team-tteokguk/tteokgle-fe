@@ -95,8 +95,9 @@ img {
     /* 텍스트 */
     --font-main: var(--brown-text);
     --font-main-second: var(--brown-main);
-    --font-second: var(--gray-base);
-    --font-second-second: var(--gray-dark);
+    --font-second: var(--white-base);
+    --font-third: var(--gray-base);
+    --font-third-second: var(--gray-dark);
     
     /* 모양 */
     /* 기본 카드 모서리 */
