@@ -1,8 +1,8 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter } from 'react-router';
 
-import ProtectedRoute from './features/auth/components/ProtectedRoute'
-import GeneralLayout from './layouts/GeneralLayout'
-import Main from './pages/Main'
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import GeneralLayout from './layouts/GeneralLayout';
+import Main from './pages/Main';
 
 export const router = createBrowserRouter([
   {
@@ -30,4 +30,4 @@ export const router = createBrowserRouter([
   //   path: '*',
   //   element: <NotFound />,
   // },
-])
+]);
