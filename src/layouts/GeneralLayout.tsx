@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet } from 'react-router';
 
 // TODO: 디자인 확정 되면 수정
 const GeneralLayout = () => {
@@ -9,7 +9,7 @@ const GeneralLayout = () => {
         <Outlet />
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default GeneralLayout
+export default GeneralLayout;
