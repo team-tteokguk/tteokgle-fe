@@ -7,7 +7,7 @@ import {
   deleteGuestBook,
   getGuestBook,
   updateGuestBook,
-} from '../api/guestbookApi';
+} from '../api/guestBookApi';
 import { guestBookKeys } from '../api/guestBookKeys';
 
 export const useGuestBook = (storeId: string) => {
