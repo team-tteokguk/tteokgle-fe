@@ -1,1 +1,142 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+:root {
+    /* 색상 */
+    /* --- 기초 색상 --- */
+    --cream-light: #FFF8F0;
+    --cream-base: #F5EBE0;
+    --cream-dark: #F5E6D3;
+
+    --ivory-base: #FFE4B5;
+    --ivory-dark: #FFD7A5;
+    --ivory-light: #FFF8E7;
+
+    --brown-main: #C17A5C;
+    --brown-dark: #A0522D;
+    --brown-text: #8B4513;
+
+    --yellow-main: #FFD700;
+    --yellow-dark: #FFA500;
+
+    --white-light: #FFFFFF;
+    --white-base: #F3F4F6;
+    --white-dark: #F9FAFB;
+    --white-border: #E5E7EB;
+
+    --gray-light-light: #D1D5DC; 
+    --gray-light: #99A1AF;
+    --gray-base: #6A7282;
+    --gray-dark: #364153;
+    --gray-text: #4A5565;
+
+    --red-base: #FB2C36;
+    --red-light: #FFE2E2;
+    --orange: #FF6900;
+    --blue: #2B7FFF;
+
+    /* 배경 및 카드 */
+    --grad-bg: linear-gradient(to bottom, var(--cream-light), var(--cream-base), var(--cream-dark));
+    --grad-item: linear-gradient(to bottom, var(--cream-light), var(--white-light));
+    --grad-notification: linear-gradient(to bottom, var(--cream-light), var(--ivory-base));
+    --grad-button: linear-gradient(to bottom, var(--ivory-base), var(--ivory-dark));
+    --grad-store: linear-gradient(to bottom, var(--white-light), var(--ivory-light));
+
+    /* 주요 색상 */
+    --brand-main: var(--brown-main);
+    --brand-dark: var(--brown-dark);
+    --grad-brand: linear-gradient(to bottom, var(--brand-main), var(--brand-dark));
+    
+    --accent-main: var(--yellow-main);
+    --accent-soft: var(--yellow-dark);
+    --grad-accent: linear-gradient(to bottom, var(--accent-main), var(--accent-soft));
+
+    /* 방명록 및 에디터 */
+    --writer-color: var(--white-base);
+    --card-top: var(--cream-light);
+
+    /* 알림 */
+    --notification-clicked: var(--white-dark);
+    --notification-border: var(--yellow-main);
+
+    /* 상점 판패 품목 카드 */
+    --store-border: var(--yellow-main);
+    --store-sold-out: var(--orange);
+
+    /* 네비게이션 바 */
+    --nav-unclicked: var(--gray-light);
+    --nav-clicked: var(--brown-main) ;
+    
+    /* 경고 버튼 */
+    --alarm-main: var(--red-base);
+    --alarm-second: var(--red-light);
+
+    /* 즐겨찾기 */
+    --subscribe-color: var(--yellow-main);
+    --unsubscribe-color: var(--gray-light-light);
+
+    /* 텍스트 */
+    --font-main: var(--brown-text);
+    --font-main-second: var(--brown-main);
+    --font-second: var(--white-base);
+    --font-third: var(--gray-base);
+    --font-third-second: var(--gray-base-dark);
+    --font-third-third: var(--gray-dark);
+    
+    /* 모양 */
+    /* 기본 카드 모서리 */
+    --radius-card: 32px;
+    --radius-main: 16px;
+
+    /* 카드 그림자 */
+    --bg-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --card-shadow: 0 8px 10px -6px rgba(0, 0, 0, 0.1),
+                0 20px 25px -6px rgba(0, 0, 0, 0.1);
+    --main-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1),
+            0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@layer components {
+    /* 기본(Base) 겉을 감싸는 카드 레이아웃 */
+    .card-wrapper {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        padding: 32px;
+        border-radius: var(--radius-card);
+        box-shadow: var(--card-shadow);
+    }
+
+    /* 기본 작은 아이템 카드 레이아웃 */
+    .card-item {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        padding: 16px;
+        border-radius: var(--radius-main);
+        box-shadow: var(--main-shadow);
+    }
+
+    /* 기본(Base) 버튼 레이아웃 */
+    .button-layout {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 16px;
+        border-radius: var(--radius-button);
+        box-shadow: var(--button-shadow);
+    }
+
+    /* 기본 배찌 */
+    .bage-base {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+        border-radius: 999px;
+        box-shadow: var(--main-shadow);
+        font-size: 10px;
+        font-weight: bold;
+        z-index: 10;
+    }
+}
