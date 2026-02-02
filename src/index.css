@@ -1,25 +1,4 @@
 @import "tailwindcss";
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-ul, li {
-  list-style: none;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
 :root {
     /* 색상 */
     /* --- 기초 색상 --- */
@@ -127,17 +106,6 @@ img {
         box-shadow: var(--card-shadow);
     }
 
-    /* 색상만 전환 */
-    .card-title {
-        background-color: var(--grad-brand);
-        color: var(--white-light);
-    }
-
-    .card-content {
-        background-color: var(--white-base);
-        color: var(--brown-text);
-    }
-
     /* 기본 작은 아이템 카드 레이아웃 */
     .card-item {
         display: flex;
@@ -149,38 +117,6 @@ img {
         box-shadow: var(--main-shadow);
     }
 
-    .card-store {
-        background-color: var(--grad-store);
-        color: var(--brown-text);
-        border-top: 1.08px solid color-mix(in srgb, var(--yellow-main), transparent 70%);
-    }
-
-    .card-sold-out {
-        background-color: var(--orange);
-        color: var(--white-light);
-        align-items: center;
-    }
-
-    .card-guest {
-        background-color: var(--grad-item);
-        color: var(--brown-text);
-        align-items: flex-start;
-    }
-
-    .card-coin {
-        background-color: var(--white-base);
-        color: var(--brown-text);
-        align-items: center;
-        border-top: 1.08px solid color-mix(in srgb, var(--white-light), transparent 50%);
-    }
-
-    .card-notification {
-        background-color: var(--grad-notification);
-        color: var(--brown-text);
-        align-items: flex-start;
-        border-top: 1.08px solid color-mix(in srgb, var(--yellow-main), transparent 70%);
-    }
-
     /* 기본(Base) 버튼 레이아웃 */
     .button-layout {
         display: flex;
@@ -189,16 +125,6 @@ img {
         padding: 16px;
         border-radius: var(--radius-button);
         box-shadow: var(--button-shadow);
-    }
-
-    .button-guest {
-        background-color: var(--grad-button);
-        columns: var(--brown-text);
-    }
-
-    .button-submit {
-        background-color: var(--grad-brand);
-        color: var(--white-base);
     }
 
     /* 기본 배찌 */
@@ -212,14 +138,6 @@ img {
         font-size: 10px;
         font-weight: bold;
         z-index: 10;
-    }
-
-    .bage-stock {
-        background-color: var(--white-light);
-        color: var(--gray-text);
-        padding-right: 9.08px;
-        padding-left: 9.08px;
-        border-top: 1.08px solid var(--white-border);
     }
 
 }
