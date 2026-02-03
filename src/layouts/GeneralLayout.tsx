@@ -1,13 +1,19 @@
 import { Outlet } from 'react-router';
 
-// TODO: 디자인 확정 되면 수정
+import { Header } from '../shared/components/Header';
+import { Navbar } from '../shared/components/Navbar';
+
 const GeneralLayout = () => {
   return (
-    <div>
-      <main>
-        <h1>공통 레이아웃</h1>
-        <Outlet />
-      </main>
+    <div className="flex justify-center pt-4">
+      <div className="w-full max-w-md">
+        <Header coin={0} />
+        <main className="pt-[70.5px] pb-4">
+          <Outlet />
+        </main>
+        {/* 고정할지 고민 */}
+        <Navbar />
+      </div>
     </div>
   );
 };
