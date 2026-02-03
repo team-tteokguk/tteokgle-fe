@@ -92,6 +92,11 @@
   --main-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+body {
+  min-height: 100vh;
+  background: var(--grad-bg);
+}
+
 @layer components {
   /* 기본(Base) 겉을 감싸는 카드 레이아웃 */
   .card-wrapper {
