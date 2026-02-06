@@ -1,4 +1,11 @@
 @import 'tailwindcss';
+
+/* input 리셋 */
+
+input:focus {
+  outline: none;
+}
+
 :root {
   /* 색상 */
   /* --- 기초 색상 --- */
@@ -30,6 +37,7 @@
 
   --red-base: #fb2c36;
   --red-light: #ffe2e2;
+  --pink-base: #fef2f2;
   --orange: #ff6900;
   --blue: #2b7fff;
 
@@ -39,6 +47,7 @@
   --grad-notification: linear-gradient(to bottom, var(--cream-light), var(--ivory-base));
   --grad-button: linear-gradient(to bottom, var(--ivory-base), var(--ivory-dark));
   --grad-store: linear-gradient(to bottom, var(--white-light), var(--ivory-light));
+  --grad-title-card: linear-gradient(to bottom, var(--brown-main), var(--brown-dark));
 
   /* 주요 색상 */
   --brand-main: var(--brown-main);
@@ -143,50 +152,79 @@ body {
     z-index: 10;
   }
 
-  @theme {
-    /* 1. 브랜드 및 주요 텍스트 컬러 (colors) */
-    --color-alarm-main: var(--alarm-main);
-    --color-alarm-second: var(--alarm-second);
-
-    --color-brand-dark: var(--brand-dark);
-    --color-brand-main: var(--brand-main);
-
-    --color-card-top: var(--card-top);
-
-    --color-font-gray: var(--font-third);
-    --color-font-gray-dark: var(--font-third-second);
-    --color-font-main: var(--font-main);
-    --color-font-secondary: var(--font-main-second);
-    --color-font-white: var(--font-second);
-
-    --color-nav-clicked: var(--nav-clicked);
-    --color-nav-unclicked: var(--nav-unclicked);
-
-    --color-notification-border: var(--notification-border);
-    --color-notification-clicked: var(--notification-clicked);
-
-    --color-store-border: var(--store-border);
-    --color-store-soldout: var(--store-sold-out);
-
-    --color-subscribe: var(--subscribe-color);
-    --color-unsubscribe: var(--unsubscribe-color);
-    --color-writer: var(--writer-color);
-
-    /* 2. 그라데이션 (backgroundImage) */
-    --background-image-grad-accent: var(--grad-accent);
-    --background-image-grad-bg: var(--grad-bg);
-    --background-image-grad-button: var(--grad-button);
-    --background-image-grad-item: var(--grad-item);
-    --background-image-grad-notification: var(--grad-notification);
-    --background-image-grad-profile: var(--grad-profile);
-    --background-image-grad-store: var(--grad-store);
-
-    /* 3. 모양 및 그림자 (borderRadius, boxShadow) */
-    --radius-button: var(--radius-button);
-    --radius-main: var(--radius-main);
-
-    --shadow-card: var(--card-shadow);
-    --shadow-main: var(--main-shadow);
-    --shadow-top: var(--top-shadow);
+  .edit-button-base {
+    flex-shrink: 0;
+    border-radius: 16px;
+    padding: 14px 15px;
   }
+
+  .mypage-button-base {
+    width: 100%;
+    padding: 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.312px;
+    font-weight: 700;
+  }
+}
+
+@theme {
+  /* 1. 브랜드 및 주요 텍스트 컬러 (colors) */
+  --color-alarm-main: var(--alarm-main);
+  --color-alarm-second: var(--alarm-second);
+
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-main: var(--brand-main);
+
+  --color-white-dark: var(--white-dark);
+
+  --color-card-top: var(--card-top);
+
+  --color-font-gray: var(--font-third);
+  --color-font-gray-dark: var(--font-third-second);
+  --color-font-main: var(--font-main);
+  --color-font-secondary: var(--font-main-second);
+  --color-font-white: var(--font-second);
+  --color-font-gray: var(--gray-text);
+  --color-font-gray-dark: var(--gray-dark);
+
+  --color-disabled: var(--white-border);
+  --color-warning: var(--red-base);
+  --color-warning-pink: var(--pink-base);
+
+  --color-nav-clicked: var(--nav-clicked);
+  --color-nav-unclicked: var(--nav-unclicked);
+
+  --color-notification-border: var(--notification-border);
+  --color-notification-clicked: var(--notification-clicked);
+
+  --color-store-border: var(--store-border);
+  --color-store-soldout: var(--store-sold-out);
+
+  --color-subscribe: var(--subscribe-color);
+  --color-unsubscribe: var(--unsubscribe-color);
+  --color-writer: var(--writer-color);
+
+  /* 2. 그라데이션 (backgroundImage) */
+  --background-image-grad-accent: var(--grad-accent);
+  --background-image-grad-bg: var(--grad-bg);
+  --background-image-grad-button: var(--grad-button);
+  --background-image-grad-item: var(--grad-item);
+  --background-image-grad-notification: var(--grad-notification);
+  --background-image-grad-profile: var(--grad-profile);
+  --background-image-grad-store: var(--grad-store);
+  --background-image-grad-title-card: var(--grad-title-card);
+
+  /* 3. 모양 및 그림자 (borderRadius, boxShadow) */
+  --radius-button: var(--radius-button);
+  --radius-main: var(--radius-main);
+
+  --shadow-card: var(--card-shadow);
+  --shadow-main: var(--main-shadow);
+  --shadow-top: var(--top-shadow);
 }
