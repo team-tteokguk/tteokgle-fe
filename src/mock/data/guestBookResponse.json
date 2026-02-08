@@ -1,0 +1,42 @@
+[
+    {
+        "content": "댓글111",
+        "createdAt": "2026:02:01:12:22",
+        "id": "dsfsdfd23",
+        "writerId": "whyo",
+        "writerImageUrl": "url",
+        "writerNickname": "외요"
+    },
+    {
+        "content": "댓ㄴㅇㄹ글111",
+        "createdAt": "2026:02:01:12:22",
+        "id": "dsfsdfd23",
+        "writerId": "whyo",
+        "writerImageUrl": "url",
+        "writerNickname": "외요"
+    },
+    {
+        "content": "댓ㅋㄴㄹㄴㅇ111",
+        "createdAt": "2026:02:01:12:22",
+        "id": "dsfsdfd23",
+        "writerId": "whyo",
+        "writerImageUrl": "url",
+        "writerNickname": "외요"
+    },
+    {
+        "content": "댓글12111",
+        "createdAt": "2026:02:01:12:22",
+        "id": "dsfsdfd23",
+        "writerId": "whyo",
+        "writerImageUrl": "url",
+        "writerNickname": "외요"
+    },
+    {
+        "content": "댓글1131",
+        "createdAt": "2026:02:01:12:22",
+        "id": "dsfsdfd23",
+        "writerId": "whyo",
+        "writerImageUrl": "url",
+        "writerNickname": "외요"
+    }
+]
