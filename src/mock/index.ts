@@ -1,4 +1,4 @@
-import { guestBookHandlers } from './guestbookHandlers';
+import { guestBookHandlers } from './guestBookHandlers';
 import { memberHandlers } from './memberHandlers';
 import { myItemHandlers } from './myItemHandlers';
 
