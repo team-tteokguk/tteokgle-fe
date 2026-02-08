@@ -8,6 +8,16 @@ export interface ItemDetailResponse extends ItmeBase {
   mediaUrl: string;
 }
 
+/**
+ * 나의 떡국에 아이템 배치 정보 업데이트
+ */
+export interface ItemPlacementRequest {
+  isUsed: boolean;
+  posX: number;
+  posY: number;
+  posZ: number;
+}
+
 // RESPONSE
 
 /**

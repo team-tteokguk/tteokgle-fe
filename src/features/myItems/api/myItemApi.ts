@@ -10,13 +10,13 @@ export const getItemDetail = async (itemId: string): Promise<ItemDetailResponse>
 
 // [PATCH] 고명 배치 및 수납
 export const updateItemPlacement = async (itemId: string): Promise<ItemDetailResponse> => {
-  const { data } = await instance.get(`/tteokguk/me/items/${itemId}`);
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`);
   return data;
 };
 
 // [PATCH] 고명 읽음 처리
 export const readItem = async (itemId: string): Promise<ItemDetailResponse> => {
-  const { data } = await instance.get(`/tteokguk/me/items/${itemId}/read`);
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}/read`);
   return data;
 };
 

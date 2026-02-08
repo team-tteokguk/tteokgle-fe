@@ -2,7 +2,7 @@ import type { Member, MemberUpdateDto } from '../features/members/types';
 
 import { http, HttpResponse } from 'msw';
 
-export const handlers = [
+export const memberHandlers = [
   http.get('*/members/me', () => {
     const mockMember: Member = {
       id: 123,

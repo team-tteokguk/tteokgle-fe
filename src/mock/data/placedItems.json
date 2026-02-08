@@ -1,0 +1,20 @@
+[
+  {
+    "id": "item-001",
+    "name": "계란 지단",
+    "imageUrl": "/images/egg.png",
+    "isUsed": true,
+    "posX": 10.5,
+    "posY": 20.0,
+    "posZ": 5.0
+  },
+  {
+    "id": "item-002",
+    "name": "김가루",
+    "imageUrl": "/images/seaweed.png",
+    "isUsed": true,
+    "posX": -5.0,
+    "posY": 15.0,
+    "posZ": 2.0
+  }
+]
