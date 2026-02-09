@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router';
 
 import { router } from './router.tsx';
 import { queryClient } from './services/queryClient.ts';
+import { GlobalModal } from './shared/components/GlobalModal.tsx';
 
 import './index.css';
 
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <GlobalModal />
     </QueryClientProvider>
   </StrictMode>,
 );

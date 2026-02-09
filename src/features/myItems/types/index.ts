@@ -26,6 +26,7 @@ export interface PlacedItemResponse extends ItmeBase {
   posX: number;
   posY: number;
   posZ: number;
+  read: boolean;
   used: boolean;
 }
 
