@@ -1,8 +1,12 @@
+import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
+import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
 import plusIcon from '../shared/assets/icons/plus.png';
 import { TitleCard } from '../shared/components/TitleCard';
 
 export const MyTteok = () => {
+  const { data, error, isPending } = usePlacedItemList();
+
   const TTEOK_DATA = [
     { h: '56px', left: '25%', rotate: '-15deg', top: '20%', w: '68px' },
     { h: '50px', left: '45%', rotate: '20deg', top: '35%', w: '62px' },
@@ -24,7 +28,10 @@ export const MyTteok = () => {
                 {TTEOK_DATA.map((style, idx) => (
                   <TteokPiece key={idx} style={style} />
                 ))}
-                {/* 고명 */}
+                {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
+                {isPending && <div>Loading...</div>}
+                {error && <div>Error!</div>}
+                {data && !isPending && data.map((item) => <PlacedItem item={item} />)}
               </div>
             </div>
           </div>
