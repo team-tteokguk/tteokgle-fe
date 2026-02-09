@@ -6,6 +6,10 @@ input:focus {
   outline: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 :root {
   /* 색상 */
   /* --- 기초 색상 --- */
@@ -48,6 +52,18 @@ input:focus {
   --grad-button: linear-gradient(to bottom, var(--ivory-base), var(--ivory-dark));
   --grad-store: linear-gradient(to bottom, var(--white-light), var(--ivory-light));
   --grad-title-card: linear-gradient(to bottom, var(--brown-main), var(--brown-dark));
+
+  /* 나의 떡국 */
+  --grad-plate: linear-gradient(to bottom, #8b6f47, #a0826d, #8b6f47);
+  --grad-outline: linear-gradient(180deg, #e8dcc8 0%, #f5ebd7 50%, #d4c4a8 100%);
+  --grad-bowl: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  --grad-soup: linear-gradient(180deg, #fff9e6 0%, #fffef7 50%, #fff5dc 100%);
+  --grad-tteok: linear-gradient(180deg, #fff 0%, #fffef9 50%, #fff8f0 100%);
 
   /* 주요 색상 */
   --brand-main: var(--brown-main);
@@ -186,6 +202,7 @@ body {
   --color-card-top: var(--card-top);
 
   --color-font-gray: var(--font-third);
+  --color-font-gray-light: var(--gray-light);
   --color-font-gray-dark: var(--font-third-second);
   --color-font-main: var(--font-main);
   --color-font-secondary: var(--font-main-second);
@@ -219,6 +236,12 @@ body {
   --background-image-grad-profile: var(--grad-profile);
   --background-image-grad-store: var(--grad-store);
   --background-image-grad-title-card: var(--grad-title-card);
+  /* 접시 관련 */
+  --background-image-grad-plate: var(--grad-plate);
+  --background-image-grad-outline: var(--grad-outline);
+  --background-image-grad-bowl: var(--grad-bowl);
+  --background-image-grad-soup: var(--grad-soup);
+  --background-image-grad-tteok: var(--grad-tteok);
 
   /* 3. 모양 및 그림자 (borderRadius, boxShadow) */
   --radius-button: var(--radius-button);

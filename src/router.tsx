@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router';
 import GeneralLayout from './layouts/GeneralLayout';
 import Main from './pages/Main';
 import { Mypage } from './pages/Mypage';
+import { MyTteok } from './pages/MyTteok';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ export const router = createBrowserRouter([
             element: <Mypage />,
             index: true,
             path: 'mypage',
+          },
+          {
+            element: <MyTteok />,
+            index: true,
+            path: 'my-tteok',
           },
         ],
         // 잠시 주석 처리

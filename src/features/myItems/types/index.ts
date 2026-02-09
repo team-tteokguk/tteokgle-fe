@@ -23,15 +23,16 @@ export interface ItmeBase {
  * 나의 떡국용 배치된 고명 정보 조회
  */
 export interface PlacedItemResponse extends ItmeBase {
-  isUsed: boolean;
   posX: number;
   posY: number;
   posZ: number;
+  read: boolean;
+  used: boolean;
 }
 
 /**
  * 나의 떡국용 미배치된 고명 정보 조회
  */
 export interface UnplacedItemResponse extends ItmeBase {
-  isRead: boolean;
+  read: boolean;
 }

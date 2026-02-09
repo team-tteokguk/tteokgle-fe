@@ -17,15 +17,15 @@ export const useItemDetail = (itemId: string) => {
   });
 };
 
-export const useUpdateItemPlacement = (itemId: string) => {
+export const useUpdateItemPlacement = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateItemPlacement,
+    mutationFn: (itemId: string) => updateItemPlacement(itemId),
     onError: (error) => {
       console.error('아이템 배치 실패', error);
     },
-    onSuccess: () => {
+    onSuccess: (_, itemId) => {
       queryClient.invalidateQueries({
         queryKey: myItemKeys.detail(itemId),
       });
