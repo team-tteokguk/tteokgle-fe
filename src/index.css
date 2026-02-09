@@ -6,6 +6,10 @@ input:focus {
   outline: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 :root {
   /* 색상 */
   /* --- 기초 색상 --- */
@@ -198,6 +202,7 @@ body {
   --color-card-top: var(--card-top);
 
   --color-font-gray: var(--font-third);
+  --color-font-gray-light: var(--gray-light);
   --color-font-gray-dark: var(--font-third-second);
   --color-font-main: var(--font-main);
   --color-font-secondary: var(--font-main-second);

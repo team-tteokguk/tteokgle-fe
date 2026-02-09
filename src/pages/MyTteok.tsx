@@ -1,11 +1,14 @@
+import { AddItemModal } from '../features/myItems/components/AddItemModal';
 import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
 import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
 import plusIcon from '../shared/assets/icons/plus.png';
 import { TitleCard } from '../shared/components/TitleCard';
+import { useModalStore } from '../store/useModalStore';
 
 export const MyTteok = () => {
   const { data, error, isPending } = usePlacedItemList();
+  const { openModal } = useModalStore();
 
   const TTEOK_DATA = [
     { h: '56px', left: '25%', rotate: '-15deg', top: '20%', w: '68px' },
@@ -16,6 +19,10 @@ export const MyTteok = () => {
     { h: '60px', left: '60%', rotate: '45deg', top: '25%', w: '72px' },
     { h: '54px', left: '65%', rotate: '-10deg', top: '50%', w: '66px' },
   ];
+
+  const handleAddClick = () => {
+    openModal(<AddItemModal />);
+  };
 
   return (
     <div>
@@ -38,6 +45,7 @@ export const MyTteok = () => {
         </div>
         <button
           className="bg-grad-title-card flex w-full items-center justify-center gap-1.75 rounded-2xl py-4 text-base leading-6 font-bold tracking-[-0.312px] text-white shadow-lg"
+          onClick={handleAddClick}
           type="button"
         >
           <img alt="plus-icon" className="w-5" src={plusIcon} />
