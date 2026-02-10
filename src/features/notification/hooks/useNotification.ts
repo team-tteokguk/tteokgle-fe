@@ -14,7 +14,7 @@ export const useUpdateNotification = (memberId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateNotifications,
+    mutationFn: () => updateNotifications(memberId),
     onError: (error) => {
       console.error('알림 업데이트', error);
     },

@@ -1,0 +1,45 @@
+
+[
+    {
+        "content": "알림 내용",
+        "id": "12349687236",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    },
+    {
+        "content": "dsds용",
+        "id": "3453",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    },
+    {
+        "content": "알림 내용",
+        "id": "5464575",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    },
+    {
+        "content": "asdfsd",
+        "id": "234235",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    },
+    {
+        "content": "알asdf",
+        "id": "43534",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    },
+    {
+        "content": "알asdf용",
+        "id": "546465",
+        "isRead": false,
+        "localDateTime": "2026-02-01",
+        "url": "url"
+    }
+]
