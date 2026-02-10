@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 
 // import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
-import Main from './pages/Main';
+import { Login } from './pages/Login';
 import { Mypage } from './pages/Mypage';
 import { MyTteok } from './pages/MyTteok';
 
@@ -10,10 +10,7 @@ export const router = createBrowserRouter([
   {
     children: [
       // 로그인 불필요
-      {
-        element: <Main />,
-        index: true,
-      },
+      {},
 
       // 로그인 필수
       {
@@ -44,4 +41,9 @@ export const router = createBrowserRouter([
   //   path: '*',
   //   element: <NotFound />,
   // },
+  {
+    element: <Login />,
+    index: true,
+    path: 'login',
+  },
 ]);
