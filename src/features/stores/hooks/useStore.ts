@@ -72,6 +72,7 @@ export const useToggleSubscribe = (storeId: string) => {
 
     // 세 번째 인자인 context를 통해 previousStatus에 접근합니다.
     onError: (error, isSubscribed, context) => {
+      console.log(`isSubscribed ${isSubscribed}`);
       console.error('즐겨찾기 상태 변경 실패', error);
 
       // context가 존재하고 previousStatus가 있다면 롤백 진행
