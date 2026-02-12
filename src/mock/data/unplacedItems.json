@@ -1,0 +1,14 @@
+[
+  {
+    "id": "item-003",
+    "name": "김치",
+    "imageUrl": "/images/kimchi.png",
+    "isRead": true
+  },
+  {
+    "id": "item-004",
+    "name": "애호박",
+    "imageUrl": "/images/zucchini.png",
+    "isRead": false
+  }
+]

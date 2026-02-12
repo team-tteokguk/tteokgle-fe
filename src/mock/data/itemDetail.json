@@ -1,0 +1,9 @@
+{
+  "id": "item-001",
+  "name": "계란 지단",
+  "imageUrl": "/images/egg.png",
+  "content": "새해 복 많이 받으세요!",
+  "contentType": "TEXT",
+  "isRead": false,
+  "mediaUrl": ""
+}

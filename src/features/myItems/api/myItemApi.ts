@@ -1,4 +1,9 @@
-import type { ItemDetailResponse, PlacedItemResponse, UnplacedItemResponse } from '../types';
+import type {
+  ItemDetailResponse,
+  ItemPlacementRequest,
+  PlacedItemResponse,
+  UnplacedItemResponse,
+} from '../types';
 
 import { instance } from '../../../services/axios';
 
@@ -9,14 +14,17 @@ export const getItemDetail = async (itemId: string): Promise<ItemDetailResponse>
 };
 
 // [PATCH] 고명 배치 및 수납
-export const updateItemPlacement = async (itemId: string): Promise<ItemDetailResponse> => {
-  const { data } = await instance.get(`/tteokguk/me/items/${itemId}`);
+export const updateItemPlacement = async (
+  itemId: string,
+  body: ItemPlacementRequest,
+): Promise<void> => {
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`, body);
   return data;
 };
 
 // [PATCH] 고명 읽음 처리
 export const readItem = async (itemId: string): Promise<ItemDetailResponse> => {
-  const { data } = await instance.get(`/tteokguk/me/items/${itemId}/read`);
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}/read`);
   return data;
 };
 
