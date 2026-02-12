@@ -19,7 +19,7 @@ export const useItemDetail = (itemId: string) => {
   });
 };
 
-export const useUpdateItemPlacement = (itemId: string) => {
+export const useUpdateItemPlacement = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -31,6 +31,7 @@ export const useUpdateItemPlacement = (itemId: string) => {
       queryClient.invalidateQueries({ queryKey: myItemKeys.detail(itemId) });
       queryClient.invalidateQueries({ queryKey: myItemKeys.placed() });
       queryClient.invalidateQueries({ queryKey: myItemKeys.unplaced() });
+
     },
   });
 };
