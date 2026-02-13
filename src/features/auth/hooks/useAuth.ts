@@ -4,19 +4,24 @@ import { useAuthStore } from '../../../store/auth/useAuthStore';
 import { authApi } from '../api/authApi';
 
 export const useAuth = () => {
-  const { accessToken, logout: clearStore } = useAuthStore();
+  const { accessToken, clearAuth, setAccessToken } = useAuthStore();
   const navigate = useNavigate();
 
   const logout = async () => {
     try {
       await authApi.logout();
-    } catch (error) {
+    } catch (_error) {
       console.error('로그아웃 에러');
     } finally {
-      clearStore();
+      clearAuth();
       navigate('/login');
     }
   };
 
-  return { isLoggedIn: !!accessToken, logout };
+  return {
+    accessToken,
+    isLoggedIn: !!accessToken,
+    logout,
+    setAccessToken,
+  };
 };

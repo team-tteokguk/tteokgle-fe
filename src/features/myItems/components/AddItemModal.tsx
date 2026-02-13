@@ -1,3 +1,5 @@
+import type { ItemPlacementRequest } from '../types';
+
 import closeIcon from '../../../shared/assets/icons/x.png';
 import { getItemEmoji, getItemNameKR } from '../../../shared/utils/itemUtils';
 import { useModalStore } from '../../../store/useModalStore';
@@ -12,7 +14,15 @@ export const AddItemModal = () => {
   // TODO: 나중에 잘되는지 테스트 해보기!
   const handleItemClick = (id: string) => {
     if (isPlacementPending) return;
-    placementItem(id);
+
+    const defaultBody: ItemPlacementRequest = {
+      // x: 0,
+      // y: 0,
+      // rotation: 0,
+      // ... 필요한 필드 작성
+    } as ItemPlacementRequest; // 임시 타입 단언, 실제 필드를 채워주세요.
+
+    placementItem({ body: defaultBody, itemId: id });
   };
 
   return (
