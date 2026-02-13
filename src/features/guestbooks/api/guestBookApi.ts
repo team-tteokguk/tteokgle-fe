@@ -8,7 +8,7 @@ export const getGuestBook = async (storeId: string): Promise<GuestBookResponse[]
   return data;
 };
 
-// [POST] 방명록 불러오기
+// [POST] 방명록 작성하기
 export const createGuestBook = async (
   storeId: string,
   body: GuestBookRequest,
@@ -17,13 +17,13 @@ export const createGuestBook = async (
   return data;
 };
 
-// [PATCH] 방명록 수정하기
+// [PUT] 방명록 수정하기
 export const updateGuestBook = async (
   storeId: string,
   guestbookId: string,
   body: GuestBookRequest,
 ): Promise<GuestBookResponse> => {
-  const { data } = await instance.patch(`/store/${storeId}/guestbooks/${guestbookId}`, body);
+  const { data } = await instance.put(`/store/${storeId}/guestbooks/${guestbookId}`, body);
   return data;
 };
 
