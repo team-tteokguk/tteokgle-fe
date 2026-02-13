@@ -52,6 +52,7 @@ button {
   --grad-button: linear-gradient(to bottom, var(--ivory-base), var(--ivory-dark));
   --grad-store: linear-gradient(to bottom, var(--white-light), var(--ivory-light));
   --grad-title-card: linear-gradient(to bottom, var(--brown-main), var(--brown-dark));
+  --grad-disabled: linear-gradient(180deg, #e0e0e0 0%, #bdbdbd 100%);
 
   /* 나의 떡국 */
   --grad-plate: linear-gradient(to bottom, #8b6f47, #a0826d, #8b6f47);
@@ -255,6 +256,9 @@ body {
   --background-image-grad-profile: var(--grad-profile);
   --background-image-grad-store: var(--grad-store);
   --background-image-grad-title-card: var(--grad-title-card);
+  --background-image-grad-brand: var(--grad-brand);
+  --background-image-grad-disabled: var(--grad-disabled);
+
   /* 접시 관련 */
   --background-image-grad-plate: var(--grad-plate);
   --background-image-grad-outline: var(--grad-outline);

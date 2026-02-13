@@ -1,5 +1,6 @@
-import googleIcon from '../shared/assets/icons/googlle.png';
-import kakaoIcon from '../shared/assets/icons/kakao.png';
+import googleIcon from '../../shared/assets/icons/googlle.png';
+import kakaoIcon from '../../shared/assets/icons/kakao.png';
+import { BouncingEmojis } from '../../shared/components/BouncingEmojis';
 
 export const Login = () => {
   return (
@@ -22,11 +23,7 @@ export const Login = () => {
             구글로 시작하기
           </button>
         </div>
-        <div className="flex justify-center gap-0.75 text-4xl leading-10 tracking-[0.369px]">
-          <p className="animate-bounce">🥚</p>
-          <p className="animate-bounce [animation-delay:0.2s]">🥩</p>
-          <p className="animate-bounce [animation-delay:0.4s]">🌿</p>
-        </div>
+        <BouncingEmojis />
       </div>
     </div>
   );

@@ -2,7 +2,8 @@ import { createBrowserRouter } from 'react-router';
 
 // import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
-import { Login } from './pages/Login';
+import { Login } from './pages/auth/Login';
+import { SetupNickname } from './pages/auth/SetupNickname';
 import { Mypage } from './pages/Mypage';
 import { MyTteok } from './pages/MyTteok';
 
@@ -45,5 +46,19 @@ export const router = createBrowserRouter([
     element: <Login />,
     index: true,
     path: 'login',
+  },
+
+  // 레이아웃 미적용 & 로그인 가드
+  {
+    children: [
+      {
+        element: <SetupNickname />,
+        index: true,
+        path: '/setup-nickname',
+      },
+      // element: <ProtectedRoute />,
+    ],
+    // 잠시 주석 처리
+    // element: <ProtectedRoute />,
   },
 ]);
