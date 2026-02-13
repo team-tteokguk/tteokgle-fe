@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 
-// import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
 import { GoogleCallback } from './pages/auth/GoogleCalllback';
 import { Login } from './pages/auth/Login';
@@ -28,8 +28,7 @@ export const router = createBrowserRouter([
             path: 'my-tteok',
           },
         ],
-        // 잠시 주석 처리
-        // element: <ProtectedRoute />,
+        element: <ProtectedRoute />,
       },
     ],
     element: <GeneralLayout />,
@@ -62,9 +61,7 @@ export const router = createBrowserRouter([
         index: true,
         path: '/setup-nickname',
       },
-      // element: <ProtectedRoute />,
     ],
-    // 잠시 주석 처리
-    // element: <ProtectedRoute />,
+    element: <ProtectedRoute />,
   },
 ]);
