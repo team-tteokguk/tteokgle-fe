@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router';
 
 // import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
+import { GoogleCallback } from './pages/auth/GoogleCalllback';
 import { Login } from './pages/auth/Login';
 import { SetupNickname } from './pages/auth/SetupNickname';
 import { Mypage } from './pages/Mypage';
@@ -46,6 +47,11 @@ export const router = createBrowserRouter([
     element: <Login />,
     index: true,
     path: 'login',
+  },
+  {
+    element: <GoogleCallback />,
+    index: true,
+    path: 'auth/google/callback',
   },
 
   // 레이아웃 미적용 & 로그인 가드

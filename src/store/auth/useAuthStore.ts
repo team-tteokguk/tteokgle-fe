@@ -2,41 +2,24 @@ import { create } from 'zustand';
 
 interface AuthState {
   accessToken: null | string;
+  clearAuth: () => void;
   isAuthenticated: boolean;
-  login: (user: User, token: string) => void;
-
-  logout: () => void;
-  // 토큰 갱신
-  setAccessToken: (token: string) => void;
-
-  user: null | User;
-}
-
-interface User {
-  // TODO: 유저 타입 정의 수정
-  email: string;
-  id: number;
-  name: string;
+  setAccessToken: (token: null | string) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
-  isAuthenticated: false,
-  login: (userData, token) =>
-    set({
-      accessToken: token,
-      isAuthenticated: true,
-      user: userData,
-    }),
-
-  logout: () =>
+  clearAuth: () =>
     set({
       accessToken: null,
       isAuthenticated: false,
-      user: null,
     }),
 
-  setAccessToken: (token) => set({ accessToken: token }),
+  isAuthenticated: false,
 
-  user: null,
+  setAccessToken: (token) =>
+    set({
+      accessToken: token,
+      isAuthenticated: !!token,
+    }),
 }));

@@ -1,8 +1,13 @@
+import { GOOGLE_AUTH_URL } from '../../features/auth/constants';
 import googleIcon from '../../shared/assets/icons/googlle.png';
 import kakaoIcon from '../../shared/assets/icons/kakao.png';
 import { BouncingEmojis } from '../../shared/components/BouncingEmojis';
 
 export const Login = () => {
+  const handleGoogleLogin = () => {
+    window.location.href = GOOGLE_AUTH_URL;
+  };
+
   return (
     <div className="flex min-h-screen w-full items-center justify-center">
       <div className="w-full max-w-md text-center">
@@ -18,7 +23,11 @@ export const Login = () => {
             <img alt="kakao-icon" className="w-6" src={kakaoIcon} />
             카카오로 시작하기
           </button>
-          <button className="social-login-button-base text-[#1E2939]" type="button">
+          <button
+            className="social-login-button-base text-[#1E2939]"
+            onClick={handleGoogleLogin}
+            type="button"
+          >
             <img alt="google" className="w-6" src={googleIcon} />
             구글로 시작하기
           </button>
