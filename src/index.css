@@ -1,1 +1,276 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* input 리셋 */
+
+input:focus {
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+:root {
+  /* 색상 */
+  /* --- 기초 색상 --- */
+  --cream-light: #fff8f0;
+  --cream-base: #f5ebe0;
+  --cream-dark: #f5e6d3;
+
+  --ivory-base: #ffe4b5;
+  --ivory-dark: #ffd7a5;
+  --ivory-light: #fff8e7;
+
+  --brown-main: #c17a5c;
+  --brown-dark: #a0522d;
+  --brown-text: #8b4513;
+
+  --yellow-main: #ffd700;
+  --yellow-dark: #ffa500;
+
+  --white-light: #ffffff;
+  --white-base: #f3f4f6;
+  --white-dark: #f9fafb;
+  --white-border: #e5e7eb;
+
+  --gray-light-light: #d1d5dc;
+  --gray-light: #99a1af;
+  --gray-base: #6a7282;
+  --gray-dark: #364153;
+  --gray-text: #4a5565;
+
+  --red-base: #fb2c36;
+  --red-light: #ffe2e2;
+  --pink-base: #fef2f2;
+  --orange: #ff6900;
+  --blue: #2b7fff;
+
+  /* 배경 및 카드 */
+  --grad-bg: linear-gradient(to bottom, var(--cream-light), var(--cream-base), var(--cream-dark));
+  --grad-item: linear-gradient(to bottom, var(--cream-light), var(--white-light));
+  --grad-notification: linear-gradient(to bottom, var(--cream-light), var(--ivory-base));
+  --grad-button: linear-gradient(to bottom, var(--ivory-base), var(--ivory-dark));
+  --grad-store: linear-gradient(to bottom, var(--white-light), var(--ivory-light));
+  --grad-title-card: linear-gradient(to bottom, var(--brown-main), var(--brown-dark));
+  --grad-disabled: linear-gradient(180deg, #e0e0e0 0%, #bdbdbd 100%);
+
+  /* 나의 떡국 */
+  --grad-plate: linear-gradient(to bottom, #8b6f47, #a0826d, #8b6f47);
+  --grad-outline: linear-gradient(180deg, #e8dcc8 0%, #f5ebd7 50%, #d4c4a8 100%);
+  --grad-bowl: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  --grad-soup: linear-gradient(180deg, #fff9e6 0%, #fffef7 50%, #fff5dc 100%);
+  --grad-tteok: linear-gradient(180deg, #fff 0%, #fffef9 50%, #fff8f0 100%);
+
+  /* 주요 색상 */
+  --brand-main: var(--brown-main);
+  --brand-dark: var(--brown-dark);
+  --grad-brand: linear-gradient(to bottom, var(--brand-main), var(--brand-dark));
+
+  --accent-main: var(--yellow-main);
+  --accent-soft: var(--yellow-dark);
+  --grad-accent: linear-gradient(to bottom, var(--accent-main), var(--accent-soft));
+
+  /* 방명록 및 에디터 */
+  --writer-color: var(--white-base);
+  --card-top: var(--cream-light);
+
+  /* 알림 */
+  --notification-clicked: var(--white-dark);
+  --notification-border: var(--yellow-main);
+
+  /* 상점 판패 품목 카드 */
+  --store-border: var(--yellow-main);
+  --store-sold-out: var(--orange);
+
+  /* 네비게이션 바 */
+  --nav-unclicked: var(--gray-light);
+  --nav-clicked: var(--brown-main);
+
+  /* 경고 버튼 */
+  --alarm-main: var(--red-base);
+  --alarm-second: var(--red-light);
+
+  /* 즐겨찾기 */
+  --subscribe-color: var(--yellow-main);
+  --unsubscribe-color: var(--gray-light-light);
+
+  /* 텍스트 */
+  --font-main: var(--brown-text);
+  --font-main-second: var(--brown-main);
+  --font-second: var(--white-base);
+  --font-third: var(--gray-base);
+  --font-third-second: var(--gray-base-dark);
+  --font-third-third: var(--gray-dark);
+
+  /* 모양 */
+  /* 기본 카드 모서리 */
+  --radius-card: 32px;
+  --radius-main: 16px;
+
+  /* 카드 그림자 */
+  --bg-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --card-shadow: 0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 20px 25px -6px rgba(0, 0, 0, 0.1);
+  --main-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--grad-bg);
+}
+
+@layer components {
+  /* 기본(Base) 겉을 감싸는 카드 레이아웃 */
+  .card-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    padding: 32px;
+    border-radius: var(--radius-card);
+    box-shadow: var(--card-shadow);
+  }
+
+  /* 기본 작은 아이템 카드 레이아웃 */
+  .card-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    padding: 16px;
+    border-radius: var(--radius-main);
+    box-shadow: var(--main-shadow);
+  }
+
+  /* 기본(Base) 버튼 레이아웃 */
+  .button-layout {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px;
+    border-radius: var(--radius-button);
+    box-shadow: var(--button-shadow);
+  }
+
+  /* 기본 배찌 */
+  .bage-base {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    border-radius: 999px;
+    box-shadow: var(--main-shadow);
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 10;
+  }
+
+  .edit-button-base {
+    flex-shrink: 0;
+    border-radius: 16px;
+    padding: 14px 15px;
+  }
+
+  .mypage-button-base {
+    width: 100%;
+    padding: 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.312px;
+    font-weight: 700;
+  }
+
+  .social-login-button-base {
+    width: 100%;
+    display: flex;
+    height: 56px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.312px;
+  }
+}
+
+@theme {
+  /* 1. 브랜드 및 주요 텍스트 컬러 (colors) */
+  --color-alarm-main: var(--alarm-main);
+  --color-alarm-second: var(--alarm-second);
+
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-main: var(--brand-main);
+
+  --color-white-dark: var(--white-dark);
+
+  --color-card-top: var(--card-top);
+
+  --color-font-gray: var(--font-third);
+  --color-font-gray-light: var(--gray-light);
+  --color-font-gray-dark: var(--font-third-second);
+  --color-font-main: var(--font-main);
+  --color-font-secondary: var(--font-main-second);
+  --color-font-white: var(--font-second);
+  --color-font-gray: var(--gray-text);
+  --color-font-gray-dark: var(--gray-dark);
+
+  --color-disabled: var(--white-border);
+  --color-warning: var(--red-base);
+  --color-warning-pink: var(--pink-base);
+
+  --color-nav-clicked: var(--nav-clicked);
+  --color-nav-unclicked: var(--nav-unclicked);
+
+  --color-notification-border: var(--notification-border);
+  --color-notification-clicked: var(--notification-clicked);
+
+  --color-store-border: var(--store-border);
+  --color-store-soldout: var(--store-sold-out);
+
+  --color-subscribe: var(--subscribe-color);
+  --color-unsubscribe: var(--unsubscribe-color);
+  --color-writer: var(--writer-color);
+
+  /* 2. 그라데이션 (backgroundImage) */
+  --background-image-grad-accent: var(--grad-accent);
+  --background-image-grad-bg: var(--grad-bg);
+  --background-image-grad-button: var(--grad-button);
+  --background-image-grad-item: var(--grad-item);
+  --background-image-grad-notification: var(--grad-notification);
+  --background-image-grad-profile: var(--grad-profile);
+  --background-image-grad-store: var(--grad-store);
+  --background-image-grad-title-card: var(--grad-title-card);
+  --background-image-grad-brand: var(--grad-brand);
+  --background-image-grad-disabled: var(--grad-disabled);
+
+  /* 접시 관련 */
+  --background-image-grad-plate: var(--grad-plate);
+  --background-image-grad-outline: var(--grad-outline);
+  --background-image-grad-bowl: var(--grad-bowl);
+  --background-image-grad-soup: var(--grad-soup);
+  --background-image-grad-tteok: var(--grad-tteok);
+
+  /* 3. 모양 및 그림자 (borderRadius, boxShadow) */
+  --radius-button: var(--radius-button);
+  --radius-main: var(--radius-main);
+
+  --shadow-card: var(--card-shadow);
+  --shadow-main: var(--main-shadow);
+  --shadow-top: var(--top-shadow);
+}

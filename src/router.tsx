@@ -1,21 +1,33 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter } from 'react-router';
 
-import ProtectedRoute from './features/auth/components/ProtectedRoute'
-import GeneralLayout from './layouts/GeneralLayout'
-import Main from './pages/Main'
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import GeneralLayout from './layouts/GeneralLayout';
+import { GoogleCallback } from './pages/auth/GoogleCalllback';
+import { Login } from './pages/auth/Login';
+import { SetupNickname } from './pages/auth/SetupNickname';
+import { Mypage } from './pages/Mypage';
+import { MyTteok } from './pages/MyTteok';
 
 export const router = createBrowserRouter([
   {
     children: [
       // 로그인 불필요
-      {
-        element: <Main />,
-        index: true,
-      },
+      {},
 
       // 로그인 필수
       {
-        children: [],
+        children: [
+          {
+            element: <Mypage />,
+            index: true,
+            path: 'mypage',
+          },
+          {
+            element: <MyTteok />,
+            index: true,
+            path: 'my-tteok',
+          },
+        ],
         element: <ProtectedRoute />,
       },
     ],
@@ -30,4 +42,26 @@ export const router = createBrowserRouter([
   //   path: '*',
   //   element: <NotFound />,
   // },
-])
+  {
+    element: <Login />,
+    index: true,
+    path: 'login',
+  },
+  {
+    element: <GoogleCallback />,
+    index: true,
+    path: 'auth/google/callback',
+  },
+
+  // 레이아웃 미적용 & 로그인 가드
+  {
+    children: [
+      {
+        element: <SetupNickname />,
+        index: true,
+        path: '/setup-nickname',
+      },
+    ],
+    element: <ProtectedRoute />,
+  },
+]);

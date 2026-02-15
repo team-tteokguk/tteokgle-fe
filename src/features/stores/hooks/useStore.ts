@@ -13,20 +13,19 @@ import {
 } from '../api/storeApi';
 import { storeKeys } from '../api/storeKeys';
 
-export const useStore = (storeId: string) => {
+export const useGetStore = (storeId: string) => {
   return useQuery({
     queryFn: () => getStore(storeId),
     queryKey: storeKeys.detail(storeId),
   });
 };
 
-export const useItems = (storeId: string, params: StoreItemsParams = {}) => {
+export const useGetItems = (storeId: string, params: StoreItemsParams = {}) => {
   const normalizedParams: StoreItemsParams = {
     page: 0,
     size: 20,
     ...params,
   };
-
   return useQuery({
     placeholderData: keepPreviousData,
     queryFn: () => getItems(storeId, normalizedParams),
@@ -63,29 +62,41 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
     },
   });
 };
+// useStore.ts
 
 export const useToggleSubscribe = (storeId: string) => {
   const queryClient = useQueryClient();
   const queryKey = storeKeys.subscribe(storeId);
 
-  return useMutation({
+  // 리턴 타입을 위해 인터페이스 정의 (선택 사항이지만 권장)
+  interface MutationContext {
+    previousStatus: boolean | undefined;
+  }
+
+  return useMutation<void, Error, boolean, MutationContext>({
     mutationFn: (isSubscribed: boolean) =>
       isSubscribed ? unsubscribe(storeId) : subscribe(storeId),
 
-    onError: (error) => {
+    // 세 번째 인자인 context를 통해 previousStatus에 접근합니다.
+    onError: (error, isSubscribed, context) => {
+      console.log(`isSubscribed ${isSubscribed}`);
       console.error('즐겨찾기 상태 변경 실패', error);
+
+      // context가 존재하고 previousStatus가 있다면 롤백 진행
+      if (context?.previousStatus !== undefined) {
+        queryClient.setQueryData(queryKey, context.previousStatus);
+      }
     },
 
     onMutate: async (isSubscribed) => {
-      // 진행 중인 refetch 중지
       await queryClient.cancelQueries({ queryKey });
 
-      // 롤백을 위한 백업
-      const previousStatus = queryClient.getQueryData(queryKey);
+      const previousStatus = queryClient.getQueryData<boolean>(queryKey);
 
-      // 캐시 즉시 업데이트
+      // 낙관적 업데이트
       queryClient.setQueryData(queryKey, !isSubscribed);
 
+      // 여기서 리턴하는 객체가 onError의 context가 됩니다.
       return { previousStatus };
     },
 

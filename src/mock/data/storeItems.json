@@ -1,0 +1,16 @@
+[
+  {
+    "id": "item-003",
+    "name": "김치",
+    "imageUrl": "/images/kimchi.png",
+    "cost": "100",
+    "sellCounts": "3"
+  },
+  {
+    "id": "item-004",
+    "name": "애호박",
+    "imageUrl": "/images/zucchini.png",
+    "cost": "50",
+    "sellCounts": "5"
+  }
+]

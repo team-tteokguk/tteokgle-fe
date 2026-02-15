@@ -1,15 +1,43 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { RouterProvider } from 'react-router'
+import { QueryClientProvider } from '@tanstack/react-query';
+import { StrictMode, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router';
 
-import App from './App.tsx'
-import { router } from './router.tsx'
+import { router } from './router.tsx';
+import { instance } from './services/axios.ts';
+import { queryClient } from './services/queryClient.ts';
+import { GlobalModal } from './shared/components/GlobalModal.tsx';
+import { useAuthStore } from './store/auth/useAuthStore.ts';
 
-import './index.css'
+import './index.css';
+
+const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const { data } = await instance.post('/auth/refresh');
+        setAccessToken(data.accessToken);
+        console.log('✅ 자동 로그인 성공');
+      } catch (_error) {
+        console.log('ℹ️ 자동 로그인 실패 (로그인 필요)');
+      }
+    };
+
+    initAuth();
+  }, [setAccessToken]);
+
+  return <>{children}</>;
+};
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <AuthInitializer>
+        <RouterProvider router={router} />
+        <GlobalModal />
+      </AuthInitializer>
+    </QueryClientProvider>
   </StrictMode>,
-)
+);
