@@ -38,7 +38,7 @@ export const AddItemModal = () => {
       </div>
       <ul className="flex flex-wrap gap-3 p-6">
         {data &&
-          data.map((item) => (
+          data.items.map((item) => (
             <li
               className="bg-grad-accent relative flex h-31.25 w-31.25 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl shadow-lg"
               key={item.id}
@@ -56,7 +56,7 @@ export const AddItemModal = () => {
               </span>
             </li>
           ))}
-        {data && data.length === 0 && !isPending && (
+        {data && data.items.length === 0 && !isPending && (
           <div className="flex h-49 w-full flex-col items-center justify-center gap-2">
             <p className="text-font-gray text-base leading-6 tracking-[-0.312px]">
               보유 중인 고명이 없습니다.
