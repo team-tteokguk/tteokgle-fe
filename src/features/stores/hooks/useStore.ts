@@ -1,6 +1,7 @@
 import type { ItemCreateRequest } from '../types';
+import type { StoreItemsParams } from '../types/storeParams';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createItem,
@@ -19,10 +20,17 @@ export const useStore = (storeId: string) => {
   });
 };
 
-export const useItems = (storeId: string) => {
+export const useItems = (storeId: string, params: StoreItemsParams = {}) => {
+  const normalizedParams: StoreItemsParams = {
+    page: 0,
+    size: 20,
+    ...params,
+  };
+
   return useQuery({
-    queryFn: () => getItems(storeId),
-    queryKey: storeKeys.items(storeId),
+    placeholderData: keepPreviousData,
+    queryFn: () => getItems(storeId, normalizedParams),
+    queryKey: storeKeys.items(storeId, normalizedParams),
   });
 };
 
@@ -35,7 +43,7 @@ export const useCreateItem = (storeId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: storeKeys.items(storeId),
+        queryKey: storeKeys.itemsRoot(storeId),
       });
     },
   });
@@ -50,7 +58,7 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: storeKeys.items(storeId),
+        queryKey: storeKeys.itemsRoot(storeId),
       });
     },
   });

@@ -1,4 +1,5 @@
 import type { ItemCreateRequest, StoreItemResponse, StoreResponse } from '../types';
+import type { StoreItemsParams } from '../types/storeParams';
 
 import { instance } from '../../../services/axios';
 
@@ -9,8 +10,16 @@ export const getStore = async (storeId: string): Promise<StoreResponse> => {
 };
 
 // [GET] 상점 고명 리스트 조회하기
-export const getItems = async (storeId: string): Promise<StoreItemResponse[]> => {
-  const { data } = await instance.get(`/store/${storeId}/items`);
+export const getItems = async (
+  storeId: string,
+  params: StoreItemsParams,
+): Promise<StoreItemResponse[]> => {
+  const { data } = await instance.get(`/store/${storeId}/items`, {
+    params: {
+      ...params,
+      sort: 'createdAt,desc', // spring pageable 형태 고정
+    },
+  });
   return data;
 };
 
