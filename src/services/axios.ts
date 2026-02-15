@@ -11,6 +11,12 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
+let refreshPromise: null | Promise<string> = null;
+
+const getAccessTokenFromRefreshResponse = (data: any): null | string => {
+  return data?.accessToken ?? data?.access_token ?? data?.token ?? null;
+};
+
 instance.interceptors.request.use(
   (config) => {
     const { accessToken } = useAuthStore.getState();
@@ -27,20 +33,42 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    if (!originalRequest) return Promise.reject(error);
+
+    const requestUrl = originalRequest?.url ?? '';
+    const isRefreshRequest = requestUrl.includes('/auth/refresh');
+
+    if (error.response?.status === 401 && isRefreshRequest) {
+      useAuthStore.getState().clearAuth();
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const { data } = await axios.post(
-          `${instance.defaults.baseURL}/auth/refresh`,
-          {},
-          {
-            withCredentials: true,
-          },
-        );
+        if (!refreshPromise) {
+          refreshPromise = axios
+            .post(
+              `${instance.defaults.baseURL}/auth/refresh`,
+              {},
+              {
+                withCredentials: true,
+              },
+            )
+            .then(({ data }) => {
+              const token = getAccessTokenFromRefreshResponse(data);
+              if (!token) {
+                throw new Error('Refresh succeeded but no access token was returned.');
+              }
+              return token;
+            })
+            .finally(() => {
+              refreshPromise = null;
+            });
+        }
 
-        const newAccessToken = data.accessToken;
+        const newAccessToken = await refreshPromise;
 
         useAuthStore.getState().setAccessToken(newAccessToken);
 
@@ -51,7 +79,9 @@ instance.interceptors.response.use(
 
         useAuthStore.getState().clearAuth();
 
-        window.location.href = '/login';
+        if (window.location.pathname !== '/login') {
+          window.location.replace('/login');
+        }
         return Promise.reject(refreshError);
       }
     }
