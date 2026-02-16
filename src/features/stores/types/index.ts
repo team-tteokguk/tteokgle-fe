@@ -5,9 +5,40 @@ import type { ItmeBase } from '../../myItems/types';
  */
 export interface ItemCreateRequest {
   content: string;
-  contentType: string;
-  imageUrl: string;
-  mediaUrl: string;
+  contentType: 'NONE' | 'PHOTO' | 'VIDEO';
+  imageUrl: null | string;
+  mediaUrl: null | string;
+  name: string;
+}
+
+export interface MyStoreItem extends ItmeBase {
+  cost: number;
+  sellCounts: number;
+}
+
+export interface MyStoreItemsPage {
+  first: boolean;
+  hasNext: boolean;
+  numberOfElements: number;
+  page: number;
+  size: number;
+}
+
+export interface MyStoreItemsRequest {
+  page: number;
+  size: number;
+  sort: string[];
+}
+
+export interface MyStoreItemsResponse {
+  items: MyStoreItem[];
+  page: MyStoreItemsPage;
+  sellingItemCount: number;
+  storeName: string;
+}
+
+export interface MyStoreResponse {
+  id: string;
   name: string;
 }
 

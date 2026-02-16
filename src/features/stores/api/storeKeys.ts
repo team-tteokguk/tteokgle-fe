@@ -13,6 +13,11 @@ export const storeKeys = {
   // 2. 상점의 물건 리스트
   items: (storeId: string) => [...storeKeys.detail(storeId), 'items'] as const,
 
+  // 내 상점
+  me: () => [...storeKeys.all, 'me'] as const,
+
+  meItems: (params: { page: number; size: number; sort: string[] }) =>
+    [...storeKeys.me(), 'items', params] as const,
   // 3. 상점에 즐겨찾기 추가
   subscribe: (storeId: string) => [...storeKeys.detail(storeId), 'subscribe'] as const,
 };

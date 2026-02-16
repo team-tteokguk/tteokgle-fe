@@ -1,4 +1,4 @@
-import type { ItemCreateRequest } from '../types';
+import type { ItemCreateRequest, MyStoreItemsRequest } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -6,6 +6,8 @@ import {
   createItem,
   deleteItem,
   getItems,
+  getMyStore,
+  getMyStoreItems,
   getStore,
   subscribe,
   unsubscribe,
@@ -26,6 +28,20 @@ export const useGetItems = (storeId: string) => {
   });
 };
 
+export const useGetMyStore = () => {
+  return useQuery({
+    queryFn: getMyStore,
+    queryKey: storeKeys.me(),
+  });
+};
+
+export const useGetMyStoreItems = (params: MyStoreItemsRequest) => {
+  return useQuery({
+    queryFn: () => getMyStoreItems(params),
+    queryKey: storeKeys.meItems(params),
+  });
+};
+
 export const useCreateItem = (storeId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -36,6 +52,12 @@ export const useCreateItem = (storeId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: storeKeys.items(storeId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.me(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: [...storeKeys.me(), 'items'],
       });
     },
   });

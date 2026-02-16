@@ -2,7 +2,8 @@
 
 /* input 리셋 */
 
-input:focus {
+input:focus,
+textarea:focus {
   outline: none;
 }
 
@@ -207,6 +208,45 @@ body {
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
   }
+
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    width: 28rem;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+  }
+
+  .heading3-text {
+    color: var(--font-main);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+  }
+
+  .count-button {
+    border-radius: 33554400px;
+    background: #f3f4f6;
+    display: flex;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+    color: #8b4513;
+    text-align: center;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.312px;
+    flex-shrink: 0;
+  }
 }
 
 @theme {
@@ -217,12 +257,15 @@ body {
   --color-brand-dark: var(--brand-dark);
   --color-brand-main: var(--brand-main);
 
+  --color-accent-main: var(--accent-main);
+
   --color-white-dark: var(--white-dark);
 
   --color-card-top: var(--card-top);
 
   --color-font-gray: var(--font-third);
   --color-font-gray-light: var(--gray-light);
+  --color-font-gray-extra-light: var(--gray-light-light);
   --color-font-gray-dark: var(--font-third-second);
   --color-font-main: var(--font-main);
   --color-font-secondary: var(--font-main-second);
