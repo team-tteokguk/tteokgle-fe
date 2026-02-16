@@ -1,4 +1,5 @@
 import type { ItemPlacementRequest } from '../types';
+import type { MyItemParams } from '../types/myItemParams';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -53,9 +54,15 @@ export const useReadItem = (itemId: string) => {
   });
 };
 
-export const usePlacedItemList = () => {
+export const usePlacedItemList = (params: MyItemParams) => {
+  const normalizedParams: MyItemParams = {
+    page: 0,
+    size: 20,
+    ...params,
+  };
+
   return useQuery({
-    queryFn: getPlacedItemList,
+    queryFn: () => getPlacedItemList(normalizedParams),
     queryKey: myItemKeys.placed(),
   });
 };

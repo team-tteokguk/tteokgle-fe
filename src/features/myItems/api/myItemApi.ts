@@ -4,6 +4,7 @@ import type {
   PlacedItemResponse,
   UnplacedItemResponse,
 } from '../types';
+import type { MyItemParams } from '../types/myItemParams';
 
 import { instance } from '../../../services/axios';
 
@@ -29,8 +30,13 @@ export const readItem = async (itemId: string): Promise<ItemDetailResponse> => {
 };
 
 // [GET] 인벤토리 고명 리스트 조회
-export const getPlacedItemList = async (): Promise<PlacedItemResponse[]> => {
-  const { data } = await instance.get(`/tteokguk/me/items/placed`);
+export const getPlacedItemList = async (params: MyItemParams): Promise<PlacedItemResponse[]> => {
+  const { data } = await instance.get(`/tteokguk/me/items/placed`, {
+    params: {
+      ...params,
+      sort: 'createdAt,desc',
+    },
+  });
   return data;
 };
 

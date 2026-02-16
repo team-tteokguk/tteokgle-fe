@@ -1,3 +1,5 @@
+import type { MyItemParams } from '../types/myItemParams';
+
 export const myItemKeys = {
   all: ['items'] as const,
 
@@ -6,4 +8,6 @@ export const myItemKeys = {
   placed: () => [...myItemKeys.all, 'placed'] as const,
 
   unplaced: () => [...myItemKeys.all, 'unplaced'] as const,
+
+  unplacedRoot: (params: MyItemParams) => [...myItemKeys.all, 'unplaced', params] as const,
 };
