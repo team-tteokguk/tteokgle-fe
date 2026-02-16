@@ -7,7 +7,7 @@ export const myItemKeys = {
 
   placed: () => [...myItemKeys.all, 'placed'] as const,
 
-  unplaced: () => [...myItemKeys.all, 'unplaced'] as const,
+  unplaced: (params: MyItemParams) => [...myItemKeys.all, 'unplaced', params] as const,
 
-  unplacedRoot: (params: MyItemParams) => [...myItemKeys.all, 'unplaced', params] as const,
+  unplacedRoot: () => [...myItemKeys.all, 'unplaced'] as const,
 };

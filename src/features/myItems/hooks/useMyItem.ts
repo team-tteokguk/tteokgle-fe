@@ -32,7 +32,7 @@ export const useUpdateItemPlacement = () => {
     onSuccess: (_, { itemId }) => {
       queryClient.invalidateQueries({ queryKey: myItemKeys.detail(itemId) });
       queryClient.invalidateQueries({ queryKey: myItemKeys.placed() });
-      queryClient.invalidateQueries({ queryKey: myItemKeys.unplaced() });
+      queryClient.invalidateQueries({ queryKey: myItemKeys.unplacedRoot() });
     },
   });
 };
@@ -54,7 +54,14 @@ export const useReadItem = (itemId: string) => {
   });
 };
 
-export const usePlacedItemList = (params: MyItemParams) => {
+export const usePlacedItemList = () => {
+  return useQuery({
+    queryFn: () => getPlacedItemList(),
+    queryKey: myItemKeys.placed(),
+  });
+};
+
+export const useUnPlacedItemList = (params: MyItemParams = {}) => {
   const normalizedParams: MyItemParams = {
     page: 0,
     size: 20,
@@ -62,14 +69,7 @@ export const usePlacedItemList = (params: MyItemParams) => {
   };
 
   return useQuery({
-    queryFn: () => getPlacedItemList(normalizedParams),
-    queryKey: myItemKeys.placed(),
-  });
-};
-
-export const useUnPlacedItemList = () => {
-  return useQuery({
-    queryFn: getUnPlacedItemList,
-    queryKey: myItemKeys.unplaced(),
+    queryFn: () => getUnPlacedItemList(normalizedParams),
+    queryKey: myItemKeys.unplaced(normalizedParams),
   });
 };
