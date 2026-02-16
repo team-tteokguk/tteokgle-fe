@@ -1,4 +1,5 @@
 import type { GuestBookRequest } from '../types';
+import type { GuestBookParams } from '../types/guestBookParams';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -10,10 +11,15 @@ import {
 } from '../api/guestBookApi';
 import { guestBookKeys } from '../api/guestBookKeys';
 
-export const useGuestBook = (storeId: string) => {
+export const useGuestBook = (storeId: string, params: GuestBookParams) => {
+  const normalizedParams: GuestBookParams = {
+    page: 0,
+    size: 20,
+    ...params,
+  };
   return useQuery({
-    queryFn: () => getGuestBook(storeId),
-    queryKey: guestBookKeys.list(storeId),
+    queryFn: () => getGuestBook(storeId, normalizedParams),
+    queryKey: guestBookKeys.list(storeId, normalizedParams),
   });
 };
 
@@ -26,7 +32,7 @@ export const useCreateGuestBook = (storeId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.listRoot(storeId),
       });
     },
   });
@@ -41,7 +47,7 @@ export const useUpdateGuestBook = (storeId: string, guestbookId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.listRoot(storeId),
       });
     },
   });
@@ -56,7 +62,7 @@ export const useDeleteGuestBook = (storeId: string, guestbookId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.listRoot(storeId),
       });
     },
   });
