@@ -52,7 +52,7 @@ describe('Member hooks test', () => {
   });
 
   it('방명록 하나를 수정함', async () => {
-    const { result } = renderHook(() => useUpdateGuestBook('store-01', 'guestbook-01'), {
+    const { result } = renderHook(() => useUpdateGuestBook('store-01'), {
       wrapper: createWrapper(),
     });
 
@@ -60,7 +60,10 @@ describe('Member hooks test', () => {
       content: '떡국 너무 맛있어요! 새해 복 많이 받으세요.',
     };
 
-    result.current.mutate(newGuestBook);
+    result.current.mutate({
+      body: newGuestBook,
+      guestbookId: 'guestbook-01',
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -69,11 +72,11 @@ describe('Member hooks test', () => {
   });
 
   it('방명록 하나를 삭제함', async () => {
-    const { result } = renderHook(() => useDeleteGuestBook('store-01', 'guestbook-01'), {
+    const { result } = renderHook(() => useDeleteGuestBook('store-01'), {
       wrapper: createWrapper(),
     });
 
-    result.current.mutate();
+    result.current.mutate('guestbook-01');
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });

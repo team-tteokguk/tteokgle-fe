@@ -1,4 +1,5 @@
 import { CreateNewItemModal } from '../features/stores/components/CreateNewItemModal';
+import { GuestBookModal } from '../features/stores/components/GuestBookModal';
 import { ProductItem } from '../features/stores/components/ProductItem';
 import { useGetMyStore, useGetMyStoreItems } from '../features/stores/hooks/useStore';
 import plusIcon from '../shared/assets/icons/plus.png';
@@ -11,6 +12,10 @@ export const MyStore = () => {
 
   const handleCreateClick = () => {
     openModal(<CreateNewItemModal />);
+  };
+
+  const handleViewGuestBookClick = () => {
+    openModal(<GuestBookModal />);
   };
 
   const {
@@ -64,7 +69,11 @@ export const MyStore = () => {
           <img alt="plus" className="w-5" src={plusIcon} />
           새로운 고명 추가하기
         </button>
-        <button className="mypage-button-base bg-grad-button text-brand-dark" type="button">
+        <button
+          className="mypage-button-base bg-grad-button text-brand-dark"
+          onClick={handleViewGuestBookClick}
+          type="button"
+        >
           📖 방명록 보기
         </button>
       </div>

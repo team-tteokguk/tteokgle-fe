@@ -13,6 +13,6 @@ export interface GuestBookResponse {
   createdAt: string;
   id: string;
   writerId: string;
-  writerImageUrl: string;
+  writerImageUrl: null | string;
   writerNickname: string;
 }

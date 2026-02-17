@@ -267,6 +267,7 @@ body {
   --color-font-gray-light: var(--gray-light);
   --color-font-gray-extra-light: var(--gray-light-light);
   --color-font-gray-dark: var(--font-third-second);
+  --color-font-black: var(--font-third-third);
   --color-font-main: var(--font-main);
   --color-font-secondary: var(--font-main-second);
   --color-font-white: var(--font-second);
