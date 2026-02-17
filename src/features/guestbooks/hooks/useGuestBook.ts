@@ -12,6 +12,7 @@ import { guestBookKeys } from '../api/guestBookKeys';
 
 export const useGuestBook = (storeId: string) => {
   return useQuery({
+    enabled: !!storeId,
     queryFn: () => getGuestBook(storeId),
     queryKey: guestBookKeys.list(storeId),
   });
@@ -32,10 +33,11 @@ export const useCreateGuestBook = (storeId: string) => {
   });
 };
 
-export const useUpdateGuestBook = (storeId: string, guestbookId: string) => {
+export const useUpdateGuestBook = (storeId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (body: GuestBookRequest) => updateGuestBook(storeId, guestbookId, body),
+    mutationFn: ({ body, guestbookId }: { body: GuestBookRequest; guestbookId: string }) =>
+      updateGuestBook(storeId, guestbookId, body),
     onError: (error) => {
       console.error('댓글 수정 실패', error);
     },
@@ -47,10 +49,10 @@ export const useUpdateGuestBook = (storeId: string, guestbookId: string) => {
   });
 };
 
-export const useDeleteGuestBook = (storeId: string, guestbookId: string) => {
+export const useDeleteGuestBook = (storeId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => deleteGuestBook(storeId, guestbookId),
+    mutationFn: (guestbookId: string) => deleteGuestBook(storeId, guestbookId),
     onError: (error) => {
       console.error('댓글 삭제 실패', error);
     },

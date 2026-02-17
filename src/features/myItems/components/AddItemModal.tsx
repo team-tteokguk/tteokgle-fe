@@ -26,7 +26,7 @@ export const AddItemModal = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-[50%] max-h-132.25 min-h-69.25 w-md translate-x-[-50%] rounded-t-4xl bg-white">
+    <div className="bottom-sheet max-h-132.25 min-h-69.25">
       <div className="border-disabled flex justify-between border-b px-6 py-6.25">
         {/* TODO: 백 수정되면 고명 갯수 넣기 */}
         <h2 className="text-font-main text-xl leading-7 font-bold tracking-[-0.449px]">
@@ -38,7 +38,7 @@ export const AddItemModal = () => {
       </div>
       <ul className="flex flex-wrap gap-3 p-6">
         {data &&
-          data.map((item) => (
+          data.items.map((item) => (
             <li
               className="bg-grad-accent relative flex h-31.25 w-31.25 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl shadow-lg"
               key={item.id}
@@ -56,7 +56,7 @@ export const AddItemModal = () => {
               </span>
             </li>
           ))}
-        {data && data.length === 0 && !isPending && (
+        {data && data.items.length === 0 && !isPending && (
           <div className="flex h-49 w-full flex-col items-center justify-center gap-2">
             <p className="text-font-gray text-base leading-6 tracking-[-0.312px]">
               보유 중인 고명이 없습니다.

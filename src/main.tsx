@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
 
@@ -13,31 +13,41 @@ import './index.css';
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
       try {
         const { data } = await instance.post('/auth/refresh');
         setAccessToken(data.accessToken);
+        if (window.location.pathname === '/login' || window.location.pathname === '/') {
+          router.navigate('/my-tteok', { replace: true });
+        }
         console.log('✅ 자동 로그인 성공');
       } catch (_error) {
         console.log('ℹ️ 자동 로그인 실패 (로그인 필요)');
+      } finally {
+        setIsAuthInitialized(true);
       }
     };
 
     initAuth();
   }, [setAccessToken]);
 
+  if (!isAuthInitialized) {
+    return null;
+  }
+
   return <>{children}</>;
 };
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthInitializer>
-        <RouterProvider router={router} />
-        <GlobalModal />
-      </AuthInitializer>
-    </QueryClientProvider>
-  </StrictMode>,
+  // <StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthInitializer>
+      <RouterProvider router={router} />
+      <GlobalModal />
+    </AuthInitializer>
+  </QueryClientProvider>,
+  // </StrictMode>,
 );

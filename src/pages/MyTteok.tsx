@@ -38,7 +38,7 @@ export const MyTteok = () => {
                 {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
                 {isPending && <div>Loading...</div>}
                 {error && <div>Error!</div>}
-                {data && !isPending && data.map((item) => <PlacedItem item={item} />)}
+                {data && !isPending && data.items.map((item) => <PlacedItem item={item} />)}
               </div>
             </div>
           </div>

@@ -49,8 +49,8 @@ describe('myitem hooks 테스트', () => {
 
     expect(Array.isArray(result.current.data)).toBe(true);
     // 데이터가 있다는 가정하에 테스트 (MSW 핸들러 설정에 따라 인덱스 조정 필요)
-    if (result.current.data && result.current.data.length > 0) {
-      expect(result.current.data[0].id).toBe('item-003');
+    if (result.current.data && result.current.data.items.length > 0) {
+      expect(result.current.data.items[0].id).toBe('item-003');
     }
   });
 
@@ -63,8 +63,8 @@ describe('myitem hooks 테스트', () => {
 
     expect(Array.isArray(result.current.data)).toBe(true);
 
-    if (result.current.data && result.current.data.length > 0) {
-      expect(result.current.data[0].id).toBe('item-001');
+    if (result.current.data && result.current.data) {
+      expect(result.current.data.items[0].id).toBe('item-001');
     }
   });
 

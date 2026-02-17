@@ -1,9 +1,9 @@
-import type { PlacedItemResponse } from '../types';
+import type { PlacedItemList } from '../types';
 
 import { getItemEmoji } from '../../../shared/utils/itemUtils';
 
 interface PlacedItemProps {
-  item: PlacedItemResponse;
+  item: PlacedItemList;
 }
 
 export const PlacedItem = ({ item }: PlacedItemProps) => {

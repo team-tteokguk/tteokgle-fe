@@ -2,6 +2,7 @@ import type { ItemPlacementRequest } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { useAuthStore } from '../../../store/auth/useAuthStore';
 import {
   getItemDetail,
   getPlacedItemList,
@@ -12,8 +13,10 @@ import {
 import { myItemKeys } from '../api/myItemKeys';
 
 export const useItemDetail = (itemId: string) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return useQuery({
-    enabled: !!itemId,
+    enabled: !!itemId && isAuthenticated,
     queryFn: () => getItemDetail(itemId),
     queryKey: myItemKeys.detail(itemId),
   });
@@ -54,14 +57,20 @@ export const useReadItem = (itemId: string) => {
 };
 
 export const usePlacedItemList = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return useQuery({
+    enabled: isAuthenticated,
     queryFn: getPlacedItemList,
     queryKey: myItemKeys.placed(),
   });
 };
 
 export const useUnPlacedItemList = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   return useQuery({
+    enabled: isAuthenticated,
     queryFn: getUnPlacedItemList,
     queryKey: myItemKeys.unplaced(),
   });

@@ -29,10 +29,18 @@ export interface ItmeBase {
   name: string;
 }
 
+export interface Page {
+  first: boolean;
+  hasNext: boolean;
+  numberOfElements: number;
+  page: number;
+  size: number;
+}
+
 /**
  * 나의 떡국용 배치된 고명 정보 조회
  */
-export interface PlacedItemResponse extends ItmeBase {
+export interface PlacedItemList extends ItmeBase {
   posX: number;
   posY: number;
   posZ: number;
@@ -40,9 +48,19 @@ export interface PlacedItemResponse extends ItmeBase {
   used: boolean;
 }
 
+export interface PlacedItemResponse {
+  items: PlacedItemList[];
+  page: Page;
+}
+
 /**
  * 나의 떡국용 미배치된 고명 정보 조회
  */
-export interface UnplacedItemResponse extends ItmeBase {
+export interface UnplacedItemList extends ItmeBase {
   read: boolean;
+}
+
+export interface UnplacedItemResponse {
+  items: UnplacedItemList[];
+  page: Page;
 }
