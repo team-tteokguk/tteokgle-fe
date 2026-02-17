@@ -59,7 +59,7 @@ describe('Store hooks test', () => {
 
     result.current.mutate({
       content: '내용',
-      contentType: '영상',
+      contentType: 'VIDEO',
       imageUrl: '이미지',
       mediaUrl: '영상url',
       name: '계란',

@@ -1,6 +1,6 @@
 export interface Member {
   createdAt: string;
-  memberId: number;
+  memberId: string;
   nickname: string;
   point: number;
   profileImage: string;
