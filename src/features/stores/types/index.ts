@@ -42,6 +42,12 @@ export interface MyStoreResponse {
   name: string;
 }
 
+export interface StoreFavoritesRequest {
+  page?: number;
+  size?: number;
+  sort?: string;
+}
+
 /**
  * 상점에서 상품 리스트 조회
  */
@@ -50,10 +56,35 @@ export interface StoreItemResponse extends ItmeBase {
   sellCounts: number;
 }
 
+export interface StoreListItem {
+  favorite: boolean;
+  nickname: string;
+  profileImage: string;
+  sellingItemTypeCount: number;
+  storeId: string;
+  storeName: string;
+}
+
+export interface StoreListSliceResponse {
+  content: StoreListItem[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  size: number;
+}
+
 /**
  * 상점 정보 불러오기
  */
 export interface StoreResponse {
   id: number;
   name: string;
+}
+
+export interface StoreSearchRequest {
+  keyword: string;
+  page?: number;
+  size?: number;
+  sort?: string;
 }
