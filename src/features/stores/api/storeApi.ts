@@ -3,8 +3,11 @@ import type {
   MyStoreItemsRequest,
   MyStoreItemsResponse,
   MyStoreResponse,
+  StoreFavoritesRequest,
   StoreItemResponse,
+  StoreListSliceResponse,
   StoreResponse,
+  StoreSearchRequest,
 } from '../types';
 
 import { instance } from '../../../services/axios';
@@ -50,12 +53,12 @@ export const deleteItem = async (storeId: string, itemId: string): Promise<void>
 
 // [POST] 즐겨찾기 추가
 export const subscribe = async (storeId: string): Promise<void> => {
-  await instance.post(`/store/${storeId}/subscription`);
+  await instance.post(`/stores/${storeId}/subscribe`);
 };
 
 // [POST] 즐겨찾기 해제
 export const unsubscribe = async (storeId: string): Promise<void> => {
-  await instance.delete(`/store/${storeId}/subscription`);
+  await instance.delete(`/stores/${storeId}/subscribe`);
 };
 
 // [GET] 내 상점 정보 조회
@@ -95,4 +98,18 @@ export const uploadImageToPresignedUrl = async (
   if (!response.ok) {
     throw new Error('이미지 업로드에 실패했습니다.');
   }
+};
+
+// [GET] 상점 검색
+export const searchStores = async (params: StoreSearchRequest): Promise<StoreListSliceResponse> => {
+  const { data } = await instance.get('/stores/search', { params });
+  return data;
+};
+
+// [GET] 내 즐겨찾기 목록 조회
+export const getMyFavoriteStores = async (
+  params: StoreFavoritesRequest,
+): Promise<StoreListSliceResponse> => {
+  const { data } = await instance.get('/stores/me/favorites', { params });
+  return data;
 };

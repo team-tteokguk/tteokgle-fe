@@ -5,6 +5,7 @@ import GeneralLayout from './layouts/GeneralLayout';
 import { GoogleCallback } from './pages/auth/GoogleCalllback';
 import { Login } from './pages/auth/Login';
 import { SetupNickname } from './pages/auth/SetupNickname';
+import { FindFriends } from './pages/FindFriends';
 import { Mypage } from './pages/Mypage';
 import { MyStore } from './pages/MyStore';
 import { MyTteok } from './pages/MyTteok';
@@ -35,6 +36,11 @@ export const router = createBrowserRouter([
             element: <MyStore />,
             index: true,
             path: 'my-store',
+          },
+          {
+            element: <FindFriends />,
+            index: true,
+            path: 'find-buddy',
           },
         ],
         element: <ProtectedRoute />,
