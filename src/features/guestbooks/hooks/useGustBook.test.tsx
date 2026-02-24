@@ -26,7 +26,7 @@ const createWrapper = () => {
 
 describe('Member hooks test', () => {
   it('방명록을 다 가져옴', async () => {
-    const { result } = renderHook(() => useGuestBook('store-01'), {
+    const { result } = renderHook(() => useGuestBook('store-01', {}), {
       wrapper: createWrapper(),
     });
 
