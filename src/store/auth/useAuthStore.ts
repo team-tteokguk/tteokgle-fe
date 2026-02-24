@@ -6,6 +6,7 @@ interface AuthState {
   isAuthenticated: boolean;
   logout: () => void;
   setAccessToken: (token: null | string) => void;
+  setAuthenticated: (value: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -29,4 +30,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       accessToken: token,
       isAuthenticated: !!token,
     }),
+
+  setAuthenticated: (value) =>
+    set((state) => ({
+      accessToken: value ? state.accessToken : null,
+      isAuthenticated: value,
+    })),
 }));

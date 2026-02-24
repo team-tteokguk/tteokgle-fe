@@ -10,8 +10,9 @@ export const useMyProfile = () => {
   });
 };
 
-export const useMyPoint = () => {
+export const useMyPoint = (enabled = true) => {
   return useQuery({
+    enabled,
     queryFn: getMyProfile,
     queryKey: memberKeys.me(),
     select: (profile) => profile.point,

@@ -4,11 +4,14 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { instance } from '../../services/axios';
 import { useAuthStore } from '../../store/auth/useAuthStore';
 
+const SKIP_INIT_REFRESH_KEY = 'skip-init-refresh-once';
+
 export const GoogleCallback = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<null | string>(null);
 
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   useEffect(() => {
@@ -17,14 +20,12 @@ export const GoogleCallback = () => {
 
     if (errorParam) {
       console.error('OAuth error:', errorParam);
-      setError('로그인이 취소되었어요');
-      setTimeout(() => navigate('/login'), 2000);
+      navigate('/login', { replace: true });
       return;
     }
 
     if (!code) {
-      setError('잘못된 접근이에요');
-      setTimeout(() => navigate('/login'), 2000);
+      navigate('/login', { replace: true });
       return;
     }
 
@@ -34,11 +35,11 @@ export const GoogleCallback = () => {
           params: { code },
         });
 
-        if (!data?.accessToken) {
-          throw new Error('액세스 토큰을 받지 못했어요');
+        sessionStorage.setItem(SKIP_INIT_REFRESH_KEY, 'true');
+        setAuthenticated(true);
+        if (data?.accessToken) {
+          setAccessToken(data.accessToken);
         }
-
-        setAccessToken(data.accessToken);
 
         if (data.newMember) {
           navigate('/setup-nickname', { replace: true });
@@ -59,7 +60,7 @@ export const GoogleCallback = () => {
     };
 
     handleGoogleLogin();
-  }, [navigate, searchParams, setAccessToken]);
+  }, [navigate, searchParams, setAccessToken, setAuthenticated]);
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
