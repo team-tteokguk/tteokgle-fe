@@ -10,6 +10,14 @@ export const useMyProfile = () => {
   });
 };
 
+export const useMyPoint = () => {
+  return useQuery({
+    queryFn: getMyProfile,
+    queryKey: memberKeys.me(),
+    select: (profile) => profile.point,
+  });
+};
+
 export const useUpdateNickname = () => {
   const queryClient = useQueryClient();
 

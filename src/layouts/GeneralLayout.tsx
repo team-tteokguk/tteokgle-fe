@@ -7,7 +7,7 @@ const GeneralLayout = () => {
   return (
     <div className="flex justify-center pt-4">
       <div className="w-full max-w-md">
-        <Header coin={0} />
+        <Header />
         <main className="pt-[70.5px] pb-4">
           <Outlet />
         </main>
