@@ -1,21 +1,15 @@
 import type { TokenResponse } from '../types/index';
 
-import axios from 'axios';
-
-import { api } from '../../../shared/api/axiosInstance';
+import { instance } from '../../../services/axios';
 
 export const authApi = {
   // 로그아웃
   logout: async (): Promise<void> => {
-    await api.post('/logout');
+    await instance.post('/logout');
   },
 
   refresh: async (): Promise<TokenResponse> => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/refresh`,
-      {},
-      { withCredentials: true },
-    );
+    const response = await instance.post('/auth/refresh');
     return response.data;
   },
 };

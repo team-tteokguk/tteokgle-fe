@@ -8,6 +8,11 @@ export interface Member {
   socialType: 'GOOGLE' | 'KAKAO';
 }
 
+export interface MemberProfileImageUpdateDto {
+  profileImage: string;
+}
+
 export interface MemberUpdateDto {
-  nickname: string;
+  name?: string;
+  nickname?: string;
 }

@@ -1,4 +1,4 @@
-import type { Member, MemberUpdateDto } from '../types';
+import type { Member, MemberProfileImageUpdateDto, MemberUpdateDto } from '../types';
 
 import { instance } from '../../../services/axios';
 
@@ -7,8 +7,13 @@ export const getMyProfile = async (): Promise<Member> => {
   return data;
 };
 
-export const updateNickname = async (body: MemberUpdateDto): Promise<Member> => {
+export const updateProfile = async (body: MemberUpdateDto): Promise<Member> => {
   const { data } = await instance.patch('/members/me', body);
+  return data;
+};
+
+export const updateProfileImage = async (body: MemberProfileImageUpdateDto): Promise<Member> => {
+  const { data } = await instance.patch('/members/me/profile-image', body);
   return data;
 };
 
