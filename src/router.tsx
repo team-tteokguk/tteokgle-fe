@@ -9,6 +9,7 @@ import { FindFriends } from './pages/FindFriends';
 import { Mypage } from './pages/Mypage';
 import { MyStore } from './pages/MyStore';
 import { MyTteok } from './pages/MyTteok';
+import { Store } from './pages/Store';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,11 @@ export const router = createBrowserRouter([
             element: <FindFriends />,
             index: true,
             path: 'find-buddy',
+          },
+          {
+            element: <Store />,
+            index: true,
+            path: 'store/:storeId',
           },
         ],
         element: <ProtectedRoute />,
