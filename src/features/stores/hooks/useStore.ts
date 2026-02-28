@@ -11,6 +11,7 @@ import {
   getMyStore,
   getMyStoreItems,
   getStore,
+  purchaseItem,
   searchStores,
   subscribe,
   unsubscribe,
@@ -62,6 +63,22 @@ export const useGetMyStoreItems = (params: MyStoreItemsRequest) => {
   return useQuery({
     queryFn: () => getMyStoreItems(params),
     queryKey: storeKeys.meItems(params),
+  });
+};
+
+export const usePurchaseItem = (storeId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: purchaseItem,
+    onError: (error) => {
+      console.error('아이템 구매 실패', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.items(storeId),
+      });
+    },
   });
 };
 
