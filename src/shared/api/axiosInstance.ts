@@ -34,11 +34,12 @@ api.interceptors.response.use(
           { withCredentials: true },
         );
 
-        const { accessToken } = res.data; // body에서 AT만 꺼냄
-
-        useAuthStore.getState().setAccessToken(accessToken);
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        const accessToken = res.data?.accessToken ?? null;
+        useAuthStore.getState().setAuthenticated(true);
+        if (accessToken) {
+          useAuthStore.getState().setAccessToken(accessToken);
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        }
         return api(originalRequest);
       } catch (refreshError) {
         // 리프레시 토큰 만료

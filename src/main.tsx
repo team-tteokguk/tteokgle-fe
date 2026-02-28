@@ -11,15 +11,34 @@ import { useAuthStore } from './store/auth/useAuthStore.ts';
 
 import './index.css';
 
+const SKIP_INIT_REFRESH_KEY = 'skip-init-refresh-once';
+
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   useEffect(() => {
+    const pathname = window.location.pathname;
+    const shouldSkipForOAuthCallback = pathname === '/auth/google/callback';
+    const shouldSkipOnce = sessionStorage.getItem(SKIP_INIT_REFRESH_KEY) === 'true';
+
+    if (shouldSkipOnce) {
+      sessionStorage.removeItem(SKIP_INIT_REFRESH_KEY);
+    }
+
+    if (shouldSkipForOAuthCallback || shouldSkipOnce) {
+      setIsAuthInitialized(true);
+      return;
+    }
+
     const initAuth = async () => {
       try {
         const { data } = await instance.post('/auth/refresh');
-        setAccessToken(data.accessToken);
+        setAuthenticated(true);
+        if (data?.accessToken) {
+          setAccessToken(data.accessToken);
+        }
         if (window.location.pathname === '/login' || window.location.pathname === '/') {
           router.navigate('/my-tteok', { replace: true });
         }
@@ -32,7 +51,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     };
 
     initAuth();
-  }, [setAccessToken]);
+  }, [setAccessToken, setAuthenticated]);
 
   if (!isAuthInitialized) {
     return null;

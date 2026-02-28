@@ -3,8 +3,8 @@
  */
 export interface NotificationResponse {
   content: string;
+  date: string;
   id: string;
   isRead: boolean;
-  localDateTime: string;
   url: string;
 }

@@ -11,7 +11,7 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-let refreshPromise: null | Promise<string> = null;
+let refreshPromise: null | Promise<null | string> = null;
 
 const getAccessTokenFromRefreshResponse = (data: any): null | string => {
   return data?.accessToken ?? data?.access_token ?? data?.token ?? null;
@@ -36,10 +36,15 @@ instance.interceptors.response.use(
     if (!originalRequest) return Promise.reject(error);
 
     const requestUrl = originalRequest?.url ?? '';
+    const isAuthLoginRequest = requestUrl.includes('/auth/login');
     const isRefreshRequest = requestUrl.includes('/auth/refresh');
 
     if (error.response?.status === 401 && isRefreshRequest) {
       useAuthStore.getState().clearAuth();
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && isAuthLoginRequest) {
       return Promise.reject(error);
     }
 
@@ -57,11 +62,7 @@ instance.interceptors.response.use(
               },
             )
             .then(({ data }) => {
-              const token = getAccessTokenFromRefreshResponse(data);
-              if (!token) {
-                throw new Error('Refresh succeeded but no access token was returned.');
-              }
-              return token;
+              return getAccessTokenFromRefreshResponse(data);
             })
             .finally(() => {
               refreshPromise = null;
@@ -69,10 +70,12 @@ instance.interceptors.response.use(
         }
 
         const newAccessToken = await refreshPromise;
-
-        useAuthStore.getState().setAccessToken(newAccessToken);
-
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        const { setAccessToken, setAuthenticated } = useAuthStore.getState();
+        setAuthenticated(true);
+        if (newAccessToken) {
+          setAccessToken(newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        }
         return instance(originalRequest);
       } catch (refreshError) {
         console.error('세션이 만료되었습니다. 다시 로그인해주세요.');
