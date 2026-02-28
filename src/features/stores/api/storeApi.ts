@@ -3,6 +3,7 @@ import type {
   MyStoreItemsRequest,
   MyStoreItemsResponse,
   MyStoreResponse,
+  MyStoreUpdateRequest,
   StoreFavoritesRequest,
   StoreItemResponse,
   StoreListSliceResponse,
@@ -64,6 +65,12 @@ export const unsubscribe = async (storeId: string): Promise<void> => {
 // [GET] 내 상점 정보 조회
 export const getMyStore = async (): Promise<MyStoreResponse> => {
   const { data } = await instance.get('/stores/me');
+  return data;
+};
+
+// [PATCH] 내 상점 이름 변경
+export const updateMyStore = async (body: MyStoreUpdateRequest): Promise<MyStoreResponse> => {
+  const { data } = await instance.patch('/stores/me', body);
   return data;
 };
 

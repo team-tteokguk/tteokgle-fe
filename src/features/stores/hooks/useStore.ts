@@ -14,6 +14,7 @@ import {
   searchStores,
   subscribe,
   unsubscribe,
+  updateMyStore,
 } from '../api/storeApi';
 import { storeKeys } from '../api/storeKeys';
 
@@ -38,6 +39,22 @@ export const useGetMyStore = () => {
   return useQuery({
     queryFn: getMyStore,
     queryKey: storeKeys.me(),
+  });
+};
+
+export const useUpdateMyStore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateMyStore,
+    onError: (error) => {
+      console.error('상점 이름 변경 실패', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.me(),
+      });
+    },
   });
 };
 

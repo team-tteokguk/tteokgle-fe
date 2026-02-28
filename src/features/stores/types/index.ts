@@ -42,6 +42,10 @@ export interface MyStoreResponse {
   name: string;
 }
 
+export interface MyStoreUpdateRequest {
+  name: string;
+}
+
 export interface StoreFavoritesRequest {
   page?: number;
   size?: number;

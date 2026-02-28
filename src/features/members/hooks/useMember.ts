@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getMyProfile, updateNickname, withdrawMember } from '../api/memberApi';
+import { getMyProfile, updateProfile, updateProfileImage, withdrawMember } from '../api/memberApi';
 import { memberKeys } from '../api/memberKeys';
 
 export const useMyProfile = () => {
@@ -23,13 +23,28 @@ export const useUpdateNickname = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateNickname,
+    mutationFn: updateProfile,
     onError: (error) => {
-      console.error('닉네임 변경 실패:', error);
+      console.error('변경 실패:', error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: memberKeys.me() });
-      console.log('닉네임 변경 완료!');
+      console.log('변경 완료!');
+    },
+  });
+};
+
+export const useUpdateProfileImage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProfileImage,
+    onError: (error) => {
+      console.error('프로필 이미지 변경 실패:', error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: memberKeys.me() });
+      console.log('프로필 이미지 변경 완료!');
     },
   });
 };
@@ -37,10 +52,5 @@ export const useUpdateNickname = () => {
 export const useWithdrawMember = () => {
   return useMutation({
     mutationFn: withdrawMember,
-    onSuccess: () => {
-      // TODO: 나중에 수정
-      alert('탈퇴되었습니다.');
-      // TODO: 토큰 삭제 및 로그인 페이지 이동 처리
-    },
   });
 };
