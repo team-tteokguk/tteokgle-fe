@@ -1,23 +1,39 @@
 import { useState } from 'react';
 
+import cartIcon from '../../../shared/assets/icons/cart.png';
 import trashcanIcon from '../../../shared/assets/icons/trashcan-red.png';
 import { useModalStore } from '../../../store/useModalStore';
 
 interface ConfirmModalProps {
   confirmText?: string;
   description?: string;
+  iconSrc?: null | string;
   onConfirm: () => Promise<void> | void;
   title?: string;
+  type?: ConfirmModalType;
 }
+
+type ConfirmModalType = 'cart' | 'default' | 'logout' | 'withdraw';
 
 export const ConfirmModal = ({
   confirmText = '탈퇴하기',
   description = '탈퇴하시면 모든 데이터가 삭제되며\n 복구할 수 없습니다.',
+  iconSrc,
   onConfirm,
   title = '회원 탈퇴',
+  type = 'withdraw',
 }: ConfirmModalProps) => {
   const { closeModal } = useModalStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const resolvedIconSrc = (() => {
+    if (iconSrc === null) return null;
+    if (iconSrc) return iconSrc;
+
+    if (type === 'withdraw') return trashcanIcon;
+    if (type === 'cart') return cartIcon;
+    return null;
+  })();
 
   const handleConfirm = async () => {
     if (isSubmitting) return;
@@ -33,9 +49,11 @@ export const ConfirmModal = ({
 
   return (
     <div className="flex w-[min(384px,94vw)] flex-col items-center rounded-4xl bg-white p-6 shadow-2xl">
-      <div className="bg-alarm-second mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-        <img alt="trashcan-icon" className="w-8" src={trashcanIcon} />
-      </div>
+      {resolvedIconSrc && (
+        <div className="bg-alarm-second mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+          <img alt="confirm-modal-icon" className="w-8" src={resolvedIconSrc} />
+        </div>
+      )}
       <h2 className="text-font-main mb-2 text-[20px] leading-7 font-bold tracking-[-0.449px]">
         {title}
       </h2>

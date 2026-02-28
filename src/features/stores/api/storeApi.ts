@@ -28,13 +28,13 @@ interface PresignResponse {
 
 // [GET] 상점 정보 불러오기
 export const getStore = async (storeId: string): Promise<StoreResponse> => {
-  const { data } = await instance.get(`/store/${storeId}`);
+  const { data } = await instance.get(`/stores/${storeId}`);
   return data;
 };
 
 // [GET] 상점 고명 리스트 조회하기
-export const getItems = async (storeId: string): Promise<StoreItemResponse[]> => {
-  const { data } = await instance.get(`/store/${storeId}/items`);
+export const getItems = async (storeId: string): Promise<StoreItemResponse> => {
+  const { data } = await instance.get(`/stores/${storeId}/items`);
   return data;
 };
 
@@ -49,7 +49,7 @@ export const createItem = async (
 
 // [DELETE] 고명 삭제하기
 export const deleteItem = async (storeId: string, itemId: string): Promise<void> => {
-  await instance.delete(`/store/${storeId}/items/${itemId}`);
+  await instance.delete(`/stores/${storeId}/items/${itemId}`);
 };
 
 // [POST] 즐겨찾기 추가
@@ -119,4 +119,9 @@ export const getMyFavoriteStores = async (
 ): Promise<StoreListSliceResponse> => {
   const { data } = await instance.get('/stores/me/favorites', { params });
   return data;
+};
+
+// [POST] 아이템 구매
+export const purchaseItem = async (itemId: string): Promise<void> => {
+  await instance.post(`/stores/items/${itemId}/purchase`);
 };

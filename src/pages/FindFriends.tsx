@@ -1,6 +1,7 @@
 import type { StoreListItem } from '../features/stores/types';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import {
   useGetFavoriteStores,
@@ -16,10 +17,11 @@ import { TitleCard } from '../shared/components/TitleCard';
 interface StoreCardProps {
   isFavorite: boolean;
   onFavoriteChanged: (nextFavorite: boolean, storeId: string) => void;
+  onStoreClick: (storeId: string) => void;
   store: StoreListItem;
 }
 
-const StoreCard = ({ isFavorite, onFavoriteChanged, store }: StoreCardProps) => {
+const StoreCard = ({ isFavorite, onFavoriteChanged, onStoreClick, store }: StoreCardProps) => {
   const { isPending: isTogglePending, mutate } = useToggleSubscribe(store.storeId);
 
   const handleToggleFavorite = () => {
@@ -37,7 +39,10 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, store }: StoreCardProps) => 
   };
 
   return (
-    <li className="border-accent-main bg-grad-item flex items-center rounded-2xl border-2 px-4 py-4">
+    <li
+      className="border-accent-main bg-grad-item flex cursor-pointer items-center rounded-2xl border-2 px-4 py-4"
+      onClick={() => onStoreClick(store.storeId)}
+    >
       {store.profileImage ? (
         <img
           alt={`${store.nickname} profile`}
@@ -61,7 +66,10 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, store }: StoreCardProps) => 
       <button
         aria-label="subscribe-button"
         disabled={isTogglePending}
-        onClick={handleToggleFavorite}
+        onClick={(event) => {
+          event.stopPropagation();
+          handleToggleFavorite();
+        }}
         type="button"
       >
         <img alt="star-icon" className="w-5" src={isFavorite ? activeStar : disabledStarIcon} />
@@ -71,6 +79,7 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, store }: StoreCardProps) => 
 };
 
 export const FindFriends = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'favorites' | 'search'>('search');
   const [hiddenStoreIds, setHiddenStoreIds] = useState<string[]>([]);
   const [optimisticFavorites, setOptimisticFavorites] = useState<Record<string, boolean>>({});
@@ -149,6 +158,10 @@ export const FindFriends = () => {
     setHiddenStoreIds((prev) => prev.filter((id) => id !== storeId));
   };
 
+  const handleStoreClick = (storeId: string) => {
+    navigate(`/store/${storeId}`);
+  };
+
   const renderEmptyState = () => {
     if (!isFavoriteTab && !keyword.trim()) {
       return (
@@ -222,6 +235,7 @@ export const FindFriends = () => {
               isFavorite={optimisticFavorites[store.storeId] ?? store.favorite}
               key={store.storeId}
               onFavoriteChanged={handleFavoriteChanged}
+              onStoreClick={handleStoreClick}
               store={store}
             />
           ))}

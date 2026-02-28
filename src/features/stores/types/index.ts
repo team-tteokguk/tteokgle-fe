@@ -52,12 +52,18 @@ export interface StoreFavoritesRequest {
   sort?: string;
 }
 
+export interface StoreItem extends ItmeBase {
+  cost: number;
+  sellCounts: number;
+}
+
 /**
  * 상점에서 상품 리스트 조회
  */
 export interface StoreItemResponse extends ItmeBase {
-  cost: number;
-  sellCounts: number;
+  items: StoreItem[];
+  sellingItemCount: number;
+  storeName: string;
 }
 
 export interface StoreListItem {
