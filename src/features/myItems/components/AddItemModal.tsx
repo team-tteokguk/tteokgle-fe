@@ -30,7 +30,7 @@ export const AddItemModal = () => {
           data.items.map((item) => (
             <li key={item.id}>
               <button
-                className="bg-grad-accent disabled:bg-grad-disabled relative flex h-31.25 w-31.25 flex-col items-center justify-center gap-2 rounded-2xl opacity-70 shadow-lg"
+                className="bg-grad-accent disabled:bg-grad-disabled relative flex h-31.25 w-31.25 flex-col items-center justify-center gap-2 rounded-2xl shadow-lg disabled:opacity-70"
                 disabled={item.used}
                 onClick={() => handleItemClick(item.id)}
                 type="button"

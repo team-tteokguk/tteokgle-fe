@@ -267,6 +267,25 @@ body {
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
   }
+
+  .pretty-scrollbar {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(153, 161, 175, 0.75) transparent;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(153, 161, 175, 0.75);
+    border-radius: 999px;
+  }
 }
 
 @theme {

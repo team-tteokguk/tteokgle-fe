@@ -1,4 +1,5 @@
 import { AddItemModal } from '../features/myItems/components/AddItemModal';
+import { ItemDetailModal } from '../features/myItems/components/ItemDetailModal';
 import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
 import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
@@ -9,8 +10,6 @@ import { useModalStore } from '../store/useModalStore';
 export const MyTteok = () => {
   const { data, error, isPending } = usePlacedItemList();
   const { openModal } = useModalStore();
-
-  console.log(data);
 
   const TTEOK_DATA = [
     { h: '56px', left: '25%', rotate: '-15deg', top: '20%', w: '68px' },
@@ -26,6 +25,9 @@ export const MyTteok = () => {
     openModal(<AddItemModal />);
   };
 
+  const handleItemClick = (itemId: string) => {
+    openModal(<ItemDetailModal itemId={itemId} />);
+  };
   return (
     <div>
       <TitleCard sub="고명을 터치해 메시지를 확인하세요" title="나의 떡국" />
@@ -42,7 +44,9 @@ export const MyTteok = () => {
                 {error && <div>Error!</div>}
                 {data &&
                   !isPending &&
-                  data.items.map((item) => <PlacedItem item={item} key={item.id} />)}
+                  data.items.map((item) => (
+                    <PlacedItem item={item} key={item.id} onClick={handleItemClick} />
+                  ))}
               </div>
             </div>
           </div>

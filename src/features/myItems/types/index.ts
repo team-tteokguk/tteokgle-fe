@@ -4,7 +4,9 @@
 export interface ItemDetailResponse extends ItmeBase {
   content: string;
   contentType: string;
+  creatorNickname: string;
   isRead: boolean;
+  itemType: string;
   mediaUrl: string;
 }
 
