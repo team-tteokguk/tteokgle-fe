@@ -1,5 +1,3 @@
-import type { ItemPlacementRequest } from '../types';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '../../../store/auth/useAuthStore';
@@ -26,8 +24,7 @@ export const useUpdateItemPlacement = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ body, itemId }: { body: ItemPlacementRequest; itemId: string }) =>
-      updateItemPlacement(itemId, body),
+    mutationFn: ({ itemId }: { itemId: string }) => updateItemPlacement(itemId),
     onError: (error) => {
       console.error('아이템 배치 실패', error);
     },

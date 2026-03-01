@@ -10,6 +10,8 @@ export const MyTteok = () => {
   const { data, error, isPending } = usePlacedItemList();
   const { openModal } = useModalStore();
 
+  console.log(data);
+
   const TTEOK_DATA = [
     { h: '56px', left: '25%', rotate: '-15deg', top: '20%', w: '68px' },
     { h: '50px', left: '45%', rotate: '20deg', top: '35%', w: '62px' },
@@ -38,7 +40,9 @@ export const MyTteok = () => {
                 {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
                 {isPending && <div>Loading...</div>}
                 {error && <div>Error!</div>}
-                {data && !isPending && data.items.map((item) => <PlacedItem item={item} />)}
+                {data &&
+                  !isPending &&
+                  data.items.map((item) => <PlacedItem item={item} key={item.id} />)}
               </div>
             </div>
           </div>
