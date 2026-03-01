@@ -4,19 +4,15 @@
 export interface ItemDetailResponse extends ItmeBase {
   content: string;
   contentType: string;
+  creatorNickname: string;
   isRead: boolean;
+  itemType: string;
   mediaUrl: string;
 }
 
 /**
  * 나의 떡국에 아이템 배치 정보 업데이트
  */
-export interface ItemPlacementRequest {
-  isUsed: boolean;
-  posX: number;
-  posY: number;
-  posZ: number;
-}
 
 // RESPONSE
 
@@ -58,6 +54,7 @@ export interface PlacedItemResponse {
  */
 export interface UnplacedItemList extends ItmeBase {
   read: boolean;
+  used: boolean;
 }
 
 export interface UnplacedItemResponse {

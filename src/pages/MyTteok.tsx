@@ -1,4 +1,5 @@
 import { AddItemModal } from '../features/myItems/components/AddItemModal';
+import { ItemDetailModal } from '../features/myItems/components/ItemDetailModal';
 import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
 import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
@@ -24,6 +25,9 @@ export const MyTteok = () => {
     openModal(<AddItemModal />);
   };
 
+  const handleItemClick = (itemId: string) => {
+    openModal(<ItemDetailModal itemId={itemId} />);
+  };
   return (
     <div>
       <TitleCard sub="고명을 터치해 메시지를 확인하세요" title="나의 떡국" />
@@ -38,7 +42,11 @@ export const MyTteok = () => {
                 {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
                 {isPending && <div>Loading...</div>}
                 {error && <div>Error!</div>}
-                {data && !isPending && data.items.map((item) => <PlacedItem item={item} />)}
+                {data &&
+                  !isPending &&
+                  data.items.map((item) => (
+                    <PlacedItem item={item} key={item.id} onClick={handleItemClick} />
+                  ))}
               </div>
             </div>
           </div>

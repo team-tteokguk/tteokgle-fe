@@ -76,15 +76,7 @@ describe('myitem hooks 테스트', () => {
 
     // 수정: mutate 호출 시 itemId와 body를 객체로 묶어서 전달
     result.current.mutate({
-      body: {
-        // 실제 ItemPlacementRequest 타입에 맞는 필드 작성
-        itemRotate: 0,
-        positionX: 100,
-        positionY: 100,
-        // 필요하다면 기존 코드의 필드명 확인 (posX -> positionX 등 API 명세에 맞춤)
-        // 여기서는 예시로 작성된 필드명을 유지하거나 조정합니다.
-        // isUsed: true,
-      } as any, // 타입 오류 방지를 위해 any 사용 (실제 타입에 맞춰 수정 권장)
+      // 타입 오류 방지를 위해 any 사용 (실제 타입에 맞춰 수정 권장)
       itemId: 'item-001',
     });
 
