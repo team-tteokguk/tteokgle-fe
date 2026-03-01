@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { instance } from '../../services/axios';
 import { useAuthStore } from '../../store/auth/useAuthStore';
 
-const SKIP_INIT_REFRESH_KEY = 'skip-init-refresh-once';
+const AUTH_REFRESH_ELIGIBLE_KEY = 'auth-refresh-eligible';
 
 export const GoogleCallback = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export const GoogleCallback = () => {
           params: { code },
         });
 
-        sessionStorage.setItem(SKIP_INIT_REFRESH_KEY, 'true');
+        localStorage.setItem(AUTH_REFRESH_ELIGIBLE_KEY, 'true');
         setAuthenticated(true);
         if (data?.accessToken) {
           setAccessToken(data.accessToken);

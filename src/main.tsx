@@ -11,9 +11,11 @@ import { useAuthStore } from './store/auth/useAuthStore.ts';
 
 import './index.css';
 
-const SKIP_INIT_REFRESH_KEY = 'skip-init-refresh-once';
+const AUTH_REFRESH_ELIGIBLE_KEY = 'auth-refresh-eligible';
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const setAuthResolved = useAuthStore((state) => state.setAuthResolved);
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
@@ -21,13 +23,16 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const pathname = window.location.pathname;
     const shouldSkipForOAuthCallback = pathname === '/auth/google/callback';
-    const shouldSkipOnce = sessionStorage.getItem(SKIP_INIT_REFRESH_KEY) === 'true';
+    const isRefreshEligible = localStorage.getItem(AUTH_REFRESH_ELIGIBLE_KEY) === 'true';
 
-    if (shouldSkipOnce) {
-      sessionStorage.removeItem(SKIP_INIT_REFRESH_KEY);
+    if (shouldSkipForOAuthCallback) {
+      setAuthResolved(true);
+      setIsAuthInitialized(true);
+      return;
     }
 
-    if (shouldSkipForOAuthCallback || shouldSkipOnce) {
+    if (!isRefreshEligible) {
+      setAuthResolved(true);
       setIsAuthInitialized(true);
       return;
     }
@@ -35,6 +40,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     const initAuth = async () => {
       try {
         const { data } = await instance.post('/auth/refresh');
+        localStorage.setItem(AUTH_REFRESH_ELIGIBLE_KEY, 'true');
         setAuthenticated(true);
         if (data?.accessToken) {
           setAccessToken(data.accessToken);
@@ -44,6 +50,8 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
         }
         console.log('✅ 자동 로그인 성공');
       } catch (_error) {
+        localStorage.removeItem(AUTH_REFRESH_ELIGIBLE_KEY);
+        clearAuth();
         console.log('ℹ️ 자동 로그인 실패 (로그인 필요)');
       } finally {
         setIsAuthInitialized(true);
@@ -51,7 +59,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     };
 
     initAuth();
-  }, [setAccessToken, setAuthenticated]);
+  }, [clearAuth, setAccessToken, setAuthenticated, setAuthResolved]);
 
   if (!isAuthInitialized) {
     return null;
