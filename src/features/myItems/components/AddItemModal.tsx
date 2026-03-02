@@ -1,4 +1,5 @@
 import closeIcon from '../../../shared/assets/icons/x.png';
+import { AsyncStateNotice } from '../../../shared/components/AsyncStateNotice';
 import { getItemEmoji, getItemNameKR } from '../../../shared/utils/itemUtils';
 import { useModalStore } from '../../../store/useModalStore';
 import { useUpdateItemPlacement } from '../hooks/useMyItem';
@@ -58,9 +59,16 @@ export const AddItemModal = () => {
             </span>
           </div>
         )}
-        {/* TODO: 에러 / 로딩 디자인 후 적용 */}
-        {error && <div>에러</div>}
-        {isPending && <div>기다리삼</div>}
+        {error && (
+          <div className="w-full">
+            <AsyncStateNotice message="고명 목록을 불러오지 못했습니다." type="error" />
+          </div>
+        )}
+        {isPending && (
+          <div className="w-full">
+            <AsyncStateNotice message="고명 목록을 불러오는 중..." type="loading" />
+          </div>
+        )}
       </ul>
     </div>
   );

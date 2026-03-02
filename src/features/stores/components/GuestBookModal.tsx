@@ -4,6 +4,8 @@ import editIcon from '../../../shared/assets/icons/pencil-blue.png';
 import sendIcon from '../../../shared/assets/icons/send.png';
 import deleteIcon from '../../../shared/assets/icons/trashcan-red.png';
 import closeIcon from '../../../shared/assets/icons/x.png';
+import { AsyncStateNotice } from '../../../shared/components/AsyncStateNotice';
+import { SkeletonBlock } from '../../../shared/components/SkeletonBlock';
 import { useModalStore } from '../../../store/useModalStore';
 import {
   useCreateGuestBook,
@@ -74,6 +76,23 @@ export const GuestBookModal = () => {
 
   const isSubmitting = isCreatePending || isUpdatePending || isDeletePending;
 
+  const renderSkeletons = () =>
+    Array.from({ length: 3 }).map((_, index) => (
+      <li
+        className="bg-grad-item border-accent-main/50 mb-3 min-h-23.5 rounded-2xl border p-4.25"
+        key={`guestbook-skeleton-${index}`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <SkeletonBlock className="h-8 w-8 rounded-full" />
+            <SkeletonBlock className="h-4 w-20" />
+          </div>
+          <SkeletonBlock className="h-3 w-12" />
+        </div>
+        <SkeletonBlock className="mt-3 ml-10 h-4 w-4/5" />
+      </li>
+    ));
+
   return (
     <div className="bottom-sheet h-[80vh] max-h-156">
       <div className="border-disabled flex w-full items-center justify-between border-b p-6">
@@ -124,8 +143,8 @@ export const GuestBookModal = () => {
       </form>
       <div>
         <ul className="w-full p-6">
-          {isPending && <p className="text-center">불러오는 중...</p>}
-          {isError && <p className="text-center">방명록을 불러오지 못했습니다.</p>}
+          {isPending && renderSkeletons()}
+          {isError && <AsyncStateNotice message="방명록을 불러오지 못했습니다." type="error" />}
           {guestbookMessage?.map((message) => {
             const isWriter = String(myProfile?.memberId) === message.writerId;
             const isStoreOwner = !!myStore?.id;

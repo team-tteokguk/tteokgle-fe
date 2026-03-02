@@ -4,6 +4,8 @@ import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
 import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
 import plusIcon from '../shared/assets/icons/plus.png';
+import { AsyncStateNotice } from '../shared/components/AsyncStateNotice';
+import { LoadingSpinner } from '../shared/components/LoadingSpinner';
 import { TitleCard } from '../shared/components/TitleCard';
 import { useModalStore } from '../store/useModalStore';
 
@@ -39,9 +41,16 @@ export const MyTteok = () => {
                 {TTEOK_DATA.map((style, idx) => (
                   <TteokPiece key={idx} style={style} />
                 ))}
-                {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
-                {isPending && <div>Loading...</div>}
-                {error && <div>Error!</div>}
+                {isPending && (
+                  <div className="absolute inset-x-4 top-1/2 z-20 -translate-y-1/2 rounded-2xl bg-white/75 py-6 backdrop-blur-[1px]">
+                    <LoadingSpinner label="떡국 정보를 불러오는 중..." size="sm" />
+                  </div>
+                )}
+                {error && (
+                  <div className="absolute inset-x-4 top-1/2 z-20 -translate-y-1/2">
+                    <AsyncStateNotice message="떡국 정보를 불러오지 못했습니다." type="error" />
+                  </div>
+                )}
                 {data &&
                   !isPending &&
                   data.items.map((item) => (

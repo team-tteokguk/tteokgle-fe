@@ -3,6 +3,8 @@ import { GuestBookModal } from '../features/stores/components/GuestBookModal';
 import { ProductItem } from '../features/stores/components/ProductItem';
 import { useGetMyStore, useGetMyStoreItems } from '../features/stores/hooks/useStore';
 import plusIcon from '../shared/assets/icons/plus.png';
+import { AsyncStateNotice } from '../shared/components/AsyncStateNotice';
+import { LoadingSpinner } from '../shared/components/LoadingSpinner';
 import { TitleCard } from '../shared/components/TitleCard';
 import { useModalStore } from '../store/useModalStore';
 
@@ -39,8 +41,14 @@ export const MyStore = () => {
         <h2 className="text-font-main mb-4 text-lg leading-7 font-bold">
           판매 중인 고명 {myStoreItems?.sellingItemCount ?? 0}개
         </h2>
-        {isPending && <p className="text-font-gray mt-4 text-sm">불러오는 중...</p>}
-        {hasError && <p className="text-warning mt-4 text-sm">상점 정보를 불러오지 못했습니다.</p>}
+        {isPending && (
+          <LoadingSpinner className="mt-4 min-h-54" label="상점 정보를 불러오는 중..." />
+        )}
+        {hasError && (
+          <div className="mt-4 flex min-h-54 items-center justify-center">
+            <AsyncStateNotice message="상점 정보를 불러오지 못했습니다." type="error" />
+          </div>
+        )}
         {hasItems && (
           <ul className="mt-4 grid grid-cols-3 gap-3">
             {myStoreItems?.items.map((item) => (

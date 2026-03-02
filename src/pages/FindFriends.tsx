@@ -12,6 +12,8 @@ import readingGlassIcon from '../shared/assets/icons/reading-glass.png';
 import activeStar from '../shared/assets/icons/star-active.png';
 import disabledStarIcon from '../shared/assets/icons/star-disabled.png';
 import whiteStarIcon from '../shared/assets/icons/star-white.png';
+import { AsyncStateNotice } from '../shared/components/AsyncStateNotice';
+import { SkeletonBlock } from '../shared/components/SkeletonBlock';
 import { TitleCard } from '../shared/components/TitleCard';
 
 interface StoreCardProps {
@@ -77,6 +79,18 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, onStoreClick, store }: Store
     </li>
   );
 };
+
+const StoreCardSkeleton = () => (
+  <li className="border-accent-main/50 flex items-center rounded-2xl border-2 px-4 py-4">
+    <SkeletonBlock className="mr-3 h-12 w-12 rounded-full" />
+    <div className="flex flex-1 flex-col gap-2">
+      <SkeletonBlock className="h-4 w-24" />
+      <SkeletonBlock className="h-3 w-40" />
+    </div>
+    <SkeletonBlock className="mr-4 h-6 w-20 rounded-full" />
+    <SkeletonBlock className="h-5 w-5 rounded-full" />
+  </li>
+);
 
 export const FindFriends = () => {
   const navigate = useNavigate();
@@ -223,7 +237,7 @@ export const FindFriends = () => {
         <p className="text-font-main text-[18px] leading-7 font-black tracking-[-0.439px]">
           {isFavoriteTab ? '즐겨찾기 목록' : '친구 목록'}
         </p>
-        {hasError && <p className="text-warning text-sm">목록을 불러오지 못했습니다.</p>}
+        {hasError && <AsyncStateNotice message="목록을 불러오지 못했습니다." type="error" />}
         {!hasError &&
           visibleStoreList.length === 0 &&
           !isPending &&
@@ -242,7 +256,11 @@ export const FindFriends = () => {
         </ul>
         <div className="h-4 w-full text-center" ref={loadMoreRef} />
         {(isPending || isFetchingNextPage) && (
-          <p className="text-font-gray text-sm">불러오는 중...</p>
+          <ul className="flex flex-col gap-2">
+            {Array.from({ length: isFetchingNextPage ? 2 : 4 }).map((_, index) => (
+              <StoreCardSkeleton key={`store-skeleton-${index}`} />
+            ))}
+          </ul>
         )}
       </div>
     </div>

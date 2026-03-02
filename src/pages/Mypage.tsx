@@ -19,6 +19,7 @@ import defaultProfileIcon from '../shared/assets/icons/default-profile.png';
 import logoutIcon from '../shared/assets/icons/logout.png';
 import storeIcon from '../shared/assets/icons/store.png';
 import warnIcon from '../shared/assets/icons/warn.png';
+import { LoadingSpinner } from '../shared/components/LoadingSpinner';
 import { TitleCard } from '../shared/components/TitleCard';
 import { useModalStore } from '../store/useModalStore';
 
@@ -162,55 +163,64 @@ export const Mypage = () => {
     isUploadingImage ||
     isProfilePending;
 
+  const isInitialProfileLoading = isProfilePending && !myProfile;
+
   return (
     <>
       <TitleCard sub="내 정보를 관리하세요" title="마이페이지" />
       <div className="mt-4 flex flex-col items-center rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)]">
-        <div className="relative h-24 w-24">
-          <img
-            alt="profile"
-            className="h-24 w-24 rounded-full border-4 border-white object-cover"
-            src={profileImage || defaultProfileIcon}
-          />
-          <input
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            className="hidden"
-            id="profile"
-            onChange={handleProfileImageChange}
-            type="file"
-          />
-          <label
-            className="bg-brand-main absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)]"
-            htmlFor="profile"
-          >
-            <img alt="camera-icon" className="w-4" src={cameraIcon} />
-          </label>
-        </div>
-        <div className="mt-4 flex w-full flex-col gap-4">
-          <InputWithLabel
-            defaultValue={nickname}
-            disabled={isFormActionPending}
-            errorMessage={nicknameErrorMessage}
-            id="username"
-            label="닉네임"
-            onSave={handleSaveNickname}
-            placeholder="닉네임을 입력해주세요"
-          />
-          <InputWithLabel
-            defaultValue={storeName}
-            disabled={isFormActionPending}
-            errorMessage={storeNameErrorMessage}
-            icon={storeIcon}
-            id="store-name"
-            label="상점 이름"
-            onSave={handleSaveStoreName}
-            placeholder="상점 이름을 입력해주세요"
-          />
-        </div>
-        {isProfileError && (
-          <p className="text-warning mt-3 text-sm">프로필을 불러오지 못했습니다.</p>
+        {isInitialProfileLoading && (
+          <LoadingSpinner className="min-h-60 w-full" label="프로필 정보를 불러오는 중..." />
         )}
-        {imageErrorMessage && <p className="text-warning mt-3 text-sm">{imageErrorMessage}</p>}
+        {!isInitialProfileLoading && (
+          <>
+            <div className="relative h-24 w-24">
+              <img
+                alt="profile"
+                className="h-24 w-24 rounded-full border-4 border-white object-cover"
+                src={profileImage || defaultProfileIcon}
+              />
+              <input
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                className="hidden"
+                id="profile"
+                onChange={handleProfileImageChange}
+                type="file"
+              />
+              <label
+                className="bg-brand-main absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)]"
+                htmlFor="profile"
+              >
+                <img alt="camera-icon" className="w-4" src={cameraIcon} />
+              </label>
+            </div>
+            <div className="mt-4 flex w-full flex-col gap-4">
+              <InputWithLabel
+                defaultValue={nickname}
+                disabled={isFormActionPending}
+                errorMessage={nicknameErrorMessage}
+                id="username"
+                label="닉네임"
+                onSave={handleSaveNickname}
+                placeholder="닉네임을 입력해주세요"
+              />
+              <InputWithLabel
+                defaultValue={storeName}
+                disabled={isFormActionPending}
+                errorMessage={storeNameErrorMessage}
+                icon={storeIcon}
+                id="store-name"
+                label="상점 이름"
+                onSave={handleSaveStoreName}
+                placeholder="상점 이름을 입력해주세요"
+              />
+            </div>
+            {isProfileError && (
+              <p className="text-warning mt-3 text-sm">프로필을 불러오지 못했습니다.</p>
+            )}
+            {imageErrorMessage && <p className="text-warning mt-3 text-sm">{imageErrorMessage}</p>}
+          </>
+        )}
       </div>
       <div className="mt-4 flex flex-col gap-3 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
         <button
