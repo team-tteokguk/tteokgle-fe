@@ -4,15 +4,12 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { instance } from '../../services/axios';
 import { useAuthStore } from '../../store/auth/useAuthStore';
 
-const AUTH_REFRESH_ELIGIBLE_KEY = 'auth-refresh-eligible';
-
 export const GoogleCallback = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<null | string>(null);
 
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -35,11 +32,7 @@ export const GoogleCallback = () => {
           params: { code },
         });
 
-        localStorage.setItem(AUTH_REFRESH_ELIGIBLE_KEY, 'true');
         setAuthenticated(true);
-        if (data?.accessToken) {
-          setAccessToken(data.accessToken);
-        }
 
         if (data.newMember) {
           navigate('/setup-nickname', { replace: true });
@@ -60,7 +53,7 @@ export const GoogleCallback = () => {
     };
 
     handleGoogleLogin();
-  }, [navigate, searchParams, setAccessToken, setAuthenticated]);
+  }, [navigate, searchParams, setAuthenticated]);
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
