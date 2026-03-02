@@ -12,12 +12,16 @@ const pointFormatter = new Intl.NumberFormat('ko-KR');
 const NOTIFICATION_MEMBER_KEY = 'me';
 
 export const Header = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isAuthResolved } = useAuthStore();
   const { openModal } = useModalStore();
-  const { data: point, isError, isPending } = useMyPoint(isAuthenticated);
-  const { data: notifications } = useGetAllNotification(NOTIFICATION_MEMBER_KEY, isAuthenticated);
+  const isNotificationEnabled = isAuthResolved && isAuthenticated;
+  const { data: point, isError, isPending } = useMyPoint(isNotificationEnabled);
+  const { data: notifications } = useGetAllNotification(
+    NOTIFICATION_MEMBER_KEY,
+    isNotificationEnabled,
+  );
 
-  useNotificationStream(NOTIFICATION_MEMBER_KEY, isAuthenticated);
+  useNotificationStream(NOTIFICATION_MEMBER_KEY, isNotificationEnabled);
 
   const unreadCount = notifications?.filter((notification) => !notification.isRead).length ?? 0;
   const pointLabel = isError
