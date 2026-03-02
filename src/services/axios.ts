@@ -11,19 +11,12 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-let refreshPromise: null | Promise<null | string> = null;
-
-const getAccessTokenFromRefreshResponse = (data: any): null | string => {
-  return data?.accessToken ?? data?.access_token ?? data?.token ?? null;
-};
+let refreshPromise: null | Promise<void> = null;
 
 instance.interceptors.request.use(
   (config) => {
-    const { accessToken } = useAuthStore.getState();
-
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
+    // 백엔드가 HttpOnly 쿠키 기반 인증을 사용하므로 Authorization 헤더를 강제로 주입하지 않는다.
+    // (SSE/REST 인증 주체 불일치 방지)
     return config;
   },
   (error) => Promise.reject(error),
@@ -61,21 +54,15 @@ instance.interceptors.response.use(
                 withCredentials: true,
               },
             )
-            .then(({ data }) => {
-              return getAccessTokenFromRefreshResponse(data);
-            })
+            .then(() => undefined)
             .finally(() => {
               refreshPromise = null;
             });
         }
 
-        const newAccessToken = await refreshPromise;
-        const { setAccessToken, setAuthenticated } = useAuthStore.getState();
+        await refreshPromise;
+        const { setAuthenticated } = useAuthStore.getState();
         setAuthenticated(true);
-        if (newAccessToken) {
-          setAccessToken(newAccessToken);
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        }
         return instance(originalRequest);
       } catch (refreshError) {
         console.error('세션이 만료되었습니다. 다시 로그인해주세요.');
