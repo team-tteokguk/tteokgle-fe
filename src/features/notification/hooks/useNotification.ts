@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import {
   connectNotificationStream,
+  disconnectNotificationStream,
   getAllNotifications,
   updateNotifications,
 } from '../api/notificationApi';
@@ -24,7 +25,7 @@ export const useNotificationStream = (memberId: string, enabled = true) => {
   useEffect(() => {
     if (!enabled) return;
 
-    const eventSource = connectNotificationStream({
+    const unsubscribe = connectNotificationStream({
       onError: () => {
         console.error('알림 스트림 연결 오류');
       },
@@ -45,7 +46,7 @@ export const useNotificationStream = (memberId: string, enabled = true) => {
     });
 
     return () => {
-      eventSource.close();
+      disconnectNotificationStream(unsubscribe);
     };
   }, [enabled, memberId, queryClient]);
 };

@@ -21,13 +21,14 @@ const NotificationSkeletonItem = () => (
 );
 
 export const NotificationModal = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isAuthResolved } = useAuthStore();
   const { closeModal } = useModalStore();
+  const isNotificationEnabled = isAuthResolved && isAuthenticated;
   const {
     data: notifications,
     isError,
     isPending,
-  } = useGetAllNotification(NOTIFICATION_MEMBER_KEY, isAuthenticated);
+  } = useGetAllNotification(NOTIFICATION_MEMBER_KEY, isNotificationEnabled);
   const { mutate: readAllNotifications } = useUpdateNotification(NOTIFICATION_MEMBER_KEY);
 
   const notificationList = notifications ?? [];

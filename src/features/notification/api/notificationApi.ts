@@ -16,10 +16,7 @@ export const getAllNotifications = async (_memberId: string): Promise<Notificati
 
   return list
     .filter((item: unknown): item is NotificationResponse => isNotificationResponse(item))
-    .map((item) => ({
-      ...item,
-      date: item.date ?? '',
-    }));
+    .map(normalizeNotification);
 };
 
 // [PATCH] 알림 일괄 읽음 처리
@@ -46,32 +43,79 @@ const isNotificationResponse = (value: unknown): value is NotificationResponse =
   );
 };
 
+const normalizeNotification = (item: NotificationResponse): NotificationResponse => {
+  const candidate = item as NotificationResponse & { localDateTime?: string };
+  return {
+    ...item,
+    date: item.date ?? candidate.localDateTime ?? '',
+  };
+};
+
+const streamSubscribers = new Set<NotificationStreamOptions>();
+let sharedEventSource: EventSource | null = null;
+
+const dispatchMessage = (event: MessageEvent) => {
+  if (!event.data || event.data === 'keep-alive') return;
+
+  try {
+    const parsed = JSON.parse(event.data) as unknown;
+    if (!isNotificationResponse(parsed)) return;
+
+    const normalized = normalizeNotification(parsed);
+    streamSubscribers.forEach((subscriber) => {
+      subscriber.onMessage(normalized);
+    });
+  } catch (_error) {
+    // 서버 keep-alive 문자열 등 JSON 이외 payload는 무시한다.
+    return;
+  }
+};
+
+const dispatchError = (event: Event) => {
+  // EventSource는 브라우저가 자동 재연결하므로 로깅/모니터링만 수행한다.
+  streamSubscribers.forEach((subscriber) => {
+    subscriber.onError?.(event);
+  });
+};
+
 export const connectNotificationStream = ({
   onError,
   onMessage,
-}: NotificationStreamOptions): EventSource => {
-  const eventSource = new EventSource(notificationStreamUrl, { withCredentials: true });
+}: NotificationStreamOptions): (() => void) => {
+  const subscriber = { onError, onMessage };
+  streamSubscribers.add(subscriber);
 
-  const handleMessage = (event: MessageEvent) => {
-    if (!event.data) return;
+  if (!sharedEventSource) {
+    sharedEventSource = new EventSource(notificationStreamUrl, { withCredentials: true });
+    sharedEventSource.addEventListener('message', dispatchMessage as EventListener);
+    // 백엔드가 custom event 이름으로 전송해도 수신 가능하도록 보강
+    sharedEventSource.addEventListener('notification', dispatchMessage as EventListener);
+    sharedEventSource.onerror = dispatchError;
+  }
 
-    try {
-      const parsed = JSON.parse(event.data) as unknown;
-      if (isNotificationResponse(parsed)) {
-        onMessage({
-          ...parsed,
-          date: parsed.date ?? '',
-        });
-      }
-    } catch (error) {
-      console.error('알림 스트림 데이터 파싱 실패', error);
+  return () => {
+    streamSubscribers.delete(subscriber);
+    if (streamSubscribers.size === 0 && sharedEventSource) {
+      sharedEventSource.close();
+      sharedEventSource = null;
     }
   };
-
-  eventSource.addEventListener('message', handleMessage);
-  eventSource.onerror = (event) => {
-    onError?.(event);
-  };
-
-  return eventSource;
 };
+
+export const disconnectNotificationStream = (unsubscribe: () => void) => {
+  try {
+    unsubscribe();
+  } catch (error) {
+    console.error('알림 스트림 데이터 파싱 실패', error);
+  }
+};
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    streamSubscribers.clear();
+    if (sharedEventSource) {
+      sharedEventSource.close();
+      sharedEventSource = null;
+    }
+  });
+}
