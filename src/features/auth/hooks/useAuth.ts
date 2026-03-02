@@ -4,7 +4,7 @@ import { useAuthStore } from '../../../store/auth/useAuthStore';
 import { authApi } from '../api/authApi';
 
 export const useAuth = () => {
-  const { accessToken, clearAuth, isAuthenticated, setAccessToken } = useAuthStore();
+  const { clearAuth, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -19,9 +19,7 @@ export const useAuth = () => {
   };
 
   return {
-    accessToken,
     isLoggedIn: isAuthenticated,
     logout,
-    setAccessToken,
   };
 };

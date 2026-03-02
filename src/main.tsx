@@ -11,39 +11,32 @@ import { useAuthStore } from './store/auth/useAuthStore.ts';
 
 import './index.css';
 
-const SKIP_INIT_REFRESH_KEY = 'skip-init-refresh-once';
-
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const setAuthResolved = useAuthStore((state) => state.setAuthResolved);
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   useEffect(() => {
     const pathname = window.location.pathname;
     const shouldSkipForOAuthCallback = pathname === '/auth/google/callback';
-    const shouldSkipOnce = sessionStorage.getItem(SKIP_INIT_REFRESH_KEY) === 'true';
 
-    if (shouldSkipOnce) {
-      sessionStorage.removeItem(SKIP_INIT_REFRESH_KEY);
-    }
-
-    if (shouldSkipForOAuthCallback || shouldSkipOnce) {
+    if (shouldSkipForOAuthCallback) {
+      setAuthResolved(true);
       setIsAuthInitialized(true);
       return;
     }
 
     const initAuth = async () => {
       try {
-        const { data } = await instance.post('/auth/refresh');
+        await instance.get('/members/me');
         setAuthenticated(true);
-        if (data?.accessToken) {
-          setAccessToken(data.accessToken);
-        }
         if (window.location.pathname === '/login' || window.location.pathname === '/') {
           router.navigate('/my-tteok', { replace: true });
         }
         console.log('✅ 자동 로그인 성공');
       } catch (_error) {
+        clearAuth();
         console.log('ℹ️ 자동 로그인 실패 (로그인 필요)');
       } finally {
         setIsAuthInitialized(true);
@@ -51,7 +44,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     };
 
     initAuth();
-  }, [setAccessToken, setAuthenticated]);
+  }, [clearAuth, setAuthenticated, setAuthResolved]);
 
   if (!isAuthInitialized) {
     return null;

@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 import closeIcon from '../../../shared/assets/icons/x.png';
+import { AsyncStateNotice } from '../../../shared/components/AsyncStateNotice';
+import { SkeletonBlock } from '../../../shared/components/SkeletonBlock';
 import { formatNotificationDate } from '../../../shared/utils/dateUtils';
 import { useAuthStore } from '../../../store/auth/useAuthStore';
 import { useModalStore } from '../../../store/useModalStore';
@@ -8,14 +10,25 @@ import { useGetAllNotification, useUpdateNotification } from '../hooks/useNotifi
 
 const NOTIFICATION_MEMBER_KEY = 'me';
 
+const NotificationSkeletonItem = () => (
+  <li className="border-disabled/60 flex items-center gap-3 rounded-2xl border-2 px-4 py-3">
+    <SkeletonBlock className="h-8 w-8 rounded-full" />
+    <div className="flex w-full flex-col gap-2">
+      <SkeletonBlock className="h-3.5 w-4/5" />
+      <SkeletonBlock className="h-3 w-1/3" />
+    </div>
+  </li>
+);
+
 export const NotificationModal = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isAuthResolved } = useAuthStore();
   const { closeModal } = useModalStore();
+  const isNotificationEnabled = isAuthResolved && isAuthenticated;
   const {
     data: notifications,
     isError,
     isPending,
-  } = useGetAllNotification(NOTIFICATION_MEMBER_KEY, isAuthenticated);
+  } = useGetAllNotification(NOTIFICATION_MEMBER_KEY, isNotificationEnabled);
   const { mutate: readAllNotifications } = useUpdateNotification(NOTIFICATION_MEMBER_KEY);
 
   const notificationList = notifications ?? [];
@@ -50,8 +63,15 @@ export const NotificationModal = () => {
         </div>
       </div>
       <ul className="flex max-h-96 flex-col gap-2 overflow-y-auto p-4">
-        {isPending && <li className="text-font-gray px-2 py-8 text-sm">불러오는 중...</li>}
-        {isError && <li className="text-warning px-2 py-8 text-sm">알림을 불러오지 못했습니다.</li>}
+        {isPending &&
+          Array.from({ length: 4 }).map((_, index) => (
+            <NotificationSkeletonItem key={`notification-skeleton-${index}`} />
+          ))}
+        {isError && (
+          <li>
+            <AsyncStateNotice message="알림을 불러오지 못했습니다." type="error" />
+          </li>
+        )}
         {!isPending && !isError && notificationList.length === 0 && (
           <li className="text-font-gray px-2 py-8 text-sm">새로운 알림이 없습니다.</li>
         )}

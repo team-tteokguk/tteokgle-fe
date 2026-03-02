@@ -3,6 +3,8 @@ import { useParams } from 'react-router';
 import { ConfirmModal } from '../features/members/components/ConfirmModal';
 import { GuestBookModal } from '../features/stores/components/GuestBookModal';
 import { useGetItems, usePurchaseItem } from '../features/stores/hooks/useStore';
+import { AsyncStateNotice } from '../shared/components/AsyncStateNotice';
+import { LoadingSpinner } from '../shared/components/LoadingSpinner';
 import { TitleCard } from '../shared/components/TitleCard';
 import { getItemEmoji, getItemNameKR } from '../shared/utils/itemUtils';
 import { useModalStore } from '../store/useModalStore';
@@ -21,7 +23,7 @@ export const Store = () => {
   const { openModal } = useModalStore();
 
   const handleViewGuestBookClick = () => {
-    openModal(<GuestBookModal />);
+    openModal(<GuestBookModal storeId={safeStoreId} />);
   };
 
   const handlePurchaseClick = (itemId: string, itemName: string, itemCost: number) => {
@@ -46,8 +48,12 @@ export const Store = () => {
     <div className="w-full">
       <TitleCard sub="친구 상점을 둘러보세요" title={store?.storeName ?? '상점'} />
       <div className="mt-4 mb-4.25 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
-        {isStorePending && <p className="text-font-gray text-sm">불러오는 중...</p>}
-        {isStoreError && <p className="text-warning text-sm">상점 정보를 불러오지 못했습니다.</p>}
+        {isStorePending && (
+          <LoadingSpinner className="min-h-139" label="상점 정보를 불러오는 중..." />
+        )}
+        {isStoreError && (
+          <AsyncStateNotice message="상점 정보를 불러오지 못했습니다." type="error" />
+        )}
         {!isStorePending && !isStoreError && (
           <>
             <p className="text-font-main text-base font-bold">
@@ -103,7 +109,11 @@ export const Store = () => {
             )}
           </>
         )}
-        {isPurchasePending && <p className="text-font-gray mt-3 text-sm">구매 처리 중...</p>}
+        {isPurchasePending && (
+          <div className="mt-3">
+            <AsyncStateNotice message="구매를 처리하는 중..." type="loading" />
+          </div>
+        )}
       </div>
       <div className="rounded-4xl bg-white/90 p-6.25 shadow-2xl">
         <button

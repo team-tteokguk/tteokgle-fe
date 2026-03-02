@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import closeIcon from '../../../shared/assets/icons/x.png';
+import { AsyncStateNotice } from '../../../shared/components/AsyncStateNotice';
 import { getItemEmoji, getItemNameKR } from '../../../shared/utils/itemUtils';
 import { useModalStore } from '../../../store/useModalStore';
 import { useItemDetail, useReadItem } from '../hooks/useMyItem';
@@ -51,8 +52,8 @@ export const ItemDetailModal = ({ itemId }: { itemId: string }) => {
       </div>
       <div className="py-1.25 pr-3 pl-6">
         <div className="pretty-scrollbar max-h-[calc(70vh-10px)] space-y-4 overflow-y-auto py-5 pr-2">
-          {error && <div className="text-warning text-sm">불러오기에 실패했습니다.</div>}
-          {isPending && <div className="text-font-gray text-sm">불러오는 중...</div>}
+          {error && <AsyncStateNotice message="고명 정보를 불러오지 못했습니다." type="error" />}
+          {isPending && <AsyncStateNotice message="고명 정보를 불러오는 중..." type="loading" />}
           {!isPending && !error && data && (
             <>
               <p className="text-center text-7xl leading-18 tracking-[0.123px]">
