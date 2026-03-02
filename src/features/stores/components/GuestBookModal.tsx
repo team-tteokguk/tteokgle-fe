@@ -16,11 +16,14 @@ import {
 import { useMyProfile } from '../../members/hooks/useMember';
 import { useGetMyStore } from '../hooks/useStore';
 
-export const GuestBookModal = () => {
+interface GuestBookModalProps {
+  storeId: string;
+}
+
+export const GuestBookModal = ({ storeId }: GuestBookModalProps) => {
   const { closeModal } = useModalStore();
   const { data: myStore } = useGetMyStore();
   const { data: myProfile } = useMyProfile();
-  const storeId = myStore?.id ?? '';
 
   const { data: guestbookMessage, isError, isPending } = useGuestBook(storeId);
   const { isPending: isCreatePending, mutate: createGuestBook } = useCreateGuestBook(storeId);
@@ -94,7 +97,7 @@ export const GuestBookModal = () => {
     ));
 
   return (
-    <div className="bottom-sheet h-[80vh] max-h-156">
+    <div className="bottom-sheet flex h-[80vh] max-h-156 flex-col">
       <div className="border-disabled flex w-full items-center justify-between border-b p-6">
         <div>
           <h2 className="text-font-main text-[20px] leading-7 font-bold tracking-[-0.449px]">
@@ -141,13 +144,13 @@ export const GuestBookModal = () => {
           </button>
         </div>
       </form>
-      <div>
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <ul className="w-full p-6">
           {isPending && renderSkeletons()}
           {isError && <AsyncStateNotice message="방명록을 불러오지 못했습니다." type="error" />}
           {guestbookMessage?.map((message) => {
             const isWriter = String(myProfile?.memberId) === message.writerId;
-            const isStoreOwner = !!myStore?.id;
+            const isStoreOwner = myStore?.id === storeId;
             const canEdit = isWriter;
             const canDelete = isWriter || isStoreOwner;
             const isEditing = editingGuestbookId === message.id;

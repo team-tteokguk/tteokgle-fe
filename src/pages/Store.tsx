@@ -23,7 +23,7 @@ export const Store = () => {
   const { openModal } = useModalStore();
 
   const handleViewGuestBookClick = () => {
-    openModal(<GuestBookModal />);
+    openModal(<GuestBookModal storeId={safeStoreId} />);
   };
 
   const handlePurchaseClick = (itemId: string, itemName: string, itemCost: number) => {

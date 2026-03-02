@@ -17,7 +17,8 @@ export const MyStore = () => {
   };
 
   const handleViewGuestBookClick = () => {
-    openModal(<GuestBookModal />);
+    if (!myStore?.id) return;
+    openModal(<GuestBookModal storeId={myStore.id} />);
   };
 
   const {
