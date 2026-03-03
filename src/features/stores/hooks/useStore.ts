@@ -114,6 +114,12 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
       queryClient.invalidateQueries({
         queryKey: storeKeys.items(storeId),
       });
+      queryClient.invalidateQueries({
+        queryKey: [...storeKeys.me(), 'items'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: storeKeys.me(),
+      });
     },
   });
 };

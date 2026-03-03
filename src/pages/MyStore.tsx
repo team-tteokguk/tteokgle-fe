@@ -53,7 +53,7 @@ export const MyStore = () => {
         {hasItems && (
           <ul className="mt-4 grid grid-cols-3 gap-3">
             {myStoreItems?.items.map((item) => (
-              <ProductItem item={item} key={item.id} />
+              <ProductItem item={item} key={item.id} storeId={myStore?.id ?? ''} />
             ))}
           </ul>
         )}
