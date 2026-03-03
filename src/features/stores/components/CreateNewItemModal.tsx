@@ -240,7 +240,7 @@ export const CreateNewItemModal = () => {
   };
 
   return (
-    <div className="bottom-sheet flex h-[85vh] max-h-204.75 w-full max-w-md flex-col overflow-hidden">
+    <div className="bottom-sheet bottom-sheet-enter flex h-[85vh] max-h-204.75 w-full max-w-md flex-col overflow-hidden">
       <div className="border-disabled sticky top-0 left-0 z-10 flex w-full items-center justify-between border-b bg-white px-6 py-6.5">
         <h2 className="text-font-main text-xl leading-7 font-bold tracking-[-0.449px]">
           고명 등록하기

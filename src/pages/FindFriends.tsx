@@ -42,7 +42,7 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, onStoreClick, store }: Store
 
   return (
     <li
-      className="border-accent-main bg-grad-item flex cursor-pointer items-center rounded-2xl border-2 px-4 py-4"
+      className="border-accent-main bg-grad-item hover:border-accent-main/80 flex cursor-pointer items-center rounded-2xl border-2 px-4 py-4 transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.99]"
       onClick={() => onStoreClick(store.storeId)}
     >
       {store.profileImage ? (
@@ -67,6 +67,7 @@ const StoreCard = ({ isFavorite, onFavoriteChanged, onStoreClick, store }: Store
       </p>
       <button
         aria-label="subscribe-button"
+        className="rounded-full p-1 transition hover:scale-110 active:scale-95"
         disabled={isTogglePending}
         onClick={(event) => {
           event.stopPropagation();

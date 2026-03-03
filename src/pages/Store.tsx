@@ -73,7 +73,7 @@ export const Store = () => {
                   return (
                     <li
                       aria-disabled={isSoldOut}
-                      className={`border-accent-main/20 relative flex aspect-square w-30 flex-col items-center gap-0.75 rounded-2xl border-2 pt-2 pb-2.25 ${isSoldOut ? 'bg-disabled/20 opacity-70' : 'bg-grad-item cursor-pointer'}`}
+                      className={`border-accent-main/20 relative flex aspect-square w-30 flex-col items-center gap-0.75 rounded-2xl border-2 pt-2 pb-2.25 transition ${isSoldOut ? 'bg-disabled/20 opacity-70' : 'bg-grad-item cursor-pointer hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.99]'}`}
                       key={item.id}
                       onClick={() => {
                         if (isSoldOut) return;
@@ -117,7 +117,7 @@ export const Store = () => {
       </div>
       <div className="rounded-4xl bg-white/90 p-6.25 shadow-2xl">
         <button
-          className="mypage-button-base bg-grad-button text-brand-dark"
+          className="mypage-button-base bg-grad-button text-brand-dark hover:shadow-lg"
           onClick={handleViewGuestBookClick}
           type="button"
         >

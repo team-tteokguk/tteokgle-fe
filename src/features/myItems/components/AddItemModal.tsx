@@ -17,7 +17,7 @@ export const AddItemModal = () => {
   };
 
   return (
-    <div className="bottom-sheet max-h-132.25 min-h-69.25">
+    <div className="bottom-sheet bottom-sheet-enter max-h-132.25 min-h-69.25">
       <div className="border-disabled flex justify-between border-b px-6 py-6.25">
         <h2 className="text-font-main text-xl leading-7 font-bold tracking-[-0.449px]">
           보유한 고명 ({data?.page.numberOfElements})

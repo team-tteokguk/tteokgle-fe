@@ -30,7 +30,7 @@ export const Header = () => {
 
   return (
     <header className="flex items-center justify-between">
-      <div className="flex min-w-28.5 items-center justify-between gap-2 rounded-full border border-white/50 bg-white/90 px-4 shadow-lg">
+      <div className="flex min-w-28.5 items-center justify-between gap-2 rounded-full border border-white/50 bg-white/90 px-4 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl">
         <span className="text-[20px] leading-7 tracking-[-0.449px]">🪙</span>
         <p
           aria-busy={isPending}
@@ -41,7 +41,7 @@ export const Header = () => {
       </div>
       <button
         aria-label="notification-button"
-        className="relative h-10 w-10 rounded-full border-white/50 bg-white/90 shadow-xl"
+        className="relative h-10 w-10 rounded-full border-white/50 bg-white/90 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl active:translate-y-0 active:scale-[0.97]"
         onClick={() => {
           openModal(<NotificationModal />);
         }}

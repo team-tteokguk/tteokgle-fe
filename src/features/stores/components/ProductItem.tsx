@@ -20,10 +20,10 @@ export const ProductItem = ({ item, storeId }: ProductItemProps) => {
   };
 
   return (
-    <li className="border-accent-main/30 bg-grad-store relative flex aspect-square w-full max-w-30 flex-col items-center justify-center gap-1 rounded-2xl border-2">
+    <li className="border-accent-main/30 bg-grad-store relative flex aspect-square w-full max-w-30 flex-col items-center justify-center gap-1 rounded-2xl border-2 transition hover:-translate-y-0.5 hover:shadow-lg">
       <button
         aria-label="판매 고명 삭제"
-        className="border-warning absolute top-1 right-1 rounded-full border p-1 disabled:opacity-50"
+        className="border-warning absolute top-1 right-1 rounded-full border p-1 transition hover:scale-110 active:scale-95 disabled:opacity-50"
         disabled={!storeId || isDeletePending}
         onClick={handleDelete}
         type="button"
