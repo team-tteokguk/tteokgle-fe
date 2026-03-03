@@ -37,7 +37,7 @@ export const MyTteok = () => {
         <div className="bg-grad-plate flex h-95.5 w-95.5 items-center justify-center rounded-full shadow-2xl">
           <div className="bg-grad-outline mx-auto flex h-80.25 w-80.25 items-center justify-center rounded-full">
             <div className="bg-grad-bowl flex h-77 w-77 items-center justify-center rounded-full">
-              <div className="bg-grad-soup relative h-69.5 w-69.5 rounded-full">
+              <div className="bg-grad-soup relative h-69.5 w-69.5 overflow-hidden rounded-full">
                 {TTEOK_DATA.map((style, idx) => (
                   <TteokPiece key={idx} style={style} />
                 ))}
