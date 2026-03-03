@@ -19,7 +19,8 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const shouldSkipForOAuthCallback = pathname === '/auth/google/callback';
+    const shouldSkipForOAuthCallback =
+      pathname === '/auth/google/callback' || pathname === '/auth/kakao/callback';
 
     if (shouldSkipForOAuthCallback) {
       setAuthResolved(true);
