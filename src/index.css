@@ -1,5 +1,16 @@
 @import 'tailwindcss';
 
+@keyframes bottom-sheet-enter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* input 리셋 */
 
 input:focus,
@@ -9,10 +20,42 @@ textarea:focus {
 
 button {
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.03);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
 }
 
 button:disabled {
   cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(43, 127, 255, 0.45);
+  outline-offset: 2px;
+}
+
+/* number input 기본 스핀 버튼 숨김 */
+.number-input-no-spinner::-webkit-inner-spin-button,
+.number-input-no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input-no-spinner {
+  -moz-appearance: textfield;
 }
 
 :root {
@@ -192,6 +235,10 @@ body {
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
     font-weight: 700;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
   }
 
   .social-login-button-base {
@@ -211,6 +258,10 @@ body {
     font-weight: 700;
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
   }
 
   .bottom-sheet {
@@ -222,6 +273,11 @@ body {
     width: 28rem;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
+  }
+
+  .bottom-sheet-enter {
+    animation: bottom-sheet-enter 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
   }
 
   .heading3-text {
@@ -250,6 +306,9 @@ body {
     line-height: 24px;
     letter-spacing: -0.312px;
     flex-shrink: 0;
+    transition:
+      transform 0.18s ease,
+      filter 0.18s ease;
   }
 
   .find-buddy-button-base {
@@ -266,6 +325,10 @@ body {
     font-weight: 700;
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
   }
 
   .pretty-scrollbar {

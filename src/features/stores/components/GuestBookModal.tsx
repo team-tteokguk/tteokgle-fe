@@ -233,7 +233,7 @@ export const GuestBookModal = ({ storeId }: GuestBookModalProps) => {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-font-black pl-10 text-sm leading-5 tracking-[-0.15px]">
+                  <p className="text-font-black pl-10 text-sm leading-5 tracking-[-0.15px] whitespace-pre-line">
                     {message.content}
                   </p>
                 )}

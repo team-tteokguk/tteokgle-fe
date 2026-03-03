@@ -13,6 +13,13 @@ import type {
 
 import { instance } from '../../../services/axios';
 
+export interface YouTubeEmbedValidationResponse {
+  embeddable: boolean;
+  embedUrl: null | string;
+  reason: null | string;
+  videoId: null | string;
+}
+
 interface PresignRequest {
   contentType: string;
   fileName: string;
@@ -24,6 +31,10 @@ interface PresignResponse {
   key: string;
   method: string;
   uploadUrl: string;
+}
+
+interface YouTubeEmbedValidationRequest {
+  url: string;
 }
 
 // [GET] 상점 정보 불러오기
@@ -124,4 +135,12 @@ export const getMyFavoriteStores = async (
 // [POST] 아이템 구매
 export const purchaseItem = async (itemId: string): Promise<void> => {
   await instance.post(`/stores/items/${itemId}/purchase`);
+};
+
+// [POST] 유튜브 임베드 가능 여부 검증
+export const validateYouTubeEmbedUrl = async (
+  body: YouTubeEmbedValidationRequest,
+): Promise<YouTubeEmbedValidationResponse> => {
+  const { data } = await instance.post('/youtube/embed/validate', body);
+  return data;
 };

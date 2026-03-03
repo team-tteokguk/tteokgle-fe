@@ -47,7 +47,7 @@ export const Store = () => {
   return (
     <div className="w-full">
       <TitleCard sub="친구 상점을 둘러보세요" title={store?.storeName ?? '상점'} />
-      <div className="mt-4 mb-4.25 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
+      <div className="mt-4 mb-4.25 min-h-133 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
         {isStorePending && (
           <LoadingSpinner className="min-h-139" label="상점 정보를 불러오는 중..." />
         )}
@@ -60,12 +60,12 @@ export const Store = () => {
               판매 중인 고명 {store?.items?.length ?? 0}개
             </p>
             {store.items.length === 0 && (
-              <div className="text-font-gray flex h-full min-h-139 w-full items-center justify-center text-sm">
+              <div className="text-font-gray flex h-full w-full items-center justify-center text-sm">
                 판매 중인 아이템이 없습니다.
               </div>
             )}
             {store.items.length > 0 && (
-              <ul className="mt-4 grid min-h-139 grid-cols-3 gap-3">
+              <ul className="mt-4 grid grid-cols-3 gap-3">
                 {store.items?.map((item) => {
                   const isSoldOut = item.sellCounts === 0;
                   const isLowStock = item.sellCounts > 0 && item.sellCounts <= 2;
@@ -73,7 +73,7 @@ export const Store = () => {
                   return (
                     <li
                       aria-disabled={isSoldOut}
-                      className={`border-accent-main/20 relative flex aspect-square w-30 flex-col items-center gap-0.75 rounded-2xl border-2 pt-2 pb-2.25 ${isSoldOut ? 'bg-disabled/20 opacity-70' : 'bg-grad-item cursor-pointer'}`}
+                      className={`border-accent-main/20 relative flex aspect-square w-30 flex-col items-center gap-0.75 rounded-2xl border-2 pt-2 pb-2.25 transition ${isSoldOut ? 'bg-disabled/20 opacity-70' : 'bg-grad-item cursor-pointer hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.99]'}`}
                       key={item.id}
                       onClick={() => {
                         if (isSoldOut) return;
@@ -117,7 +117,7 @@ export const Store = () => {
       </div>
       <div className="rounded-4xl bg-white/90 p-6.25 shadow-2xl">
         <button
-          className="mypage-button-base bg-grad-button text-brand-dark"
+          className="mypage-button-base bg-grad-button text-brand-dark hover:shadow-lg"
           onClick={handleViewGuestBookClick}
           type="button"
         >

@@ -38,7 +38,7 @@ export const MyStore = () => {
   return (
     <div className="w-full">
       <TitleCard sub="고명을 추가해보세요" title={myStore?.name ? myStore.name : '내 상점'} />
-      <div className="mt-4 mb-4 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
+      <div className="mt-4 mb-4 min-h-133 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
         <h2 className="text-font-main mb-4 text-lg leading-7 font-bold">
           판매 중인 고명 {myStoreItems?.sellingItemCount ?? 0}개
         </h2>
@@ -53,7 +53,7 @@ export const MyStore = () => {
         {hasItems && (
           <ul className="mt-4 grid grid-cols-3 gap-3">
             {myStoreItems?.items.map((item) => (
-              <ProductItem item={item} key={item.id} />
+              <ProductItem item={item} key={item.id} storeId={myStore?.id ?? ''} />
             ))}
           </ul>
         )}

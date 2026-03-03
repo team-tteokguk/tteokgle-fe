@@ -9,8 +9,14 @@ export const getItemDetail = async (itemId: string): Promise<ItemDetailResponse>
 };
 
 // [PATCH] 고명 배치 및 수납
-export const updateItemPlacement = async (itemId: string): Promise<void> => {
-  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`, {});
+export const updateItemPlacement = async ({
+  isUsed,
+  itemId,
+}: {
+  isUsed: boolean;
+  itemId: string;
+}): Promise<void> => {
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`, { isUsed });
   return data;
 };
 
