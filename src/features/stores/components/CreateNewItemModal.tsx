@@ -269,7 +269,7 @@ export const CreateNewItemModal = () => {
               -
             </button>
             <input
-              className="text-font-main border-disabled w-full rounded-2xl border-2 py-3 text-center text-[20px] leading-7 font-bold tracking-[-0.449px]"
+              className="number-input-no-spinner text-font-main border-disabled w-full rounded-2xl border-2 py-3 text-center text-[20px] leading-7 font-bold tracking-[-0.449px]"
               min={1}
               onChange={(e) => setCount(Math.max(1, Number(e.target.value) || 1))}
               type="number"
