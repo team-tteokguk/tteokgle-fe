@@ -5,7 +5,11 @@ import guestBookResponseData from '../mock/data/guestBookResponse.json';
 
 export const guestBookHandlers = [
   http.get('*/store/:storeId/guestbooks', () => {
-    return HttpResponse.json(guestBookResponseData);
+    return HttpResponse.json({
+      content: guestBookResponseData,
+      last: true,
+      number: 0,
+    });
   }),
 
   http.post('*/store/:storeId/guestbooks', async ({ request }) => {

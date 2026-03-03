@@ -1,5 +1,5 @@
 import type { GuestBookRequest, GuestBookResponse } from '../types';
-import type { GuestBookParams } from '../types/guestBookParams';
+import type { GuestBookParams, PageResponse } from '../types/guestBookParams';
 
 import { instance } from '../../../services/axios';
 
@@ -7,7 +7,7 @@ import { instance } from '../../../services/axios';
 export const getGuestBook = async (
   storeId: string,
   params: GuestBookParams,
-): Promise<GuestBookResponse[]> => {
+): Promise<PageResponse<GuestBookResponse>> => {
   const { data } = await instance.get(`/store/${storeId}/guestbooks`, {
     params: {
       ...params,
