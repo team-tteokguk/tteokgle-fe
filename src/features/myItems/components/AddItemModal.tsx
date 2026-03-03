@@ -10,10 +10,10 @@ export const AddItemModal = () => {
   const { isPending: isPlacementPending, mutate: placementItem } = useUpdateItemPlacement();
   const { closeModal } = useModalStore();
 
-  const handleItemClick = (id: string) => {
+  const handleItemClick = (id: string, isUsed: boolean) => {
     if (isPlacementPending) return;
 
-    placementItem({ itemId: id });
+    placementItem({ isUsed: !isUsed, itemId: id });
   };
 
   return (
@@ -31,9 +31,11 @@ export const AddItemModal = () => {
           data.items.map((item) => (
             <li key={item.id}>
               <button
-                className="bg-grad-accent disabled:bg-grad-disabled relative flex h-31.25 w-31.25 flex-col items-center justify-center gap-2 rounded-2xl shadow-lg disabled:opacity-70"
-                disabled={item.used}
-                onClick={() => handleItemClick(item.id)}
+                aria-pressed={item.used}
+                className={`relative flex h-31.25 w-31.25 flex-col items-center justify-center gap-2 rounded-2xl shadow-lg transition ${
+                  item.used ? 'bg-grad-disabled opacity-70' : 'bg-grad-accent'
+                }`}
+                onClick={() => handleItemClick(item.id, item.used)}
                 type="button"
               >
                 {!item.read && (

@@ -26,7 +26,8 @@ export const useUpdateItemPlacement = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ itemId }: { itemId: string }) => updateItemPlacement(itemId),
+    mutationFn: ({ isUsed, itemId }: { isUsed: boolean; itemId: string }) =>
+      updateItemPlacement({ isUsed, itemId }),
     onError: (error) => {
       console.error('아이템 배치 실패', error);
     },
