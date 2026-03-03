@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import photoIcon from '../../../shared/assets/icons/photo.png';
 import closeIcon from '../../../shared/assets/icons/x.png';
 import { getAllGomyeongInfos } from '../../../shared/utils/itemUtils';
+import { encodeNewlines } from '../../../shared/utils/textUtils';
 import { useModalStore } from '../../../store/useModalStore';
 import { createImagePresignedUrl, uploadImageToPresignedUrl } from '../api/storeApi';
 import { useCreateItem, useGetMyStore } from '../hooks/useStore';
@@ -151,7 +152,7 @@ export const CreateNewItemModal = () => {
       }
 
       const body = {
-        content: content.trim(),
+        content: encodeNewlines(content.trim()),
         contentType,
         imageUrl,
         mediaUrl: normalizedMediaUrl || null,

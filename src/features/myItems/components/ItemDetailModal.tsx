@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import closeIcon from '../../../shared/assets/icons/x.png';
 import { AsyncStateNotice } from '../../../shared/components/AsyncStateNotice';
 import { getItemEmoji, getItemNameKR } from '../../../shared/utils/itemUtils';
+import { decodeNewlines } from '../../../shared/utils/textUtils';
 import { useModalStore } from '../../../store/useModalStore';
 import { useItemDetail, useReadItem } from '../hooks/useMyItem';
 
@@ -70,8 +71,8 @@ export const ItemDetailModal = ({ itemId }: { itemId: string }) => {
               </p>
               <div className="bg-grad-bg rounded-2xl p-4">
                 <p className="text-font-main mb-2 text-sm font-bold">💬 메시지</p>
-                <p className="text-font-gray rounded-2xl text-sm">
-                  {data.content || '메시지가 없습니다.'}
+                <p className="text-font-gray rounded-2xl text-sm whitespace-pre-line">
+                  {data.content ? decodeNewlines(data.content) : '메시지가 없습니다.'}
                 </p>
               </div>
 
