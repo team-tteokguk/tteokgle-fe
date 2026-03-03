@@ -179,12 +179,18 @@ export const FindFriends = () => {
   const renderEmptyState = () => {
     if (!isFavoriteTab && !keyword.trim()) {
       return (
-        <p className="text-font-gray text-center text-sm">닉네임 또는 상점명으로 검색해보세요.</p>
+        <div className="flex min-h-93 items-center justify-center">
+          <p className="text-font-gray text-center text-sm">닉네임 또는 상점명으로 검색해보세요.</p>
+        </div>
       );
     }
 
     const emptyLabel = isFavoriteTab ? '즐겨찾기한 상점이 없습니다.' : '검색 결과가 없습니다.';
-    return <p className="text-font-gray text-center text-sm">{emptyLabel}</p>;
+    return (
+      <div className="flex min-h-93 items-center justify-center">
+        <p className="text-font-gray text-center text-sm">{emptyLabel}</p>
+      </div>
+    );
   };
 
   return (
@@ -218,22 +224,24 @@ export const FindFriends = () => {
           </button>
         </div>
       </TitleCard>
-      <div className="mt-4 flex flex-col gap-4 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
-        <div className="border-disabled flex w-full items-center rounded-2xl border-2 pl-[13.5px]">
-          <img alt="reading-glass-icon" className="h-5 w-5" src={readingGlassIcon} />
-          <input
-            className="w-full px-4 py-3"
-            onChange={(event) => setSearchInput(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                handleSearch();
-              }
-            }}
-            placeholder="친구 이름 또는 상점명으로 검색..."
-            type="text"
-            value={searchInput}
-          />
-        </div>
+      <div className="mt-4 flex min-h-133.5 flex-col gap-4 rounded-4xl border border-white/50 bg-white/90 p-6.25 shadow-xl">
+        {activeTab === 'search' && (
+          <div className="border-disabled flex w-full items-center rounded-2xl border-2 pl-[13.5px]">
+            <img alt="reading-glass-icon" className="h-5 w-5" src={readingGlassIcon} />
+            <input
+              className="w-full px-4 py-3"
+              onChange={(event) => setSearchInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+              placeholder="친구 이름 또는 상점명으로 검색..."
+              type="text"
+              value={searchInput}
+            />
+          </div>
+        )}
         <p className="text-font-main text-[18px] leading-7 font-black tracking-[-0.439px]">
           {isFavoriteTab ? '즐겨찾기 목록' : '친구 목록'}
         </p>
