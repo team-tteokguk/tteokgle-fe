@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
 import { GoogleCallback } from './pages/auth/GoogleCalllback';
+import { KakaoCallback } from './pages/auth/KakaoCallback';
 import { Login } from './pages/auth/Login';
 import { SetupNickname } from './pages/auth/SetupNickname';
 import { FindFriends } from './pages/FindFriends';
@@ -72,6 +73,11 @@ export const router = createBrowserRouter([
     element: <GoogleCallback />,
     index: true,
     path: 'auth/google/callback',
+  },
+  {
+    element: <KakaoCallback />,
+    index: true,
+    path: 'auth/kakao/callback',
   },
 
   // 레이아웃 미적용 & 로그인 가드
