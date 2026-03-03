@@ -7,7 +7,11 @@ import closeIcon from '../../../shared/assets/icons/x.png';
 import { getAllGomyeongInfos } from '../../../shared/utils/itemUtils';
 import { encodeNewlines } from '../../../shared/utils/textUtils';
 import { useModalStore } from '../../../store/useModalStore';
-import { createImagePresignedUrl, uploadImageToPresignedUrl } from '../api/storeApi';
+import {
+  createImagePresignedUrl,
+  uploadImageToPresignedUrl,
+  validateYouTubeEmbedUrl,
+} from '../api/storeApi';
 import { useCreateItem, useGetMyStore } from '../hooks/useStore';
 
 const ALLOWED_IMAGE_TYPES = new Set(['image/gif', 'image/jpeg', 'image/png', 'image/webp']);
@@ -26,13 +30,27 @@ export const CreateNewItemModal = () => {
   const [imageError, setImageError] = useState<null | string>(null);
   const [imageFileName, setImageFileName] = useState('');
   const [mediaUrl, setMediaUrl] = useState('');
+  const [validatedMediaUrl, setValidatedMediaUrl] = useState('');
+  const [youtubeValidationMessage, setYoutubeValidationMessage] = useState<null | string>(null);
+  const [isYoutubeEmbeddable, setIsYoutubeEmbeddable] = useState(false);
+  const [isValidatingYoutube, setIsValidatingYoutube] = useState(false);
   const [count, setCount] = useState(1);
   const [submitError, setSubmitError] = useState<null | string>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const normalizedMediaUrl = mediaUrl.trim();
+  const isYoutubeValidationDone =
+    normalizedMediaUrl.length === 0 ||
+    (isYoutubeEmbeddable && validatedMediaUrl === normalizedMediaUrl);
 
   const isDisabled =
-    isSubmitting || !myStore?.id || content.trim().length === 0 || count < 1 || !name;
+    isSubmitting ||
+    isValidatingYoutube ||
+    !myStore?.id ||
+    content.trim().length === 0 ||
+    count < 1 ||
+    !name ||
+    !isYoutubeValidationDone;
 
   const handleCountMinus = () => {
     setCount((prev) => Math.max(1, prev - 1));
@@ -55,6 +73,20 @@ export const CreateNewItemModal = () => {
       URL.revokeObjectURL(objectUrl);
     };
   }, [selectedImageFile]);
+
+  useEffect(() => {
+    if (!normalizedMediaUrl) {
+      setValidatedMediaUrl('');
+      setIsYoutubeEmbeddable(false);
+      setYoutubeValidationMessage(null);
+      return;
+    }
+
+    if (validatedMediaUrl !== normalizedMediaUrl) {
+      setIsYoutubeEmbeddable(false);
+      setYoutubeValidationMessage(null);
+    }
+  }, [normalizedMediaUrl, validatedMediaUrl]);
 
   const handleRemoveImage = () => {
     setSelectedImageFile(null);
@@ -96,6 +128,38 @@ export const CreateNewItemModal = () => {
     setImageError(null);
   };
 
+  const handleValidateYouTube = async () => {
+    if (!normalizedMediaUrl) {
+      setIsYoutubeEmbeddable(false);
+      setValidatedMediaUrl('');
+      setYoutubeValidationMessage('YouTube URL을 입력해주세요.');
+      return;
+    }
+
+    try {
+      setIsValidatingYoutube(true);
+      setSubmitError(null);
+
+      const validation = await validateYouTubeEmbedUrl({ url: normalizedMediaUrl });
+      if (!validation.embeddable) {
+        setIsYoutubeEmbeddable(false);
+        setValidatedMediaUrl('');
+        setYoutubeValidationMessage(validation.reason || '유효하지 않은 YouTube URL입니다.');
+        return;
+      }
+
+      setIsYoutubeEmbeddable(true);
+      setValidatedMediaUrl(normalizedMediaUrl);
+      setYoutubeValidationMessage('유효한 YouTube 링크입니다.');
+    } catch (_error) {
+      setIsYoutubeEmbeddable(false);
+      setValidatedMediaUrl('');
+      setYoutubeValidationMessage('유튜브 링크 검증에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsValidatingYoutube(false);
+    }
+  };
+
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     event.preventDefault();
 
@@ -119,11 +183,15 @@ export const CreateNewItemModal = () => {
       return;
     }
 
-    const normalizedMediaUrl = mediaUrl.trim();
     const hasImage = !!selectedImageFile;
 
     if (hasImage && normalizedMediaUrl) {
       setSubmitError('사진 또는 동영상 중 하나만 추가해주세요.');
+      return;
+    }
+
+    if (normalizedMediaUrl && !isYoutubeValidationDone) {
+      setSubmitError('YouTube 링크 유효성 검사를 완료해주세요.');
       return;
     }
 
@@ -255,13 +323,30 @@ export const CreateNewItemModal = () => {
         </div>
         <div>
           <h3 className="heading3-text mb-3">YouTube 링크 (선택)</h3>
-          <input
-            className="border-disabled w-full rounded-2xl border-2 px-4 py-3"
-            onChange={(e) => setMediaUrl(e.target.value)}
-            placeholder="YouTube URL을 입력하세요"
-            type="url"
-            value={mediaUrl}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              className="border-disabled w-full rounded-2xl border-2 px-4 py-3"
+              onChange={(e) => setMediaUrl(e.target.value)}
+              placeholder="YouTube URL을 입력하세요"
+              type="url"
+              value={mediaUrl}
+            />
+            <button
+              className="bg-grad-brand h-13 min-w-26 rounded-2xl px-4 py-3 text-sm font-bold text-white disabled:opacity-60"
+              disabled={isValidatingYoutube || normalizedMediaUrl.length === 0}
+              onClick={handleValidateYouTube}
+              type="button"
+            >
+              {isValidatingYoutube ? '검사 중...' : '유효성 검사'}
+            </button>
+          </div>
+          {youtubeValidationMessage && (
+            <p
+              className={`mt-2 text-center text-xs ${isYoutubeEmbeddable ? 'text-green-600' : 'text-warning'}`}
+            >
+              {youtubeValidationMessage}
+            </p>
+          )}
         </div>
         <div>
           <h3 className="heading3-text mb-3">판매 수량</h3>
