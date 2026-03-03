@@ -77,6 +77,7 @@ describe('myitem hooks 테스트', () => {
     // 수정: mutate 호출 시 itemId와 body를 객체로 묶어서 전달
     result.current.mutate({
       // 타입 오류 방지를 위해 any 사용 (실제 타입에 맞춰 수정 권장)
+      isUsed: true,
       itemId: 'item-001',
     });
 
