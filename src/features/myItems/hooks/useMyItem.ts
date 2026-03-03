@@ -1,3 +1,5 @@
+import type { ItemDetailResponse, PlacedItemResponse, UnplacedItemResponse } from '../types';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '../../../store/auth/useAuthStore';
@@ -39,14 +41,65 @@ export const useUpdateItemPlacement = () => {
 export const useReadItem = (itemId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<
+    ItemDetailResponse,
+    Error,
+    void,
+    {
+      previousDetail: ItemDetailResponse | undefined;
+      previousPlaced: PlacedItemResponse | undefined;
+      previousUnplaced: undefined | UnplacedItemResponse;
+    }
+  >({
     mutationFn: () => readItem(itemId),
-    onError: (error) => {
+    onError: (error, _variables, context) => {
       console.error('콘텐츠 읽음 처리 실패', error);
+      if (!context) return;
+      queryClient.setQueryData(myItemKeys.detail(itemId), context.previousDetail);
+      queryClient.setQueryData(myItemKeys.placed(), context.previousPlaced);
+      queryClient.setQueryData(myItemKeys.unplaced(), context.previousUnplaced);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: myItemKeys.detail(itemId),
+    onMutate: async () => {
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: myItemKeys.detail(itemId) }),
+        queryClient.cancelQueries({ queryKey: myItemKeys.placed() }),
+        queryClient.cancelQueries({ queryKey: myItemKeys.unplaced() }),
+      ]);
+
+      const previousDetail = queryClient.getQueryData<ItemDetailResponse>(
+        myItemKeys.detail(itemId),
+      );
+      const previousPlaced = queryClient.getQueryData<PlacedItemResponse>(myItemKeys.placed());
+      const previousUnplaced = queryClient.getQueryData<UnplacedItemResponse>(
+        myItemKeys.unplaced(),
+      );
+
+      queryClient.setQueryData<ItemDetailResponse>(myItemKeys.detail(itemId), (old) =>
+        old ? { ...old, isRead: true } : old,
+      );
+      queryClient.setQueryData<PlacedItemResponse>(myItemKeys.placed(), (old) =>
+        old
+          ? {
+              ...old,
+              items: old.items.map((item) => (item.id === itemId ? { ...item, read: true } : item)),
+            }
+          : old,
+      );
+      queryClient.setQueryData<UnplacedItemResponse>(myItemKeys.unplaced(), (old) =>
+        old
+          ? {
+              ...old,
+              items: old.items.map((item) => (item.id === itemId ? { ...item, read: true } : item)),
+            }
+          : old,
+      );
+
+      return { previousDetail, previousPlaced, previousUnplaced };
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData<ItemDetailResponse>(myItemKeys.detail(itemId), (old) => {
+        if (!old) return data;
+        return { ...old, isRead: true };
       });
       console.log('콘텐츠 읽음 처리 성공');
     },

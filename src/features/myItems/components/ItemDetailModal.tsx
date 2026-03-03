@@ -32,13 +32,19 @@ export const ItemDetailModal = ({ itemId }: { itemId: string }) => {
   const { closeModal } = useModalStore();
   const { data, error, isPending } = useItemDetail(itemId);
   const { mutate: readItem } = useReadItem(itemId);
+  const isAlreadyRead = data ? data.isRead || (data as ItemDetailWithRead).read === true : false;
+
+  interface ItemDetailWithRead {
+    read?: boolean;
+  }
 
   useEffect(() => {
-    if (!data || data.isRead) return;
+    if (!data || isAlreadyRead) return;
     readItem();
-  }, [data, readItem]);
+  }, [data, isAlreadyRead, readItem]);
 
   const embeddedYouTubeUrl = data?.mediaUrl ? toYouTubeEmbedUrl(data.mediaUrl) : null;
+  const itemTypeLabel = data?.itemType || data?.name || '';
 
   return (
     <article className="w-[min(28rem,94vw)] rounded-4xl bg-white shadow-2xl">
@@ -57,10 +63,10 @@ export const ItemDetailModal = ({ itemId }: { itemId: string }) => {
           {!isPending && !error && data && (
             <>
               <p className="text-center text-7xl leading-18 tracking-[0.123px]">
-                {getItemEmoji(data.itemType)}
+                {getItemEmoji(itemTypeLabel)}
               </p>
               <p className="text-font-main text-center text-2xl leading-8 font-bold tracking-[0.07px]">
-                {getItemNameKR(data.itemType)}
+                {getItemNameKR(itemTypeLabel)}
               </p>
               <div className="bg-grad-bg rounded-2xl p-4">
                 <p className="text-font-main mb-2 text-sm font-bold">💬 메시지</p>
