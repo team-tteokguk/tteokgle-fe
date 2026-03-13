@@ -1,5 +1,4 @@
 import type { ItemDetailResponse, PlacedItemResponse, UnplacedItemResponse } from '../types';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '../../../store/auth/useAuthStore';
@@ -34,7 +33,7 @@ export const useUpdateItemPlacement = () => {
     onSuccess: (_, { itemId }) => {
       queryClient.invalidateQueries({ queryKey: myItemKeys.detail(itemId) });
       queryClient.invalidateQueries({ queryKey: myItemKeys.placed() });
-      queryClient.invalidateQueries({ queryKey: myItemKeys.unplaced() });
+      queryClient.invalidateQueries({ queryKey: myItemKeys.unplacedRoot() });
     },
   });
 };
@@ -112,7 +111,7 @@ export const usePlacedItemList = () => {
 
   return useQuery({
     enabled: isAuthenticated,
-    queryFn: getPlacedItemList,
+    queryFn: () => getPlacedItemList(),
     queryKey: myItemKeys.placed(),
   });
 };

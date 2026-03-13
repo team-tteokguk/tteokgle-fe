@@ -1,4 +1,5 @@
 import type { NotificationResponse } from '../types';
+import type { NotificationParams } from '../types/notificationParam';
 
 import { instance } from '../../../services/axios';
 

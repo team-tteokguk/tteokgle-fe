@@ -1,5 +1,10 @@
-import type { ItemDetailResponse, PlacedItemResponse, UnplacedItemResponse } from '../types';
-
+import type {
+  ItemDetailResponse,
+  ItemPlacementRequest,
+  PlacedItemResponse,
+  UnplacedItemResponse,
+} from '../types';
+import type { MyItemParams } from '../types/myItemParams';
 import { instance } from '../../../services/axios';
 
 // [GET] 고명 컨텐츠 조회
@@ -26,14 +31,21 @@ export const readItem = async (itemId: string): Promise<ItemDetailResponse> => {
   return data;
 };
 
-// [GET] 인벤토리 고명 리스트 조회
-export const getPlacedItemList = async (): Promise<PlacedItemResponse> => {
+// [GET] 배치된 고명 리스트 조회
+export const getPlacedItemList = async (): Promise<PlacedItemResponse[]> => {
   const { data } = await instance.get(`/tteokguk/me/items/placed`);
   return data;
 };
 
-// [GET] 배치된 고명 리스트 조회
-export const getUnPlacedItemList = async (): Promise<UnplacedItemResponse> => {
-  const { data } = await instance.get(`/tteokguk/me/items/unplaced`);
+// [GET] 인벤토리 고명 리스트 조회
+export const getUnPlacedItemList = async (
+  params: MyItemParams,
+): Promise<UnplacedItemResponse[]> => {
+  const { data } = await instance.get(`/tteokguk/me/items/unplaced`, {
+    params: {
+      ...params,
+      sort: 'createdAt,desc',
+    },
+  });
   return data;
 };

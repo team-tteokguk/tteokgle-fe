@@ -26,15 +26,16 @@ const createWrapper = () => {
 
 describe('Member hooks test', () => {
   it('방명록을 다 가져옴', async () => {
-    const { result } = renderHook(() => useGuestBook('store-01'), {
+    const { result } = renderHook(() => useGuestBook('store-01', {}), {
       wrapper: createWrapper(),
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
-    expect(Array.isArray(result.current.data)).toBe(true);
-    expect(result.current.data).toHaveLength(5);
+    expect(Array.isArray(result.current.data?.pages)).toBe(true);
+    expect(result.current.data?.pages).toHaveLength(1);
+    expect(result.current.data?.pages[0]?.content).toHaveLength(5);
   });
 
   it('방명록 하나를 등록함', async () => {

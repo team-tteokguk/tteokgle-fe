@@ -1,9 +1,17 @@
+import type { GuestBookParams } from '../types/guestBookParams';
+
 export const guestBookKeys = {
   all: ['guestbooks'] as const,
 
-  // 특정 상점의 댓글 목록
-  list: (storeId: string) => [...guestBookKeys.lists(), storeId] as const,
+  infiniteList: (storeId: string, size: number) =>
+    [...guestBookKeys.infiniteRoot(storeId), size] as const,
 
-  // 모든 댓글들
+  infiniteRoot: (storeId: string) => [...guestBookKeys.all, 'infinite', storeId] as const,
+
+  list: (storeId: string, params: GuestBookParams) =>
+    [...guestBookKeys.lists(), storeId, params] as const,
+
+  listRoot: (storeId: string) => [...guestBookKeys.lists(), storeId] as const,
+
   lists: () => [...guestBookKeys.all, 'list'] as const,
 };

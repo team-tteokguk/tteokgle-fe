@@ -1,7 +1,7 @@
+import type { StoreItemsParams } from '../types/storeParams';
 import type { ItemCreateRequest, MyStoreItemsRequest, StoreListSliceResponse } from '../types';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
-
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createItem,
@@ -29,10 +29,16 @@ export const useGetStore = (storeId: string) => {
   });
 };
 
-export const useGetItems = (storeId: string) => {
+export const useGetItems = (storeId: string, params: StoreItemsParams = {}) => {
+  const normalizedParams: StoreItemsParams = {
+    page: 0,
+    size: 20,
+    ...params,
+  };
   return useQuery({
-    queryFn: () => getItems(storeId),
-    queryKey: storeKeys.items(storeId),
+    placeholderData: keepPreviousData,
+    queryFn: () => getItems(storeId, normalizedParams),
+    queryKey: storeKeys.items(storeId, normalizedParams),
   });
 };
 
@@ -91,7 +97,7 @@ export const useCreateItem = (storeId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: storeKeys.items(storeId),
+        queryKey: storeKeys.itemsRoot(storeId),
       });
       queryClient.invalidateQueries({
         queryKey: storeKeys.me(),
@@ -112,7 +118,7 @@ export const useDeleteItem = (storeId: string, itemId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: storeKeys.items(storeId),
+        queryKey: storeKeys.itemsRoot(storeId),
       });
       queryClient.invalidateQueries({
         queryKey: [...storeKeys.me(), 'items'],

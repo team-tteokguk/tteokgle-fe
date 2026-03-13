@@ -1,39 +1,43 @@
-## 🤖 AI Change Summary for PR #45
+## 🤖 AI Change Summary for PR #47
 
 ### 개요
-이번 패치는 아이템 배치 업데이트 기능과 YouTube URL 검증 기능을 개선하고, UI 요소의 스타일 및 동작을 수정하여 사용자 경험을 향상시키는 내용을 포함하고 있습니다. 주요 변경 사항으로는 아이템 배치 함수의 인자 구조 변경, YouTube URL 검증 API 추가, UI 요소의 접근성 및 스타일 개선이 있습니다.
+이번 변경 사항은 방명록 및 아이템 관련 API와 훅의 데이터 처리 방식을 개선하고, 페이지네이션 및 무한 스크롤 기능을 추가하는 데 중점을 두었습니다. 또한, 의존성 업데이트와 새로운 타입 정의 파일 추가를 포함하여 API 응답 형식을 변경하였습니다.
 
 ### 주요 변경 사항
-1. **아이템 배치 업데이트 함수 변경**:
-   - `updateItemPlacement` 함수의 인자를 객체로 변경하여 `isUsed`와 `itemId`를 함께 전달하도록 수정.
+1. **의존성 업데이트**:
+   - `@tanstack/react-query` 버전이 `5.90.17`에서 `5.90.21`로 업데이트됨.
+   - `@testing-library/jest-dom` 패키지가 추가됨.
+   - 여러 패키지의 버전이 업데이트됨.
 
-2. **YouTube URL 검증 인터페이스 및 API 추가**:
-   - `YouTubeEmbedValidationRequest` 인터페이스 추가 및 `validateYouTubeEmbedUrl` 함수로 URL 검증 기능 구현.
+2. **API 변경**:
+   - `getGuestBook` 함수가 `storeId`와 `params`를 인자로 받아 페이지네이션을 지원하도록 변경됨.
+   - `guestBookKeys`에서 `list` 메소드가 `params`를 인자로 받도록 수정됨.
+   - `useGuestBook` 훅이 `storeId`와 `params`를 인자로 받아 페이지네이션을 지원하도록 변경됨.
+   - `useUpdateGuestBook` 및 `useDeleteGuestBook` 훅에서 쿼리 키를 `guestBookKeys.list(storeId)`에서 `guestBookKeys.infiniteRoot(storeId)`로 변경.
+   - `getPlacedItemList` 및 `getUnPlacedItemList`의 반환 타입을 수정하여 배열 형태로 반환.
+   - `useGetItems` 훅에서 `StoreItemsParams`를 인자로 받아 페이지네이션을 지원하도록 변경.
+   - 알림 쿼리 키를 `notificationKeys.lists(memberId)`에서 `notificationKeys.listRoot(memberId)`로 변경.
 
-3. **UI 요소 수정**:
-   - `AddItemModal`에서 `handleItemClick` 함수의 인자에 `isUsed` 추가 및 버튼의 `aria-pressed` 속성 추가.
-   - YouTube URL 입력 필드와 검증 버튼 추가, 검증 결과에 따른 메시지 표시 로직 구현.
-   - 버튼의 호버 및 클릭 효과 추가, 입력 필드 스타일 개선.
+3. **타입 정의 추가**:
+   - `storeParams.ts` 파일이 새로 추가되었으며, `StoreItemsParams` 타입이 정의됨.
+   - `GuestBookParams` 및 `PageResponse` 타입을 새로 정의하여 무한 스크롤 기능을 지원.
 
-4. **데이터 처리 로직 개선**:
-   - `useMyItem.ts`에서 `useReadItem`의 `onMutate`와 `onError` 핸들러 개선.
-   - `useStore` 훅에서 쿼리 무효화 로직 추가.
-
-5. **유틸리티 함수 추가**:
-   - `textUtils.ts`에 `encodeNewlines` 및 `decodeNewlines` 함수 추가.
+4. **기타 변경**:
+   - `guestBookHandlers`에서 GET 요청의 응답 형식이 변경되어 `content`, `last`, `number` 속성을 포함하는 객체로 수정됨.
 
 ### 위험/영향
-- **기능적 영향**: 아이템 배치 기능과 URL 검증 기능의 변경으로 인해 기존 코드와의 호환성 문제가 발생할 수 있으며, UI 요소의 접근성 및 스타일 개선이 사용자 경험에 긍정적인 영향을 미칠 것으로 예상됨.
-- **성능 영향**: 새로운 API 호출 추가로 서버와의 통신 증가 가능성, URL 검증 로직으로 인한 사용자 경험 저하 우려.
-- **테스트 필요성**: 변경된 로직에 대한 충분한 테스트가 필요하며, 특히 데이터 처리 로직과 UI 요소의 접근성 검증이 중요함.
+- **호환성 문제**: API 변경으로 인해 기존에 `getGuestBook` 및 관련 훅을 호출하는 코드가 영향을 받을 수 있으며, 호출 방식이 변경되어 기존 코드와의 호환성 문제가 발생할 수 있음.
+- **성능**: 무한 스크롤 기능 추가로 인해 데이터 로딩 및 캐싱 방식이 변경되므로, 성능에 미치는 영향을 모니터링해야 함.
+- **타입 안정성**: 새로운 타입 정의는 코드의 타입 안정성을 향상시킬 수 있지만, 기존 코드에서 이 타입을 사용하는 부분이 없다면 즉각적인 영향은 없음.
 
 ### 테스트/검증
-- 기존 테스트 케이스를 업데이트하고, 새로운 테스트 케이스를 추가하여 변경된 기능을 검증해야 함.
-- YouTube URL 검증 기능이 정상적으로 작동하는지 다양한 URL을 입력하여 확인.
-- UI 요소가 올바르게 렌더링되고, 상태 변화에 따라 적절한 메시지가 표시되는지 테스트.
+- 변경된 API와 훅의 동작을 검증하기 위해 단위 테스트 및 통합 테스트를 수행해야 함.
+- 페이지네이션 및 무한 스크롤 기능이 정상적으로 작동하는지 확인하기 위해 다양한 `params` 값을 사용하여 테스트를 진행해야 함.
+- 수정된 게스트북 핸들러의 GET 요청에 대한 통합 테스트를 수행하여 클라이언트가 새로운 응답 형식에 적절히 대응하는지 확인해야 함.
 
 ### 후속 조치
-- 변경 사항에 대한 문서화 필요.
-- 사용자 피드백 수집을 통해 UI 개선 사항의 효과를 평가.
-- 성능 모니터링을 통해 API 호출에 따른 성능 저하 여부 확인.
-- 추가적인 기능 개선이나 버그 수정이 필요한지 검토.
+- 기존 코드에서 `getGuestBook` 호출 부분을 새로운 인자에 맞게 수정해야 함.
+- 변경된 훅을 사용하는 부분을 점검하고, 필요한 경우 수정.
+- 테스트 케이스를 업데이트하고, 새로운 기능에 대한 테스트를 추가해야 함.
+- 성능 모니터링을 통해 무한 스크롤 기능이 시스템에 미치는 영향을 분석.
+- 타입 정의를 사용하는 부분에 대한 검토 및 필요 시 리팩토링을 진행해야 함.

@@ -1,4 +1,5 @@
 import type { GuestBookRequest, GuestBookResponse } from '../types';
+import type { GuestBookParams, PageResponse } from '../types/guestBookParams';
 
 import { instance } from '../../../services/axios';
 
@@ -10,9 +11,17 @@ const normalizeGuestBookList = (data: any): GuestBookResponse[] => {
 };
 
 // [GET] 방명록 불러오기
-export const getGuestBook = async (storeId: string): Promise<GuestBookResponse[]> => {
-  const { data } = await instance.get(`/stores/${storeId}/guestbooks`);
-  return normalizeGuestBookList(data);
+export const getGuestBook = async (
+  storeId: string,
+  params: GuestBookParams,
+): Promise<PageResponse<GuestBookResponse>> => {
+  const { data } = await instance.get(`/store/${storeId}/guestbooks`, {
+    params: {
+      ...params,
+      sort: 'createdAt,desc', // spring pageable 형태 고정
+    },
+  });
+  return data;
 };
 
 // [POST] 방명록 작성하기

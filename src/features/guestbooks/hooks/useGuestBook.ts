@@ -1,6 +1,12 @@
-import type { GuestBookRequest } from '../types';
+import type { GuestBookRequest, GuestBookResponse } from '../types';
+import type { GuestBookParams, PageResponse } from '../types/guestBookParams';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import {
   createGuestBook,
@@ -10,11 +16,19 @@ import {
 } from '../api/guestBookApi';
 import { guestBookKeys } from '../api/guestBookKeys';
 
-export const useGuestBook = (storeId: string) => {
-  return useQuery({
-    enabled: !!storeId,
-    queryFn: () => getGuestBook(storeId),
-    queryKey: guestBookKeys.list(storeId),
+export const useGuestBook = (storeId: string, params: GuestBookParams) => {
+  const size = params.size ?? 20;
+  return useInfiniteQuery<
+    PageResponse<GuestBookResponse>,
+    Error,
+    InfiniteData<PageResponse<GuestBookResponse>>,
+    ReturnType<typeof guestBookKeys.infiniteList>,
+    number
+  >({
+    getNextPageParam: (lastPage) => (lastPage.last ? undefined : lastPage.number + 1),
+    initialPageParam: 0,
+    queryFn: ({ pageParam }) => getGuestBook(storeId, { page: pageParam, size }),
+    queryKey: guestBookKeys.infiniteList(storeId, size),
   });
 };
 
@@ -27,38 +41,37 @@ export const useCreateGuestBook = (storeId: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.infiniteRoot(storeId),
       });
     },
   });
 };
 
-export const useUpdateGuestBook = (storeId: string) => {
+export const useUpdateGuestBook = (storeId: string, guestbookId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ body, guestbookId }: { body: GuestBookRequest; guestbookId: string }) =>
-      updateGuestBook(storeId, guestbookId, body),
+    mutationFn: (body: GuestBookRequest) => updateGuestBook(storeId, guestbookId, body),
     onError: (error) => {
       console.error('댓글 수정 실패', error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.infiniteRoot(storeId),
       });
     },
   });
 };
 
-export const useDeleteGuestBook = (storeId: string) => {
+export const useDeleteGuestBook = (storeId: string, guestbookId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (guestbookId: string) => deleteGuestBook(storeId, guestbookId),
+    mutationFn: () => deleteGuestBook(storeId, guestbookId),
     onError: (error) => {
       console.error('댓글 삭제 실패', error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: guestBookKeys.list(storeId),
+        queryKey: guestBookKeys.infiniteRoot(storeId),
       });
     },
   });
