@@ -1,4 +1,4 @@
-import { GOOGLE_AUTH_URL } from '../../features/auth/constants';
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL } from '../../features/auth/constants';
 import googleIcon from '../../shared/assets/icons/googlle.png';
 import kakaoIcon from '../../shared/assets/icons/kakao.png';
 import { BouncingEmojis } from '../../shared/components/BouncingEmojis';
@@ -6,6 +6,9 @@ import { BouncingEmojis } from '../../shared/components/BouncingEmojis';
 export const Login = () => {
   const handleGoogleLogin = () => {
     window.location.href = GOOGLE_AUTH_URL;
+  };
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
@@ -19,7 +22,11 @@ export const Login = () => {
           고명을 모아 나만의 떡국을 완성해보세요
         </span>
         <div className="mt-11 mb-6.25 flex w-full flex-col items-center justify-center gap-3 rounded-4xl border border-white/50 bg-white/90 p-8.25 shadow-2xl">
-          <button className="social-login-button-base bg-[#FEE500] text-[#3C1E1E]" type="button">
+          <button
+            className="social-login-button-base bg-[#FEE500] text-[#3C1E1E]"
+            onClick={handleKakaoLogin}
+            type="button"
+          >
             <img alt="kakao-icon" className="w-6" src={kakaoIcon} />
             카카오로 시작하기
           </button>

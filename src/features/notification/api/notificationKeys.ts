@@ -5,10 +5,12 @@ export const notificationKeys = {
 
   listRoot: (memberId: string) => [...notificationKeys.all, 'detail', memberId],
 
-  lists: (memberId: string, params: NotificationParams) => [
+  _lists: (memberId: string, params: NotificationParams) => [
     ...notificationKeys.all,
     'detail',
     memberId,
     params,
   ],
+    
+  lists: (memberId: string) => [...notificationKeys.all, 'list', memberId] as const,
 };

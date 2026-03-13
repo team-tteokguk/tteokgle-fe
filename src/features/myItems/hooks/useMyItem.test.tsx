@@ -49,8 +49,8 @@ describe('myitem hooks 테스트', () => {
 
     expect(Array.isArray(result.current.data)).toBe(true);
     // 데이터가 있다는 가정하에 테스트 (MSW 핸들러 설정에 따라 인덱스 조정 필요)
-    if (result.current.data && result.current.data.length > 0) {
-      expect(result.current.data[0].id).toBe('item-003');
+    if (result.current.data && result.current.data.items.length > 0) {
+      expect(result.current.data.items[0].id).toBe('item-003');
     }
   });
 
@@ -63,8 +63,8 @@ describe('myitem hooks 테스트', () => {
 
     expect(Array.isArray(result.current.data)).toBe(true);
 
-    if (result.current.data && result.current.data.length > 0) {
-      expect(result.current.data[0].id).toBe('item-001');
+    if (result.current.data && result.current.data) {
+      expect(result.current.data.items[0].id).toBe('item-001');
     }
   });
 
@@ -76,15 +76,8 @@ describe('myitem hooks 테스트', () => {
 
     // 수정: mutate 호출 시 itemId와 body를 객체로 묶어서 전달
     result.current.mutate({
-      body: {
-        // 실제 ItemPlacementRequest 타입에 맞는 필드 작성
-        itemRotate: 0,
-        positionX: 100,
-        positionY: 100,
-        // 필요하다면 기존 코드의 필드명 확인 (posX -> positionX 등 API 명세에 맞춤)
-        // 여기서는 예시로 작성된 필드명을 유지하거나 조정합니다.
-        // isUsed: true,
-      } as any, // 타입 오류 방지를 위해 any 사용 (실제 타입에 맞춰 수정 권장)
+      // 타입 오류 방지를 위해 any 사용 (실제 타입에 맞춰 수정 권장)
+      isUsed: true,
       itemId: 'item-001',
     });
 

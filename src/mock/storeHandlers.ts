@@ -43,4 +43,11 @@ export const storeHandlers = [
 
     return HttpResponse.json(null, { status: 204 });
   }),
+
+  http.post('*/stores/items/:itemId/purchase', ({ params }) => {
+    const { itemId } = params;
+    console.log(`아이템 ${itemId}을 구매합니다.`);
+
+    return HttpResponse.json(null, { status: 204 });
+  }),
 ];

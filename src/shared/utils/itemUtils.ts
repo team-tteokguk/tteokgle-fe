@@ -39,3 +39,10 @@ export const getGomyeongInfo = (name: string): ItemInfo => {
 export const getItemEmoji = (name: string) => getGomyeongInfo(name).emoji;
 
 export const getItemNameKR = (name: string) => getGomyeongInfo(name).nameKR;
+
+export const getAllGomyeongInfos = (): ItemInfo[] => {
+  return Object.entries(ITEM_DATA).map(([id, value]) => ({
+    ...value,
+    id,
+  }));
+};

@@ -1,8 +1,11 @@
 import { AddItemModal } from '../features/myItems/components/AddItemModal';
+import { ItemDetailModal } from '../features/myItems/components/ItemDetailModal';
 import { PlacedItem } from '../features/myItems/components/PlacedItem';
 import { TteokPiece } from '../features/myItems/components/TteokPiece';
 import { usePlacedItemList } from '../features/myItems/hooks/useMyItem';
 import plusIcon from '../shared/assets/icons/plus.png';
+import { AsyncStateNotice } from '../shared/components/AsyncStateNotice';
+import { LoadingSpinner } from '../shared/components/LoadingSpinner';
 import { TitleCard } from '../shared/components/TitleCard';
 import { useModalStore } from '../store/useModalStore';
 
@@ -24,6 +27,9 @@ export const MyTteok = () => {
     openModal(<AddItemModal />);
   };
 
+  const handleItemClick = (itemId: string) => {
+    openModal(<ItemDetailModal itemId={itemId} />);
+  };
   return (
     <div>
       <TitleCard sub="고명을 터치해 메시지를 확인하세요" title="나의 떡국" />
@@ -31,14 +37,25 @@ export const MyTteok = () => {
         <div className="bg-grad-plate flex h-95.5 w-95.5 items-center justify-center rounded-full shadow-2xl">
           <div className="bg-grad-outline mx-auto flex h-80.25 w-80.25 items-center justify-center rounded-full">
             <div className="bg-grad-bowl flex h-77 w-77 items-center justify-center rounded-full">
-              <div className="bg-grad-soup relative h-69.5 w-69.5 rounded-full">
+              <div className="bg-grad-soup relative h-69.5 w-69.5 overflow-hidden rounded-full">
                 {TTEOK_DATA.map((style, idx) => (
                   <TteokPiece key={idx} style={style} />
                 ))}
-                {/* TODO: 에러 & 오류 UI 디자인 후 적용하기 */}
-                {isPending && <div>Loading...</div>}
-                {error && <div>Error!</div>}
-                {data && !isPending && data.map((item) => <PlacedItem item={item} />)}
+                {isPending && (
+                  <div className="absolute inset-x-4 top-1/2 z-20 -translate-y-1/2 rounded-2xl bg-white/75 py-6 backdrop-blur-[1px]">
+                    <LoadingSpinner label="떡국 정보를 불러오는 중..." size="sm" />
+                  </div>
+                )}
+                {error && (
+                  <div className="absolute inset-x-4 top-1/2 z-20 -translate-y-1/2">
+                    <AsyncStateNotice message="떡국 정보를 불러오지 못했습니다." type="error" />
+                  </div>
+                )}
+                {data &&
+                  !isPending &&
+                  data.items.map((item) => (
+                    <PlacedItem item={item} key={item.id} onClick={handleItemClick} />
+                  ))}
               </div>
             </div>
           </div>

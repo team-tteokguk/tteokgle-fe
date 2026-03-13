@@ -3,6 +3,13 @@ import type { GuestBookParams, PageResponse } from '../types/guestBookParams';
 
 import { instance } from '../../../services/axios';
 
+const normalizeGuestBookList = (data: any): GuestBookResponse[] => {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.items)) return data.items;
+  if (Array.isArray(data?.content)) return data.content;
+  return [];
+};
+
 // [GET] 방명록 불러오기
 export const getGuestBook = async (
   storeId: string,
@@ -22,7 +29,7 @@ export const createGuestBook = async (
   storeId: string,
   body: GuestBookRequest,
 ): Promise<GuestBookResponse> => {
-  const { data } = await instance.post(`/store/${storeId}/guestbooks`, body);
+  const { data } = await instance.post(`/stores/${storeId}/guestbooks`, body);
   return data;
 };
 
@@ -32,7 +39,7 @@ export const updateGuestBook = async (
   guestbookId: string,
   body: GuestBookRequest,
 ): Promise<GuestBookResponse> => {
-  const { data } = await instance.put(`/store/${storeId}/guestbooks/${guestbookId}`, body);
+  const { data } = await instance.put(`/stores/${storeId}/guestbooks/${guestbookId}`, body);
   return data;
 };
 
@@ -41,6 +48,6 @@ export const deleteGuestBook = async (
   storeId: string,
   guestbookId: string,
 ): Promise<GuestBookResponse> => {
-  const { data } = await instance.delete(`/store/${storeId}/guestbooks/${guestbookId}`);
+  const { data } = await instance.delete(`/stores/${storeId}/guestbooks/${guestbookId}`);
   return data;
 };

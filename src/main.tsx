@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
 
@@ -12,32 +12,55 @@ import { useAuthStore } from './store/auth/useAuthStore.ts';
 import './index.css';
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const setAuthResolved = useAuthStore((state) => state.setAuthResolved);
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
 
   useEffect(() => {
+    const pathname = window.location.pathname;
+    const shouldSkipForOAuthCallback =
+      pathname === '/auth/google/callback' || pathname === '/auth/kakao/callback';
+
+    if (shouldSkipForOAuthCallback) {
+      setAuthResolved(true);
+      setIsAuthInitialized(true);
+      return;
+    }
+
     const initAuth = async () => {
       try {
-        const { data } = await instance.post('/auth/refresh');
-        setAccessToken(data.accessToken);
+        await instance.get('/members/me');
+        setAuthenticated(true);
+        if (window.location.pathname === '/login' || window.location.pathname === '/') {
+          router.navigate('/my-tteok', { replace: true });
+        }
         console.log('✅ 자동 로그인 성공');
       } catch (_error) {
+        clearAuth();
         console.log('ℹ️ 자동 로그인 실패 (로그인 필요)');
+      } finally {
+        setIsAuthInitialized(true);
       }
     };
 
     initAuth();
-  }, [setAccessToken]);
+  }, [clearAuth, setAuthenticated, setAuthResolved]);
+
+  if (!isAuthInitialized) {
+    return null;
+  }
 
   return <>{children}</>;
 };
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthInitializer>
-        <RouterProvider router={router} />
-        <GlobalModal />
-      </AuthInitializer>
-    </QueryClientProvider>
-  </StrictMode>,
+  // <StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthInitializer>
+      <RouterProvider router={router} />
+      <GlobalModal />
+    </AuthInitializer>
+  </QueryClientProvider>,
+  // </StrictMode>,
 );

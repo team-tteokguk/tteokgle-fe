@@ -5,7 +5,6 @@ import type {
   UnplacedItemResponse,
 } from '../types';
 import type { MyItemParams } from '../types/myItemParams';
-
 import { instance } from '../../../services/axios';
 
 // [GET] 고명 컨텐츠 조회
@@ -15,11 +14,14 @@ export const getItemDetail = async (itemId: string): Promise<ItemDetailResponse>
 };
 
 // [PATCH] 고명 배치 및 수납
-export const updateItemPlacement = async (
-  itemId: string,
-  body: ItemPlacementRequest,
-): Promise<void> => {
-  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`, body);
+export const updateItemPlacement = async ({
+  isUsed,
+  itemId,
+}: {
+  isUsed: boolean;
+  itemId: string;
+}): Promise<void> => {
+  const { data } = await instance.patch(`/tteokguk/me/items/${itemId}`, { isUsed });
   return data;
 };
 

@@ -1,29 +1,91 @@
-import type { NotificationParams } from '../types/notificationParam';
+// import type { NotificationParams } from '../types/notificationParam';
+import type { NotificationResponse } from '../types';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-import { getAllNotifications, updateNotifications } from '../api/notificationApi';
+import {
+  connectNotificationStream,
+  disconnectNotificationStream,
+  getAllNotifications,
+  updateNotifications,
+} from '../api/notificationApi';
 import { notificationKeys } from '../api/notificationKeys';
 
-export const useGetAllNotification = (memberId: string, params: NotificationParams = {}) => {
-  const normalizedParams: NotificationParams = {
-    page: 0,
-    size: 20,
-    ...params,
-  };
+// export const useGetAllNotification = (memberId: string, params: NotificationParams = {}) => {
+//   const normalizedParams: NotificationParams = {
+//     page: 0,
+//     size: 20,
+//     ...params,
+//   };
+//   return useQuery({
+//     queryFn: () => getAllNotifications(memberId, normalizedParams),
+//     queryKey: notificationKeys.lists(memberId, normalizedParams),
+
+export const useGetAllNotification = (memberId: string, enabled = true) => {
   return useQuery({
-    queryFn: () => getAllNotifications(memberId, normalizedParams),
-    queryKey: notificationKeys.lists(memberId, normalizedParams),
+    enabled,
+    queryFn: () => getAllNotifications(memberId),
+    queryKey: notificationKeys.lists(memberId),
+
   });
+};
+
+export const useNotificationStream = (memberId: string, enabled = true) => {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const unsubscribe = connectNotificationStream({
+      onError: () => {
+        console.error('알림 스트림 연결 오류');
+      },
+      onMessage: (incomingNotification) => {
+        queryClient.setQueryData<NotificationResponse[]>(
+          notificationKeys.lists(memberId),
+          (previousNotifications) => {
+            const notifications = previousNotifications ?? [];
+            const alreadyExists = notifications.some(
+              (notification) => notification.id === incomingNotification.id,
+            );
+
+            if (alreadyExists) return notifications;
+            return [incomingNotification, ...notifications];
+          },
+        );
+      },
+    });
+
+    return () => {
+      disconnectNotificationStream(unsubscribe);
+    };
+  }, [enabled, memberId, queryClient]);
 };
 
 export const useUpdateNotification = (memberId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<void, Error, void, { previousNotifications: NotificationResponse[] }>({
     mutationFn: () => updateNotifications(memberId),
-    onError: (error) => {
+    onError: (error, _variables, context) => {
       console.error('알림 업데이트', error);
+      queryClient.setQueryData(notificationKeys.lists(memberId), context?.previousNotifications);
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({
+        queryKey: notificationKeys.lists(memberId),
+      });
+
+      const previousNotifications =
+        queryClient.getQueryData<NotificationResponse[]>(notificationKeys.lists(memberId)) ?? [];
+
+      queryClient.setQueryData<NotificationResponse[]>(
+        notificationKeys.lists(memberId),
+        previousNotifications.map((notification) => ({ ...notification, isRead: true })),
+      );
+
+      return { previousNotifications };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

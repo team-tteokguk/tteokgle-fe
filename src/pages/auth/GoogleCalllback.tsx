@@ -9,7 +9,7 @@ export const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<null | string>(null);
 
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -17,14 +17,12 @@ export const GoogleCallback = () => {
 
     if (errorParam) {
       console.error('OAuth error:', errorParam);
-      setError('로그인이 취소되었어요');
-      setTimeout(() => navigate('/login'), 2000);
+      navigate('/login', { replace: true });
       return;
     }
 
     if (!code) {
-      setError('잘못된 접근이에요');
-      setTimeout(() => navigate('/login'), 2000);
+      navigate('/login', { replace: true });
       return;
     }
 
@@ -34,11 +32,7 @@ export const GoogleCallback = () => {
           params: { code },
         });
 
-        if (!data?.accessToken) {
-          throw new Error('액세스 토큰을 받지 못했어요');
-        }
-
-        setAccessToken(data.accessToken);
+        setAuthenticated(true);
 
         if (data.newMember) {
           navigate('/setup-nickname', { replace: true });
@@ -59,7 +53,7 @@ export const GoogleCallback = () => {
     };
 
     handleGoogleLogin();
-  }, [navigate, searchParams, setAccessToken]);
+  }, [navigate, searchParams, setAuthenticated]);
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">

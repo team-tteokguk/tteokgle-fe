@@ -1,18 +1,25 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import GeneralLayout from './layouts/GeneralLayout';
 import { GoogleCallback } from './pages/auth/GoogleCalllback';
+import { KakaoCallback } from './pages/auth/KakaoCallback';
 import { Login } from './pages/auth/Login';
 import { SetupNickname } from './pages/auth/SetupNickname';
+import { FindFriends } from './pages/FindFriends';
 import { Mypage } from './pages/Mypage';
+import { MyStore } from './pages/MyStore';
 import { MyTteok } from './pages/MyTteok';
+import { Store } from './pages/Store';
 
 export const router = createBrowserRouter([
   {
     children: [
       // 로그인 불필요
-      {},
+      {
+        element: <Navigate replace to="/my-tteok" />,
+        index: true,
+      },
 
       // 로그인 필수
       {
@@ -26,6 +33,21 @@ export const router = createBrowserRouter([
             element: <MyTteok />,
             index: true,
             path: 'my-tteok',
+          },
+          {
+            element: <MyStore />,
+            index: true,
+            path: 'my-store',
+          },
+          {
+            element: <FindFriends />,
+            index: true,
+            path: 'find-buddy',
+          },
+          {
+            element: <Store />,
+            index: true,
+            path: 'store/:storeId',
           },
         ],
         element: <ProtectedRoute />,
@@ -51,6 +73,11 @@ export const router = createBrowserRouter([
     element: <GoogleCallback />,
     index: true,
     path: 'auth/google/callback',
+  },
+  {
+    element: <KakaoCallback />,
+    index: true,
+    path: 'auth/kakao/callback',
   },
 
   // 레이아웃 미적용 & 로그인 가드

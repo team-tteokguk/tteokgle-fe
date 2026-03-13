@@ -1,13 +1,61 @@
 @import 'tailwindcss';
 
+@keyframes bottom-sheet-enter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* input 리셋 */
 
-input:focus {
+input:focus,
+textarea:focus {
   outline: none;
 }
 
 button {
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.03);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(43, 127, 255, 0.45);
+  outline-offset: 2px;
+}
+
+/* number input 기본 스핀 버튼 숨김 */
+.number-input-no-spinner::-webkit-inner-spin-button,
+.number-input-no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input-no-spinner {
+  -moz-appearance: textfield;
 }
 
 :root {
@@ -187,6 +235,10 @@ body {
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
     font-weight: 700;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
   }
 
   .social-login-button-base {
@@ -206,6 +258,96 @@ body {
     font-weight: 700;
     line-height: 24px; /* 150% */
     letter-spacing: -0.312px;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    width: 28rem;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+  }
+
+  .bottom-sheet-enter {
+    animation: bottom-sheet-enter 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
+  }
+
+  .heading3-text {
+    color: var(--font-main);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+  }
+
+  .count-button {
+    border-radius: 33554400px;
+    background: #f3f4f6;
+    display: flex;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+    color: #8b4513;
+    text-align: center;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.312px;
+    flex-shrink: 0;
+    transition:
+      transform 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  .find-buddy-button-base {
+    display: flex;
+    padding: 12px 0;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 14px;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.312px;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  .pretty-scrollbar {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(153, 161, 175, 0.75) transparent;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .pretty-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(153, 161, 175, 0.75);
+    border-radius: 999px;
   }
 }
 
@@ -217,13 +359,17 @@ body {
   --color-brand-dark: var(--brand-dark);
   --color-brand-main: var(--brand-main);
 
+  --color-accent-main: var(--accent-main);
+
   --color-white-dark: var(--white-dark);
 
   --color-card-top: var(--card-top);
 
   --color-font-gray: var(--font-third);
   --color-font-gray-light: var(--gray-light);
+  --color-font-gray-extra-light: var(--gray-light-light);
   --color-font-gray-dark: var(--font-third-second);
+  --color-font-black: var(--font-third-third);
   --color-font-main: var(--font-main);
   --color-font-secondary: var(--font-main-second);
   --color-font-white: var(--font-second);

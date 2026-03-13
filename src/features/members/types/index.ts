@@ -1,9 +1,18 @@
 export interface Member {
-  id: number;
+  createdAt: string;
+  memberId: string;
   nickname: string;
-  profileImage?: string;
+  point: number;
+  profileImage: string;
+  socailId: string;
+  socialType: 'GOOGLE' | 'KAKAO';
+}
+
+export interface MemberProfileImageUpdateDto {
+  profileImage: string;
 }
 
 export interface MemberUpdateDto {
-  nickname: string;
+  name?: string;
+  nickname?: string;
 }
