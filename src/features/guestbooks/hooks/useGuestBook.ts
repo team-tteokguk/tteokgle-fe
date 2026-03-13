@@ -1,7 +1,12 @@
-import type { GuestBookRequest } from '../types';
-import type { GuestBookParams } from '../types/guestBookParams';
+import type { GuestBookRequest, GuestBookResponse } from '../types';
+import type { GuestBookParams, PageResponse } from '../types/guestBookParams';
 
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import {
   createGuestBook,
@@ -13,7 +18,13 @@ import { guestBookKeys } from '../api/guestBookKeys';
 
 export const useGuestBook = (storeId: string, params: GuestBookParams) => {
   const size = params.size ?? 20;
-  return useInfiniteQuery({
+  return useInfiniteQuery<
+    PageResponse<GuestBookResponse>,
+    Error,
+    InfiniteData<PageResponse<GuestBookResponse>>,
+    ReturnType<typeof guestBookKeys.infiniteList>,
+    number
+  >({
     getNextPageParam: (lastPage) => (lastPage.last ? undefined : lastPage.number + 1),
     initialPageParam: 0,
     queryFn: ({ pageParam }) => getGuestBook(storeId, { page: pageParam, size }),
